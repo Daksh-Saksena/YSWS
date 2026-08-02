@@ -56,11 +56,11 @@ body, html {
 /* Hero Text Styling */
 .hero-text {
     color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: clamp(3rem, 6vw, 7rem); /* Scales smoothly from mobile to large screens */
-    margin: 20px 0 0 0;
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: clamp(4rem, 8vw, 9rem); /* Scaled slightly larger because handwriting fonts appear smaller */
+    margin: -30px 0 0 0; /* Negative margin pulls the text up tighter to the logo */
     text-align: center;
     text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7); /* Dropshadow for legibility against bright backgrounds */
-    letter-spacing: -2px; /* Tighter spacing for a bold, modern look */
+    letter-spacing: normal; 
 }
