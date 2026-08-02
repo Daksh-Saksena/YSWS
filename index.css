@@ -27,6 +27,7 @@ body, html {
     width: 100%;
     height: 100vh; /* Takes up the full height of the initial screen */
     display: flex;
+    flex-direction: column; /* Stack logo and text vertically */
     justify-content: center;
     align-items: center;
     pointer-events: none; /* Prevents the logo from blocking interactions with the background */
@@ -50,4 +51,16 @@ body, html {
     z-index: 20;
     max-width: 120px; /* Adjust this to change the flag's size */
     height: auto;
+}
+
+/* Hero Text Styling */
+.hero-text {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 6vw, 7rem); /* Scales smoothly from mobile to large screens */
+    margin: 20px 0 0 0;
+    text-align: center;
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7); /* Dropshadow for legibility against bright backgrounds */
+    letter-spacing: -2px; /* Tighter spacing for a bold, modern look */
 }
