@@ -7,7 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body class="video-active">
+    <!-- Intro Video Overlay -->
+    <div id="video-overlay" class="video-overlay">
+        <video id="intro-video" autoplay playsinline preload="auto">
+            <source src="Concept animation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <!-- Sound & Skip Controls -->
+        <div class="video-controls">
+            <button id="sound-btn" class="overlay-btn sound-btn">
+                <span id="sound-icon">🔊</span> <span id="sound-text">Unmute</span>
+            </button>
+            <button id="skip-btn" class="overlay-btn skip-btn">Skip Intro ➔</button>
+        </div>
+    </div>
+
     <img src="flag.png" alt="Flag" class="flag">
     <div class="logo-container">
         <img src="image.PNG" alt="Logo" class="logo">
@@ -15,7 +30,80 @@
     </div>
     <div class="image-container">
         <!-- Display the image directly to maintain aspect ratio and enable scrolling -->
-        <img src="Bg.png" alt="High Quality Background">
+        <img src="BackGround.jpeg" alt="High Quality Background">
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoOverlay = document.getElementById('video-overlay');
+            const introVideo = document.getElementById('intro-video');
+            const soundBtn = document.getElementById('sound-btn');
+            const soundIcon = document.getElementById('sound-icon');
+            const soundText = document.getElementById('sound-text');
+            const skipBtn = document.getElementById('skip-btn');
+
+            function endVideoIntro() {
+                if (videoOverlay.classList.contains('fade-out')) return;
+                videoOverlay.classList.add('fade-out');
+                document.body.classList.remove('video-active');
+                setTimeout(() => {
+                    videoOverlay.style.display = 'none';
+                }, 800);
+            }
+
+            function toggleSound(e) {
+                if (e) e.stopPropagation();
+                if (introVideo.muted) {
+                    introVideo.muted = false;
+                    soundIcon.textContent = '🔊';
+                    soundText.textContent = 'Sound On';
+                } else {
+                    introVideo.muted = true;
+                    soundIcon.textContent = '🔇';
+                    soundText.textContent = 'Muted';
+                }
+            }
+
+            if (introVideo) {
+                // Try playing unmuted first
+                introVideo.muted = false;
+                const playPromise = introVideo.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.log("Unmuted autoplay restricted by browser policy. Muting to autoplay...", error);
+                        // Browser blocked sound autoplay - start muted and show Unmute button
+                        introVideo.muted = true;
+                        soundIcon.textContent = '🔇';
+                        soundText.textContent = 'Click to Unmute';
+                        introVideo.play().catch(endVideoIntro);
+                    });
+                }
+
+                // Cut/fade to site when video ends
+                introVideo.addEventListener('ended', endVideoIntro);
+
+                // Sound button listener
+                soundBtn.addEventListener('click', toggleSound);
+
+                // Skip button listener
+                skipBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    endVideoIntro();
+                });
+
+                // Unmute on first click anywhere if muted
+                videoOverlay.addEventListener('click', function(e) {
+                    if (introVideo.muted) {
+                        introVideo.muted = false;
+                        soundIcon.textContent = '🔊';
+                        soundText.textContent = 'Sound On';
+                    }
+                });
+            } else {
+                endVideoIntro();
+            }
+        });
+    </script>
 </body>
 </html>
