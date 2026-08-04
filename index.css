@@ -1,79 +1,135 @@
-/* Reset margins and padding to ensure the image touches the edges of the screen */
+/* ==========================================================================
+   Hack Club Official Theme Variables & Tokens
+   ========================================================================== */
+:root {
+    /* Hack Club Theme Colors */
+    --hc-red: #ec3750; /* Primary Hack Club Red */
+    --hc-orange: #ff8c37;
+    --hc-yellow: #f1c40f;
+    --hc-green: #33d6a6;
+    --hc-cyan: #5bc0de;
+    --hc-blue: #338eda;
+    --hc-purple: #a633d6;
+    --hc-darker: #121217;
+    --hc-dark: #17171d;
+    --hc-darkless: #252429;
+    --hc-muted: #8492a6;
+    --hc-smoke: #e0e6ed;
+    --hc-snow: #f9fafc;
+    --hc-white: #ffffff;
+    --hc-text: #1f2d3d;
+
+    /* Hack Club Theme Fonts */
+    --hc-font-body: "Phantom Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --hc-font-heading: "Phantom Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --hc-font-monospace: "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+}
+
+/* Hack Club Official Font Definition (Phantom Sans) */
+@font-face {
+    font-family: 'Phantom Sans';
+    src: url('https://assets.hackclub.com/fonts/Phantom_Sans_Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Phantom Sans';
+    src: url('https://assets.hackclub.com/fonts/Phantom_Sans_Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Reset margins and padding so the website touches screen edges */
 body,
 html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    background-color: #000;
-    /* Dark background behind the image */
-    scroll-behavior: smooth;
+    margin: 0; /* Remove default outer margins */
+    padding: 0; /* Remove default inner padding */
+    width: 100%; /* Full screen width */
+    background-color: var(--hc-darker); /* Hack Club Darker background */
+    font-family: var(--hc-font-body); /* Hack Club official body font */
+    color: var(--hc-white);
+    scroll-behavior: smooth; /* Smooth scrolling effect across the page */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+/* Container for the main background image */
 .image-container {
-    width: 100%;
-    /* The container naturally expands to fit the height of the image */
+    width: 100%; /* Full width container */
 }
 
+/* Background image styling */
 .image-container img {
-    display: block;
-    width: 100%;
-    height: auto;
-    /* Maintain the original aspect ratio of the image */
-    /* This ensures that if the image is tall, it will just make the page scrollable */
+    display: block; /* Removes bottom spacing/gaps under image elements */
+    width: 100%; /* Spans full width of the screen */
+    height: auto; /* Maintains original image height and aspect ratio */
 }
 
-/* Logo container positions the logo at the start (top) and centers it */
+/* Container for logo & heading text - overlay at top of screen */
 .logo-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    /* Takes up the full height of the initial screen */
-    display: flex;
-    flex-direction: column;
-    /* Stack logo and text vertically */
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    /* Prevents the logo from blocking interactions with the background */
-    z-index: 10;
-    padding-bottom: 10vh;
-    /* Shifts the logo and text group upwards */
+    position: absolute; /* Positions over the background image */
+    top: 0; /* Align to very top of the page */
+    left: 0; /* Align to very left of the page */
+    width: 100%; /* Full screen width */
+    height: 100vh; /* Full viewport height (100% of visible screen) */
+    display: flex; /* Enables flexbox layout */
+    flex-direction: column; /* Stacks logo on top, text underneath */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    pointer-events: none; /* Mouse clicks pass through to background */
+    z-index: 10; /* Keeps logo floating on top of background image */
+    padding-bottom: 25vh; /* EDIT THIS to move logo+text UP or DOWN (e.g., 20vh, 30vh, 40vh) */
 }
 
-/* Logo styling to make it big but responsive */
+/* Main logo image styling */
 .logo {
-    width: 90vw;
-    max-width: 1200px;
-    max-height: 95vh;
-    /* Prevents it from overflowing the screen height */
-    height: auto;
-    object-fit: contain;
+    width: 90vw; /* EDIT THIS to change logo width (e.g., 80vw, 95vw) */
+    max-width: 1200px; /* EDIT THIS for maximum logo size on huge screens */
+    max-height: 95vh; /* EDIT THIS so logo doesn't overflow screen height */
+    height: auto; /* Keeps correct aspect ratio */
+    object-fit: contain; /* Ensures entire logo fits without stretching */
+    margin-top: -140px; /* EDIT THIS to shift just the logo UP or DOWN */
 }
 
-/* Flag positioning in the top left */
+/* Flag icon in the top left corner */
 .flag {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 20;
-    max-width: 120px;
-    /* Adjust this to change the flag's size */
-    height: auto;
+    position: absolute; /* Pins flag relative to page top-left */
+    top: 20px; /* EDIT THIS to change distance from top edge */
+    left: 20px; /* EDIT THIS to change distance from left edge */
+    z-index: 20; /* Floating above logo container */
+    max-width: 120px; /* EDIT THIS to make flag bigger or smaller */
+    height: auto; /* Keeps correct aspect ratio */
 }
 
-/* Hero Text Styling */
+/* Loaded local Sandscript BTN font file */
+@font-face {
+    font-family: 'Sand Beach';
+    src: url('Sandscript BTN.ttf') format('truetype'),
+         url('SandBeach.ttf') format('truetype'),
+         url('SandBeach.otf') format('opentype');
+}
+
+/* "Build Your Way Home" text styling - EXEMPT from Hack Club theme font */
 .hero-text {
-    color: #ffffff;
-    font-family: 'Caveat', cursive;
-    font-weight: 700;
-    font-size: clamp(4rem, 8vw, 9rem);
-    /* Scaled slightly larger because handwriting fonts appear smaller */
-    margin: -140px 0 0 0;
-    /* More negative margin to pull the text up even closer */
-    text-align: center;
-    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7);
-    /* Dropshadow for legibility against bright backgrounds */
-    letter-spacing: normal;
+    color: var(--hc-white); /* EDIT THIS to change text color */
+    font-family: 'Sand Beach', 'Pacifico', 'Satisfy', cursive; /* Kept Sand Beach as requested */
+    font-weight: 700; /* EDIT THIS to change font boldness */
+    font-size: clamp(4rem, 8vw, 9rem); /* EDIT THIS for text size (min, responsive, max) */
+    margin: -140px 0 0 0; /* EDIT THIS to move text UP/DOWN relative to logo */
+    text-align: center; /* Centers text horizontally */
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7); /* EDIT THIS for shadow intensity */
+    letter-spacing: normal; /* EDIT THIS for letter spacing */
+}
+
+/* "A Hack Club YSWS!" subtitle text styling - USES Hack Club Official Theme */
+.sub-text {
+    color: var(--hc-white); /* EDIT THIS: uses Hack Club White (or try var(--hc-red)) */
+    font-family: var(--hc-font-heading); /* Uses official Hack Club Phantom Sans font */
+    font-weight: 700; /* Hack Club heading bold weight */
+    font-size: clamp(1.5rem, 3.5vw, 3rem); /* EDIT THIS for font size */
+    line-height: 1.25; /* Hack Club subheading line height */
+    letter-spacing: 0.009em; /* Hack Club headline letter-spacing */
+    margin: -20px 0 0 0; /* EDIT THIS to move text UP/DOWN relative to hero text */
+    text-align: center; /* Centers text horizontally */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.5); /* Hack Club shadow style */
 }
