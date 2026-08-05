@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body class="video-active">
     <!-- Intro Video Overlay -->
     <div id="video-overlay" class="video-overlay">
         <video id="intro-video" autoplay playsinline preload="auto">
-            <source src="Concept animation.mp4" type="video/mp4">
+            <source src="Concept animation v2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <!-- Sound & Skip Controls -->
@@ -34,7 +36,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const videoOverlay = document.getElementById('video-overlay');
             const introVideo = document.getElementById('intro-video');
             const soundBtn = document.getElementById('sound-btn');
@@ -70,7 +72,7 @@
                 const playPromise = introVideo.play();
 
                 if (playPromise !== undefined) {
-                    playPromise.catch(function(error) {
+                    playPromise.catch(function (error) {
                         console.log("Unmuted autoplay restricted by browser policy. Muting to autoplay...", error);
                         // Browser blocked sound autoplay - start muted and show Unmute button
                         introVideo.muted = true;
@@ -87,13 +89,13 @@
                 soundBtn.addEventListener('click', toggleSound);
 
                 // Skip button listener
-                skipBtn.addEventListener('click', function(e) {
+                skipBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     endVideoIntro();
                 });
 
                 // Unmute on first click anywhere if muted
-                videoOverlay.addEventListener('click', function(e) {
+                videoOverlay.addEventListener('click', function (e) {
                     if (introVideo.muted) {
                         introVideo.muted = false;
                         soundIcon.textContent = '🔊';
@@ -106,4 +108,5 @@
         });
     </script>
 </body>
+
 </html>
