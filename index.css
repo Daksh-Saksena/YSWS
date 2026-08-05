@@ -3,7 +3,8 @@
    ========================================================================== */
 :root {
     /* Hack Club Theme Colors */
-    --hc-red: #ec3750; /* Primary Hack Club Red */
+    --hc-red: #ec3750;
+    /* Primary Hack Club Red */
     --hc-orange: #ff8c37;
     --hc-yellow: #f1c40f;
     --hc-green: #33d6a6;
@@ -32,6 +33,7 @@
     font-weight: 400;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Phantom Sans';
     src: url('https://assets.hackclub.com/fonts/Phantom_Sans_Bold.woff2') format('woff2');
@@ -42,13 +44,20 @@
 /* Reset margins and padding so the website touches screen edges */
 body,
 html {
-    margin: 0; /* Remove default outer margins */
-    padding: 0; /* Remove default inner padding */
-    width: 100%; /* Full screen width */
-    background-color: var(--hc-darker); /* Hack Club Darker background */
-    font-family: var(--hc-font-body); /* Hack Club official body font */
+    margin: 0;
+    /* Remove default outer margins */
+    padding: 0;
+    /* Remove default inner padding */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%;
+    /* Full screen width */
+    background-color: var(--hc-darker);
+    /* Hack Club Darker background */
+    font-family: var(--hc-font-body);
+    /* Hack Club official body font */
     color: var(--hc-white);
-    scroll-behavior: smooth; /* Smooth scrolling effect across the page */
+    scroll-behavior: smooth;
+    /* Smooth scrolling effect across the page */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -123,81 +132,618 @@ body.video-active {
 
 /* Container for the main background image */
 .image-container {
-    width: 100%; /* Full width container */
+    width: 100%;
+    /* Full width container */
+    position: relative;
+    overflow: hidden;
 }
 
 /* Background image styling */
 .image-container img {
-    display: block; /* Removes bottom spacing/gaps under image elements */
-    width: 100%; /* Spans full width of the screen */
-    height: auto; /* Maintains original image height and aspect ratio */
+    display: block;
+    width: 100%;
+    height: auto;
 }
+
+/* Clouds Layer (Seamless Marquee) */
+.clouds-layer.marquee {
+    position: relative;
+    width: 100vw;
+    height: 35vh;
+    display: flex;
+    overflow: visible;
+    z-index: 4;
+    pointer-events: none;
+    align-items: center;
+}
+
+.marquee-content {
+    display: flex;
+    gap: 8vw;
+    padding-right: 8vw;
+    animation: scrollMarquee 45s linear infinite;
+    align-items: center;
+}
+
+.cloud {
+    opacity: 1;
+    height: auto;
+    flex-shrink: 0;
+    animation: gentleBob 6s infinite alternate ease-in-out;
+}
+
+.c-large { width: 600px; margin-top: -60px; }
+.c-small { width: 350px; margin-top: 80px; animation-delay: -2s; }
+.c-med { width: 500px; margin-top: -30px; animation-delay: -4s; }
+.c-huge { width: 800px; margin-top: 60px; animation-delay: -1s; }
+
+@keyframes scrollMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes gentleBob {
+    0% { transform: translateY(-15px); }
+    100% { transform: translateY(15px); }
+}
+
 
 /* Container for logo & heading text - overlay at top of screen */
 .logo-container {
-    position: absolute; /* Positions over the background image */
-    top: 0; /* Align to very top of the page */
-    left: 0; /* Align to very left of the page */
-    width: 100%; /* Full screen width */
-    height: 100vh; /* Full viewport height (100% of visible screen) */
-    display: flex; /* Enables flexbox layout */
-    flex-direction: column; /* Stacks logo on top, text underneath */
-    justify-content: center; /* Centers content vertically */
-    align-items: center; /* Centers content horizontally */
-    pointer-events: none; /* Mouse clicks pass through to background */
-    z-index: 10; /* Keeps logo floating on top of background image */
-    padding-bottom: 25vh; /* EDIT THIS to move logo+text UP or DOWN (e.g., 20vh, 30vh, 40vh) */
+    position: absolute;
+    /* Positions over the background image */
+    top: 0;
+    /* Align to very top of the page */
+    left: 0;
+    /* Align to very left of the page */
+    width: 100%;
+    /* Full screen width */
+    height: 100vh;
+    /* Full viewport height (100% of visible screen) */
+    display: flex;
+    /* Enables flexbox layout */
+    flex-direction: column;
+    /* Stacks logo on top, text underneath */
+    justify-content: center;
+    /* Centers content vertically */
+    align-items: center;
+    /* Centers content horizontally */
+    pointer-events: none;
+    /* Mouse clicks pass through to background */
+    z-index: 10;
+    /* Keeps logo floating on top of background image */
+    padding-bottom: 25vh;
+    /* EDIT THIS to move logo+text UP or DOWN (e.g., 20vh, 30vh, 40vh) */
 }
 
 /* Main logo image styling */
 .logo {
-    width: 90vw; /* EDIT THIS to change logo width (e.g., 80vw, 95vw) */
-    max-width: 1200px; /* EDIT THIS for maximum logo size on huge screens */
-    max-height: 95vh; /* EDIT THIS so logo doesn't overflow screen height */
-    height: auto; /* Keeps correct aspect ratio */
-    object-fit: contain; /* Ensures entire logo fits without stretching */
-    margin-top: -140px; /* EDIT THIS to shift just the logo UP or DOWN */
+    width: 90vw;
+    /* EDIT THIS to change logo width (e.g., 80vw, 95vw) */
+    max-width: 1200px;
+    /* EDIT THIS for maximum logo size on huge screens */
+    max-height: 95vh;
+    /* EDIT THIS so logo doesn't overflow screen height */
+    height: auto;
+    /* Keeps correct aspect ratio */
+    object-fit: contain;
+    /* Ensures entire logo fits without stretching */
+    margin-top: -140px;
+    /* EDIT THIS to shift just the logo UP or DOWN */
 }
 
 /* Flag icon in the top left corner */
 .flag {
-    position: absolute; /* Pins flag relative to page top-left */
-    top: 20px; /* EDIT THIS to change distance from top edge */
-    left: 20px; /* EDIT THIS to change distance from left edge */
-    z-index: 20; /* Floating above logo container */
-    max-width: 120px; /* EDIT THIS to make flag bigger or smaller */
-    height: auto; /* Keeps correct aspect ratio */
+    position: absolute;
+    /* Pins flag relative to page top-left */
+    top: 20px;
+    /* EDIT THIS to change distance from top edge */
+    left: 20px;
+    /* EDIT THIS to change distance from left edge */
+    z-index: 20;
+    /* Floating above logo container */
+    max-width: 120px;
+    /* EDIT THIS to make flag bigger or smaller */
+    height: auto;
+    /* Keeps correct aspect ratio */
 }
 
 /* Loaded local Sandscript BTN font file */
 @font-face {
     font-family: 'Sand Beach';
     src: url('Sandscript BTN.ttf') format('truetype'),
-         url('SandBeach.ttf') format('truetype'),
-         url('SandBeach.otf') format('opentype');
+        url('SandBeach.ttf') format('truetype'),
+        url('SandBeach.otf') format('opentype');
 }
 
 /* "Build Your Way Home" text styling - EXEMPT from Hack Club theme font */
 .hero-text {
-    color: var(--hc-white); /* EDIT THIS to change text color */
-    font-family: 'Sand Beach', 'Pacifico', 'Satisfy', cursive; /* Kept Sand Beach as requested */
-    font-weight: 700; /* EDIT THIS to change font boldness */
-    font-size: clamp(4rem, 8vw, 9rem); /* EDIT THIS for text size (min, responsive, max) */
-    margin: -140px 0 0 0; /* EDIT THIS to move text UP/DOWN relative to logo */
-    text-align: center; /* Centers text horizontally */
-    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7); /* EDIT THIS for shadow intensity */
-    letter-spacing: normal; /* EDIT THIS for letter spacing */
+    color: var(--hc-white);
+    /* EDIT THIS to change text color */
+    font-family: 'Sand Beach', 'Pacifico', 'Satisfy', cursive;
+    /* Kept Sand Beach as requested */
+    font-weight: 700;
+    /* EDIT THIS to change font boldness */
+    font-size: clamp(4rem, 8vw, 9rem);
+    /* EDIT THIS for text size (min, responsive, max) */
+    margin: -140px 0 0 0;
+    /* EDIT THIS to move text UP/DOWN relative to logo */
+    text-align: center;
+    /* Centers text horizontally */
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.7);
+    /* EDIT THIS for shadow intensity */
+    letter-spacing: normal;
+    /* EDIT THIS for letter spacing */
 }
 
 /* "A Hack Club YSWS!" subtitle text styling - USES Hack Club Official Theme */
 .sub-text {
-    color: var(--hc-white); /* EDIT THIS: uses Hack Club White (or try var(--hc-red)) */
-    font-family: var(--hc-font-heading); /* Uses official Hack Club Phantom Sans font */
-    font-weight: 700; /* Hack Club heading bold weight */
-    font-size: clamp(1.5rem, 3.5vw, 3rem); /* EDIT THIS for font size */
-    line-height: 1.25; /* Hack Club subheading line height */
-    letter-spacing: 0.009em; /* Hack Club headline letter-spacing */
-    margin: -20px 0 0 0; /* EDIT THIS to move text UP/DOWN relative to hero text */
-    text-align: center; /* Centers text horizontally */
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.5); /* Hack Club shadow style */
+    color: var(--hc-white);
+    /* EDIT THIS: uses Hack Club White (or try var(--hc-red)) */
+    font-family: var(--hc-font-heading);
+    /* Uses official Hack Club Phantom Sans font */
+    font-weight: 700;
+    /* Hack Club heading bold weight */
+    font-size: clamp(1.5rem, 3.5vw, 3rem);
+    /* EDIT THIS for font size */
+    line-height: 1.25;
+    /* Hack Club subheading line height */
+    letter-spacing: 0.009em;
+    /* Hack Club headline letter-spacing */
+    margin: 15px 0 0 0;
+    /* EDIT THIS to move text UP/DOWN relative to hero text */
+    text-align: center;
+    /* Centers text horizontally */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.5);
+    /* Hack Club shadow style */
+}
+
+/* ==========================================================================
+   STORY SECTIONS (Zig-Zag Layout)
+   ========================================================================== */
+.story {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    padding-top: 100vh;
+    padding-bottom: 120px;
+}
+
+.story-section {
+    min-height: 20vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Treasure Map Arrows */
+.map-arrow {
+    position: absolute;
+    top: 50%;
+    height: 100%;
+    width: 30vw;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.map-arrow-right {
+    left: 45vw;
+}
+
+.map-arrow-left {
+    right: 45vw;
+}
+
+.map-arrow path {
+    fill: none;
+    stroke: var(--hc-muted);
+    stroke-width: 4px;
+    stroke-dasharray: 12 12;
+    stroke-linecap: round;
+}
+
+.map-arrow polygon {
+    fill: var(--hc-muted);
+}
+
+/* Layout alternating */
+.s-left {
+    justify-content: flex-start;
+}
+
+.s-right {
+    justify-content: flex-end;
+}
+
+/* Text Block Constraints (No Boxes) */
+.story-text {
+    max-width: 600px;
+    background: transparent;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.story-text--wide {
+    max-width: 800px;
+}
+
+.s-eyebrow {
+    color: var(--hc-red);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.s-heading {
+    color: var(--hc-white);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.s-body {
+    color: var(--hc-smoke);
+    font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+    line-height: 1.5;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   SPECIFIC SECTION STYLES
+   ========================================================================== */
+
+/* Step Flow (Editorial Typography) */
+.step-flow {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.step-flow li {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.step-num {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--hc-red);
+    line-height: 0.8;
+    text-shadow: 0 4px 12px rgba(236, 55, 80, 0.4);
+    opacity: 0.9;
+}
+
+/* 4 Modes Guild Cards */
+.modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.mode-card {
+    background: rgba(18, 18, 23, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 24px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+.mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+/* Air Mode */
+.mode-card.air:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--hc-blue);
+    box-shadow: 0 15px 40px rgba(51, 142, 218, 0.3);
+}
+.mode-card.air:hover::before { background: radial-gradient(circle at top, rgba(51, 142, 218, 0.15) 0%, transparent 70%); opacity: 1; }
+
+/* Water Mode */
+.mode-card.water:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--hc-cyan);
+    box-shadow: 0 15px 40px rgba(91, 192, 222, 0.3);
+}
+.mode-card.water:hover::before { background: radial-gradient(circle at top, rgba(91, 192, 222, 0.15) 0%, transparent 70%); opacity: 1; }
+
+/* Land Mode */
+.mode-card.land:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--hc-orange);
+    box-shadow: 0 15px 40px rgba(255, 140, 55, 0.3);
+}
+.mode-card.land:hover::before { background: radial-gradient(circle at top, rgba(255, 140, 55, 0.15) 0%, transparent 70%); opacity: 1; }
+
+/* Frontier Mode */
+.mode-card.frontier:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--hc-purple);
+    box-shadow: 0 15px 40px rgba(166, 51, 214, 0.3);
+}
+.mode-card.frontier:hover::before { background: radial-gradient(circle at top, rgba(166, 51, 214, 0.15) 0%, transparent 70%); opacity: 1; }
+
+.mode-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5));
+}
+
+.mode-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--hc-white);
+}
+
+.mode-desc {
+    color: var(--hc-smoke);
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.guild-desc {
+    color: var(--hc-smoke);
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Build List */
+.build-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0 0;
+    columns: 2;
+    column-gap: 40px;
+}
+
+.build-list li {
+    font-size: 1.5rem;
+    color: var(--hc-smoke);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.build-list li::before {
+    content: "•";
+    color: var(--hc-red);
+    margin-right: 10px;
+}
+
+/* Credit Loop */
+.credit-loop {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--hc-orange);
+}
+
+.credit-arrow {
+    color: var(--hc-muted);
+    font-size: 1.2rem;
+}
+
+/* Expedition Cards (Community) */
+.expedition-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+.expedition-card {
+    display: flex;
+    align-items: center;
+    background: var(--hc-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    gap: 20px;
+}
+
+.exp-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.exp-thumb--air {
+    background: rgba(51, 142, 218, 0.2);
+}
+
+.exp-thumb--water {
+    background: rgba(91, 192, 222, 0.2);
+}
+
+.exp-thumb--frontier {
+    background: rgba(166, 51, 214, 0.2);
+}
+
+.exp-info {
+    flex: 1;
+}
+
+.exp-guild {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.exp-guild.air {
+    color: var(--hc-blue);
+}
+
+.exp-guild.water {
+    color: var(--hc-cyan);
+}
+
+.exp-guild.frontier {
+    color: var(--hc-purple);
+}
+
+.exp-title {
+    margin: 5px 0;
+    font-size: 1.3rem;
+}
+
+.exp-builder {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: var(--hc-muted);
+}
+
+.exp-progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.exp-bar {
+    height: 100%;
+    background: var(--hc-green);
+}
+
+.exp-pct {
+    font-size: 0.8rem;
+    color: var(--hc-smoke);
+}
+
+/* FAQ Accordion */
+.faq-list {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.faq-q {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+    color: var(--hc-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-q::-webkit-details-marker {
+    display: none;
+}
+
+.faq-q::after {
+    content: "+";
+    color: var(--hc-muted);
+}
+
+.faq-item[open] .faq-q::after {
+    content: "−";
+}
+
+.faq-a {
+    padding-bottom: 20px;
+    margin: 0;
+    color: var(--hc-smoke);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* FOOTER */
+.trek-footer {
+    text-align: center;
+    padding: 80px 20px;
+    background: transparent;
+}
+
+.footer-heading {
+    font-size: clamp(3rem, 6vw, 5rem);
+    margin: 0 0 10px 0;
+}
+
+.footer-sub {
+    font-size: 1.2rem;
+    color: var(--hc-smoke);
+    margin: 0 0 40px 0;
+}
+
+.footer-btn {
+    display: inline-block;
+    background: var(--hc-red);
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 15px 40px;
+    border-radius: 30px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.footer-btn:hover {
+    transform: scale(1.05);
+    background: #ff4760;
 }
