@@ -39,21 +39,21 @@
         <!-- Guild Labels — directly adjacent to each vehicle -->
 
         <!-- WATER GUILD → boat at (2, 15): label at col 3, same row -->
-        <div class="guild-tag" style="grid-column: 3 / span 2; grid-row: 15; align-self: center;">
+        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15; align-self: end;">
             <span class="gt-name">Water Guild</span>
             <span class="gt-line">Master the seas. Build boats, submarines, hovercraft, and aquatic machines that
                 conquer rivers, lakes, and oceans. If it floats, dives, or sails, you'll feel at home here.</span>
         </div>
 
         <!-- LAND GUILD → cars at (4-5, 15): label directly above at col 4, row 14 -->
-        <div class="guild-tag" style="grid-column: 4 / span 2; grid-row: 14; align-self: end;">
+        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 14; align-self: end;">
             <span class="gt-name">Land Guild</span>
             <span class="gt-line">Conquer every terrain. From RC cars and rovers to walking robots and off-road
                 machines, the Land Guild is for builders who turn rough ideas into unstoppable vehicles.</span>
         </div>
 
         <!-- FRONTIER GUILD → rocket at (7, 15): label directly right at col 8, same row -->
-        <div class="guild-tag" style="grid-column: 8 / span 2; grid-row: 15; align-self: center;">
+        <div class="guild-tag" style="grid-column: 8 / span 3; grid-row: 15; align-self: center;">
             <span class="gt-name">Frontier Guild</span>
             <span class="gt-line">Push engineering beyond the ordinary. Build experimental vehicles, space-inspired
                 creations, futuristic concepts, or anything that doesn't fit the rules. Bold, ambitious, a little
@@ -62,7 +62,7 @@
 
         <!-- AIR GUILD → jet at (9, 13): slightly above the jet -->
         <div class="guild-tag"
-            style="grid-column: 9 / span 2; grid-row: 12; align-self: end; transform: translateY(35%);">
+            style="grid-column: 8 / span 3; grid-row: 12; align-self: end; transform: translateY(35%);">
             <span class="gt-name">Air Guild</span>
             <span class="gt-line">Take to the skies. Build drones, planes, gliders, rockets, and anything that flies.
                 Whether you're chasing speed, precision, or altitude, the Air Guild is for those who dream above the
@@ -72,37 +72,39 @@
 
     <style>
         .guild-tag {
-            background: rgba(255, 252, 245, 0.45);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(0, 0, 0, 0.13);
-            border-radius: 12px;
-            padding: 10px 14px 12px 14px;
+            background: rgba(255, 252, 245, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2.5px solid rgba(0, 0, 0, 0.15);
+            border-radius: 16px;
+            padding: 18px 24px 20px 24px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
             pointer-events: auto;
             justify-self: start;
             align-self: start;
-            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+            min-width: 260px;
         }
 
         .gt-name {
             font-family: 'Lilita One', 'Fredoka', cursive;
-            font-size: clamp(11px, 1.4vw, 18px);
-            color: #111111;
+            font-size: clamp(16px, 2.1vw, 28px);
+            color: #000000;
             line-height: 1.15;
             display: block;
-            letter-spacing: 0.01em;
+            letter-spacing: 0.02em;
         }
 
         .gt-line {
             font-family: 'Schoolbell', cursive;
-            font-size: clamp(9px, 1vw, 13px);
-            color: #2a2a2a;
+            font-size: clamp(13px, 1.4vw, 18px);
+            color: #1a1a1a;
             line-height: 1.45;
             display: block;
+            font-weight: 600;
         }
     </style>
 
