@@ -11,14 +11,32 @@
     <link rel="stylesheet" href="index.css">
 </head>
 
-<body class="">
-    <!-- Intro Video Overlay (Temporarily disabled) -->
+<body class="" style="position: relative;">
+    <!-- Grid Placement System (matches the 10x30 coordinate system) -->
+    <div id="placement-grid" style="position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(30, 1fr); pointer-events: none; z-index: 50;">
+        <img src="whatitis.png" style="grid-column: 1 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(9.375%) scale(0.9);" alt="What it is">
+        <img src="red_car.png" style="grid-column: 4; grid-row: 14; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(50%);" alt="Red Car">
+        <img src="grey_car.png" style="grid-column: 5; grid-row: 14; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(50%);" alt="Grey Car">
+        <img src="boat.png" style="grid-column: 2; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(12.5%);" alt="Boat">
+        <img src="rocket.png" style="grid-column: 7; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-12.5%) scale(0.5);" alt="Rocket">
+        <img src="jet.png" style="grid-column: 9; grid-row: 13; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scaleX(-1);" alt="Jet">
+    </div>
+    <script>
+        // Sync placement grid with actual document scroll height
+        document.addEventListener('DOMContentLoaded', () => {
+            const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) + 'px';
+            document.getElementById('placement-grid').style.height = h;
+        });
+        window.addEventListener('resize', () => {
+            const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) + 'px';
+            document.getElementById('placement-grid').style.height = h;
+        });
+    </script>
     <div id="video-overlay" class="video-overlay" style="display: none;">
         <video id="intro-video" autoplay playsinline preload="auto">
             <source src="Concept animation v2.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <!-- Sound & Skip Controls -->
         <div class="video-controls">
             <button id="sound-btn" class="overlay-btn sound-btn">
                 <span id="sound-icon">🔊</span> <span id="sound-text">Unmute</span>
@@ -26,24 +44,16 @@
             <button id="skip-btn" class="overlay-btn skip-btn">Skip Intro ➔</button>
         </div>
     </div>
-
-    <img src="flag.png" alt="Flag" class="flag">
+    <img src="images/flag.png" alt="Flag" class="flag">
     <div class="logo-container">
-        <img src="image.PNG" alt="Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
         <h1 class="hero-text">Build Your Way Home</h1>
         <p class="sub-text">A Hack Club YSWS!</p>
     </div>
     <div class="image-container">
-        <!-- Display the image directly to maintain aspect ratio and enable scrolling -->
-        <img src="BackGround.png" alt="High Quality Background">
+        <img src="images/background.png" alt="High Quality Background">
     </div>
-
-    <!-- ============================================================
-         STORY SECTIONS — zig-zag layout beneath the island scroll
-         ============================================================ -->
     <main class="story">
-
-        <!-- SECTION 1 — YOU'RE STRANDED (left) -->
         <section class="story-section s-left reveal" style="margin-top: 15vh;">
             <div class="story-text">
                 <h2 class="s-heading" style="font-size: clamp(2.5rem, 6vw, 4rem);">You're <strong
@@ -53,10 +63,7 @@
                     No rescue. No signal.<br>
                     The only way home is to build it.</p>
             </div>
-
         </section>
-
-        <!-- SECTION 2 — WHAT IT IS (right) -->
         <section class="story-section s-right reveal" style="margin-top: 15vh;">
             <div class="story-text story-text--wide">
                 <p class="s-eyebrow">What it is</p>
@@ -64,92 +71,103 @@
                 <p class="s-body">You Design something that actually moves - a drone, a rover, a boat, or something
                     completely ridiculous - We Fund your build + extra credits!</p>
                 <p class="s-body" style="font-style: italic; color: var(--hc-muted);">"Don't know how to build hardware?
-                    Doesn't matter. Build whatever you want out of cardboard, motors, and hot glue. If it moves across
-                    the room, it counts, and you'll still earn Credits to spend in the shop. The big hardware kits are
-                    the bonus round, not the whole game."</p>
+                    Don't worry! Build whatever you want out of anything - maybe even cardboard, motors, and hot glue.
+                    If it moves across
+                    the room, it counts and you'll still earn Credits to spend in the shop. </p>
             </div>
         </section>
 
-        <!-- CLOUDS DIVIDER (Seamless Marquee) -->
+        <!-- New Header exactly in the gap between sections, preserving the original cloud spacing -->
+        <section class="story-section s-left reveal"
+            style="min-height: auto; margin-top: 10vh; margin-bottom: -10vh; position: relative; z-index: 10;">
+            <div class="story-text story-text--wide" style="max-width: 1000px;">
+                <h2 class="s-heading" style="margin: 0; white-space: nowrap;">Custom <i style="text-decoration: underline; text-decoration-color: var(--hc-red);">Prizes</i> for Each guild!</h2>
+            </div>
+        </section>
+
         <div class="clouds-layer marquee">
             <div class="marquee-content">
-                <img src="cloud.png" class="cloud c-large" alt="Cloud">
-                <img src="cloud.png" class="cloud c-small" alt="Cloud">
-                <img src="cloud.png" class="cloud c-med" alt="Cloud">
-                <img src="cloud.png" class="cloud c-huge" alt="Cloud">
+                <div class="cloud-wrapper c-large air1">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/air.png" class="prize p-left" alt="Air Prize">
+                    <img src="images/prizes/air2.png" class="prize p-right" alt="Air Prize">
+                </div>
+                <div class="cloud-wrapper c-small air2">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/air3.png" class="prize p-center air3-prize" alt="Air Prize">
+                </div>
+                <div class="cloud-wrapper c-med land1">
+                    <img src="images/clouds/cloud.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/land1.png" class="prize p-left" alt="Land Prize">
+                    <img src="images/prizes/land2.png" class="prize p-right" alt="Land Prize">
+                </div>
+                <div class="cloud-wrapper c-huge land2">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/land3.png" class="prize p-center" alt="Land Prize">
+                </div>
+                <div class="cloud-wrapper c-large water1">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/water.png" class="prize p-left" alt="Water Prize">
+                    <img src="images/prizes/water2.png" class="prize p-right water2-prize" alt="Water Prize">
+                </div>
+                <div class="cloud-wrapper c-med water2">
+                    <img src="images/clouds/cloud.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/water3.png" class="prize p-center" alt="Water Prize">
+                </div>
+                <div class="cloud-wrapper c-small space1">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/space.png" class="prize p-left" alt="Space Prize">
+                    <img src="images/prizes/space2.png" class="prize p-right" alt="Space Prize">
+                </div>
+                <div class="cloud-wrapper c-huge space2">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/space3.png" class="prize p-left space3-prize" alt="Space Prize">
+                    <img src="images/prizes/space4.png" class="prize p-right space4-prize" alt="Space Prize">
+                </div>
             </div>
             <div class="marquee-content" aria-hidden="true">
-                <img src="cloud.png" class="cloud c-large" alt="Cloud">
-                <img src="cloud.png" class="cloud c-small" alt="Cloud">
-                <img src="cloud.png" class="cloud c-med" alt="Cloud">
-                <img src="cloud.png" class="cloud c-huge" alt="Cloud">
+                <div class="cloud-wrapper c-large air1">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/air.png" class="prize p-left" alt="Air Prize">
+                    <img src="images/prizes/air2.png" class="prize p-right" alt="Air Prize">
+                </div>
+                <div class="cloud-wrapper c-small air2">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/air3.png" class="prize p-center air3-prize" alt="Air Prize">
+                </div>
+                <div class="cloud-wrapper c-med land1">
+                    <img src="images/clouds/cloud.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/land1.png" class="prize p-left" alt="Land Prize">
+                    <img src="images/prizes/land2.png" class="prize p-right" alt="Land Prize">
+                </div>
+                <div class="cloud-wrapper c-huge land2">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/land3.png" class="prize p-center" alt="Land Prize">
+                </div>
+                <div class="cloud-wrapper c-large water1">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/water.png" class="prize p-left" alt="Water Prize">
+                    <img src="images/prizes/water2.png" class="prize p-right water2-prize" alt="Water Prize">
+                </div>
+                <div class="cloud-wrapper c-med water2">
+                    <img src="images/clouds/cloud.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/water3.png" class="prize p-center" alt="Water Prize">
+                </div>
+                <div class="cloud-wrapper c-small space1">
+                    <img src="images/clouds/cloud2.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/space.png" class="prize p-left" alt="Space Prize">
+                    <img src="images/prizes/space2.png" class="prize p-right" alt="Space Prize">
+                </div>
+                <div class="cloud-wrapper c-huge space2">
+                    <img src="images/clouds/cloud3.png" class="cloud-bg" alt="Cloud">
+                    <img src="images/prizes/space3.png" class="prize p-left space3-prize" alt="Space Prize">
+                    <img src="images/prizes/space4.png" class="prize p-right space4-prize" alt="Space Prize">
+                </div>
             </div>
         </div>
 
-        <!-- SECTION 3 — HOW IT WORKS (left) -->
-        <section class="story-section s-left reveal" style="margin-top: 35vh;">
-            <div class="story-text">
-                <p class="s-eyebrow">How it works</p>
-                <ol class="step-flow">
-                    <li>
-                        <span class="step-num">1</span>
-                        <div class="step-content">
-                            <strong>Build something.</strong>
-                            <span>Anything that moves.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="step-num">2</span>
-                        <div class="step-content">
-                            <strong>Ship it, track hours.</strong>
-                            <span>Log your progress and prove your work.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="step-num">3</span>
-                        <div class="step-content">
-                            <strong>Earn Credits.</strong>
-                            <span>Spend them in the shop. Building something ridiculous earns you hardware parts
-                                too.</span>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </section>
 
-        <!-- SECTION 4 — 4 MODES (right) -->
-        <section class="story-section s-right reveal">
-            <div class="story-text story-text--wide">
-                <p class="s-eyebrow">Choose Your Path</p>
-                <h2 class="s-heading">Four ways off this island.</h2>
-                <p class="s-body">Build something that flies, floats, rolls, or crawls.</p>
-                <div class="modes-grid">
-                    <div class="mode-card air">
-                        <span class="mode-icon">✈️</span>
-                        <h3 class="mode-name">Air</h3>
-                        <p class="mode-desc">Planes, drones, and gliders.</p>
-                    </div>
-                    <div class="mode-card water">
-                        <span class="mode-icon">🌊</span>
-                        <h3 class="mode-name">Water</h3>
-                        <p class="mode-desc">Boats, subs, and hovercrafts.</p>
-                    </div>
-                    <div class="mode-card land">
-                        <span class="mode-icon">🚗</span>
-                        <h3 class="mode-name">Land</h3>
-                        <p class="mode-desc">Rovers, RC cars, and walkers.</p>
-                    </div>
-                    <div class="mode-card frontier">
-                        <span class="mode-icon">🚀</span>
-                        <h3 class="mode-name">Frontier</h3>
-                        <p class="mode-desc">Mechs and crazy concepts.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5 — FAQ (left) — accordion -->
-        <section class="story-section s-left reveal" id="faq" style="margin-top: 100vh;">
+        <section class="story-section s-left reveal" id="faq" style="margin-top: 400vh;">
             <div class="story-text story-text--wide">
                 <p class="s-eyebrow">Questions?</p>
                 <h2 class="s-heading">We've got answers.</h2>
@@ -191,16 +209,12 @@
                 </div>
             </div>
         </section>
-
-        <!-- FOOTER CTA -->
         <footer class="trek-footer reveal">
             <h2 class="footer-heading">Start Building →</h2>
             <p class="footer-sub">Join hundreds of Hack Clubbers building the future of transportation.</p>
             <a href="https://hackclub.com" class="footer-btn" target="_blank" rel="noopener">Join Trek</a>
         </footer>
-
     </main>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const videoOverlay = document.getElementById('video-overlay');
@@ -209,7 +223,6 @@
             const soundIcon = document.getElementById('sound-icon');
             const soundText = document.getElementById('sound-text');
             const skipBtn = document.getElementById('skip-btn');
-
             function endVideoIntro() {
                 if (videoOverlay.classList.contains('fade-out')) return;
                 videoOverlay.classList.add('fade-out');
@@ -218,7 +231,6 @@
                     videoOverlay.style.display = 'none';
                 }, 800);
             }
-
             function toggleSound(e) {
                 if (e) e.stopPropagation();
                 if (introVideo.muted) {
@@ -231,12 +243,10 @@
                     soundText.textContent = 'Muted';
                 }
             }
-
             if (introVideo) {
                 // Try playing unmuted first
                 introVideo.muted = false;
                 const playPromise = introVideo.play();
-
                 if (playPromise !== undefined) {
                     playPromise.catch(function (error) {
                         console.log("Unmuted autoplay restricted by browser policy. Muting to autoplay...", error);
@@ -247,19 +257,15 @@
                         introVideo.play().catch(endVideoIntro);
                     });
                 }
-
                 // Cut/fade to site when video ends
                 introVideo.addEventListener('ended', endVideoIntro);
-
                 // Sound button listener
                 soundBtn.addEventListener('click', toggleSound);
-
                 // Skip button listener
                 skipBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     endVideoIntro();
                 });
-
                 // Unmute on first click anywhere if muted
                 videoOverlay.addEventListener('click', function (e) {
                     if (introVideo.muted) {
@@ -271,15 +277,12 @@
             } else {
                 endVideoIntro();
             }
-
             // Scroll Reveal Animation (Intersection Observer)
             const revealElements = document.querySelectorAll('.reveal');
-
             const revealOptions = {
                 threshold: 0.15,
                 rootMargin: "0px 0px -50px 0px"
             };
-
             const revealOnScroll = new IntersectionObserver(function (entries, observer) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -288,12 +291,63 @@
                     }
                 });
             }, revealOptions);
-
             revealElements.forEach(el => {
                 revealOnScroll.observe(el);
             });
         });
     </script>
+    <script>
+        // Temporary Coordinate Grid
+        (function() {
+            const grid = document.createElement('div');
+            grid.style.position = 'absolute';
+            grid.style.top = '0';
+            grid.style.left = '0';
+            grid.style.width = '100%';
+            grid.style.height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) + 'px';
+            grid.style.pointerEvents = 'none';
+            grid.style.zIndex = '99999';
+            grid.style.display = 'grid';
+            grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
+            grid.style.gridTemplateRows = 'repeat(30, 1fr)';
+            
+            for (let r = 1; r <= 30; r++) {
+                for (let c = 1; c <= 10; c++) {
+                    const cell = document.createElement('div');
+                    cell.style.border = '1px dashed rgba(255, 0, 0, 0.4)';
+                    cell.style.display = 'flex';
+                    cell.style.justifyContent = 'center';
+                    cell.style.alignItems = 'center';
+                    cell.style.color = 'rgba(255, 0, 0, 0.9)';
+                    cell.style.fontSize = '1.5rem';
+                    cell.style.fontWeight = '900';
+                    cell.style.textShadow = '0px 0px 4px #000';
+                    cell.style.fontFamily = 'monospace';
+                    cell.innerText = `${c},${r}`;
+                    grid.appendChild(cell);
+                }
+            }
+            document.body.appendChild(grid);
+            
+            // Toggle Button
+            const btn = document.createElement('button');
+            btn.innerText = 'Toggle Grid';
+            btn.style.position = 'fixed';
+            btn.style.bottom = '20px';
+            btn.style.right = '20px';
+            btn.style.zIndex = '100000';
+            btn.style.padding = '10px 15px';
+            btn.style.background = '#121217';
+            btn.style.color = '#fff';
+            btn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            btn.style.borderRadius = '8px';
+            btn.style.cursor = 'pointer';
+            btn.style.fontFamily = 'monospace';
+            btn.onclick = () => {
+                grid.style.display = grid.style.display === 'none' ? 'grid' : 'none';
+            };
+            document.body.appendChild(btn);
+        })();
+    </script>
 </body>
-
 </html>
