@@ -16,15 +16,15 @@
     <div id="placement-grid"
         style="position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(30, 1fr); pointer-events: none; z-index: 50;">
         <img src="whatitis.png"
-            style="grid-column: 1 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(9.375%) scale(0.9);"
+            style="grid-column: 4 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scale(0.9);"
             alt="What it is">
 
         <!-- Vehicles -->
         <img src="red_car.png"
-            style="grid-column: 4; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-30%) scale(0.5);"
+            style="grid-column: 3; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-42.5%) scale(0.75);"
             alt="Red Car">
         <img src="grey_car.png"
-            style="grid-column: 5; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-30%) scale(0.5);"
+            style="grid-column: 5; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-30%) scale(0.75);"
             alt="Grey Car">
         <img src="boat.png"
             style="grid-column: 2; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(12.5%);"
@@ -38,22 +38,32 @@
 
         <!-- Guild Labels — directly adjacent to each vehicle -->
 
+        <!-- THE GUILDS SUBHEADING -->
+        <div
+            style="grid-column: 2 / span 6; grid-row: 12; align-self: center; pointer-events: auto; z-index: 10; transform: translateY(175%);">
+            <h2
+                style="font-family: var(--hc-font-heading); font-weight: 700; font-size: clamp(32px, 5vw, 64px); color: #ffffff; text-shadow: 0 4px 16px rgba(0,0,0,0.8); margin: 0; letter-spacing: 0.02em;">
+                The Four Guilds!</h2>
+        </div>
+
         <!-- WATER GUILD → boat at (2, 15): label at col 3, same row -->
-        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15; align-self: end;">
+        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15 / span 2; align-self: center;">
             <span class="gt-name">Water Guild</span>
             <span class="gt-line">Master the seas. Build boats, submarines, hovercraft, and aquatic machines that
                 conquer rivers, lakes, and oceans. If it floats, dives, or sails, you'll feel at home here.</span>
         </div>
 
         <!-- LAND GUILD → cars at (4-5, 15): label directly above at col 4, row 14 -->
-        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 14; align-self: end;">
+        <div class="guild-tag"
+            style="grid-column: 2 / span 3; grid-row: 14; align-self: center; transform: scale(0.9); transform-origin: left center;">
             <span class="gt-name">Land Guild</span>
             <span class="gt-line">Conquer every terrain. From RC cars and rovers to walking robots and off-road
                 machines, the Land Guild is for builders who turn rough ideas into unstoppable vehicles.</span>
         </div>
 
         <!-- FRONTIER GUILD → rocket at (7, 15): label directly right at col 8, same row -->
-        <div class="guild-tag" style="grid-column: 8 / span 3; grid-row: 15; align-self: center;">
+        <div class="guild-tag"
+            style="grid-column: 8 / span 3; grid-row: 15; align-self: center; transform: scale(0.85); transform-origin: left center;">
             <span class="gt-name">Frontier Guild</span>
             <span class="gt-line">Push engineering beyond the ordinary. Build experimental vehicles, space-inspired
                 creations, futuristic concepts, or anything that doesn't fit the rules. Bold, ambitious, a little
@@ -61,8 +71,7 @@
         </div>
 
         <!-- AIR GUILD → jet at (9, 13): slightly above the jet -->
-        <div class="guild-tag"
-            style="grid-column: 8 / span 3; grid-row: 12; align-self: end; transform: translateY(35%);">
+        <div class="guild-tag" style="grid-column: 7 / span 3; grid-row: 13 / span 2; align-self: center;">
             <span class="gt-name">Air Guild</span>
             <span class="gt-line">Take to the skies. Build drones, planes, gliders, rockets, and anything that flies.
                 Whether you're chasing speed, precision, or altitude, the Air Guild is for those who dream above the
@@ -116,17 +125,28 @@
             }
             syncGrid();
             window.addEventListener('resize', syncGrid);
+            setTimeout(syncGrid, 500);
         });
+    </script>
+    <script>
+        // ============================================================
+        // MAX SCROLL — change this number to wherever you want it to stop
+        // Current page height: ~5104px. Background image ends around 3800px.
+        // ============================================================
+        var MAX_SCROLL = 4200;
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > MAX_SCROLL) {
+                window.scrollTo({ top: MAX_SCROLL, behavior: 'instant' });
+            }
+        }, { passive: false });
     </script>
     <div id="video-overlay" class="video-overlay" style="display: none;">
         <video id="intro-video" autoplay playsinline preload="auto">
-            <source src="Concept animation v2.mp4" type="video/mp4">
+            <source src="YSWS.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="video-controls">
-            <button id="sound-btn" class="overlay-btn sound-btn">
-                <span id="sound-icon">🔊</span> <span id="sound-text">Unmute</span>
-            </button>
             <button id="skip-btn" class="overlay-btn skip-btn">Skip Intro ➔</button>
         </div>
     </div>
@@ -153,13 +173,13 @@
         <section class="story-section s-right reveal" style="margin-top: 15vh;">
             <div class="story-text story-text--wide">
                 <p class="s-eyebrow">What it is</p>
-                <h2 class="s-heading">Ship Something that moves. Earn Credits.</h2>
-                <p class="s-body">You Design something that actually moves - a drone, a rover, a boat, or something
-                    completely ridiculous - We Fund your build + extra credits!</p>
+                <h2 class="s-heading">Ship Something that moves. Earn Twigs.</h2>
+                <p class="s-body">You Design hardware that can move - a drone, a rover, a boat, or something
+                    completely ridiculous - We Fund your build + extra twigs!</p>
                 <p class="s-body" style="font-style: italic; color: var(--hc-muted);">"Don't know how to build hardware?
                     Don't worry! Build whatever you want out of anything - maybe even cardboard, motors, and hot glue.
                     If it moves across
-                    the room, it counts and you'll still earn Credits to spend in the shop. </p>
+                    the room, it counts and you'll still earn twigs to spend in the shop. </p>
             </div>
         </section>
 
@@ -255,116 +275,112 @@
         </div>
 
 
-        <section class="story-section s-left reveal" id="faq" style="margin-top: 400vh;">
-            <div class="story-text story-text--wide">
-                <p class="s-eyebrow">Questions?</p>
-                <h2 class="s-heading">We've got answers.</h2>
-                <div class="faq-list">
-                    <details class="faq-item">
-                        <summary class="faq-q">Who can participate?</summary>
-                        <p class="faq-a">Any Hack Club member aged 13–18. No experience required.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">What can I build?</summary>
-                        <p class="faq-a">Anything that moves! Planes, boats, submarines, rovers, walkers, RC cars,
-                            hovercraft — if it moves, it counts.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">Can beginners join?</summary>
-                        <p class="faq-a">Absolutely. Trek is designed for builders at all levels. Your first project can
-                            be as simple as a rubber-band-powered boat.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">Can I build with LEGO or cardboard?</summary>
-                        <p class="faq-a">Yes! Any material is valid. What matters is that it moves and that you built
-                            it.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">Can I work in a team?</summary>
-                        <p class="faq-a">Yes, teams of up to 4 are welcome. Each member earns Credits for a completed
-                            project.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">How do Credits work?</summary>
-                        <p class="faq-a">Credits are earned when you ship a completed, documented project. You then
-                            redeem them in the Trek store for parts, tools and kits.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-q">When do rewards ship?</summary>
-                        <p class="faq-a">Rewards ship within a few weeks of your project being approved by the Trek
-                            team.</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-        <footer class="trek-footer reveal">
-            <h2 class="footer-heading">Start Building →</h2>
-            <p class="footer-sub">Join hundreds of Hack Clubbers building the future of transportation.</p>
-            <a href="https://hackclub.com" class="footer-btn" target="_blank" rel="noopener">Join Trek</a>
-        </footer>
+
     </main>
+    <footer class="trek-footer reveal">
+        <h2 class="footer-heading">Start Building →</h2>
+        <p class="footer-sub">Join hundreds of Hack Clubbers building the future of transportation.</p>
+        <a href="https://rsvp.soon.it/trek" class="footer-btn" target="_blank" rel="noopener">RSVP for trek</a>
+        <br><br>
+        <button id="replay-btn" class="footer-btn"
+            style="background: transparent; border: 1px solid rgba(255,255,255,0.3); font-size: 1rem; padding: 10px 20px; cursor: pointer; color: white;">Replay
+            Animation</button>
+    </footer>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const videoOverlay = document.getElementById('video-overlay');
             const introVideo = document.getElementById('intro-video');
-            const soundBtn = document.getElementById('sound-btn');
-            const soundIcon = document.getElementById('sound-icon');
-            const soundText = document.getElementById('sound-text');
             const skipBtn = document.getElementById('skip-btn');
+
+            // Block scrolling while video is playing
+            function blockScroll(e) {
+                if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) e.preventDefault();
+            }
+            function lockScroll() {
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+                window.addEventListener('keydown', blockScroll, { passive: false });
+            }
+            function unlockScroll() {
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+                window.removeEventListener('keydown', blockScroll);
+            }
+
             function endVideoIntro() {
                 if (videoOverlay.classList.contains('fade-out')) return;
                 videoOverlay.classList.add('fade-out');
                 document.body.classList.remove('video-active');
+                unlockScroll();
+                // Mark as played for this session
+                sessionStorage.setItem('introPlayed', '1');
                 setTimeout(() => {
                     videoOverlay.style.display = 'none';
                 }, 800);
             }
-            function toggleSound(e) {
-                if (e) e.stopPropagation();
-                if (introVideo.muted) {
-                    introVideo.muted = false;
-                    soundIcon.textContent = '🔊';
-                    soundText.textContent = 'Sound On';
-                } else {
-                    introVideo.muted = true;
-                    soundIcon.textContent = '🔇';
-                    soundText.textContent = 'Muted';
+
+            let fallbackTimer;
+
+            function playIntroVideo() {
+                clearTimeout(fallbackTimer);
+                videoOverlay.classList.remove('fade-out');
+                videoOverlay.style.display = 'flex';
+                document.body.classList.add('video-active');
+                lockScroll();
+                
+                introVideo.muted = true;
+                introVideo.currentTime = 0;
+                introVideo.play().catch(endVideoIntro);
+                
+                if (introVideo.readyState >= 1 && introVideo.duration && introVideo.duration !== Infinity) {
+                    fallbackTimer = setTimeout(endVideoIntro, (introVideo.duration * 1000) + 250);
                 }
             }
+
+            // Attach core listeners exactly once
             if (introVideo) {
-                // Try playing unmuted first
-                introVideo.muted = false;
-                const playPromise = introVideo.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(function (error) {
-                        console.log("Unmuted autoplay restricted by browser policy. Muting to autoplay...", error);
-                        // Browser blocked sound autoplay - start muted and show Unmute button
-                        introVideo.muted = true;
-                        soundIcon.textContent = '🔇';
-                        soundText.textContent = 'Click to Unmute';
-                        introVideo.play().catch(endVideoIntro);
-                    });
-                }
-                // Cut/fade to site when video ends
                 introVideo.addEventListener('ended', endVideoIntro);
-                // Sound button listener
-                soundBtn.addEventListener('click', toggleSound);
-                // Skip button listener
-                skipBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    endVideoIntro();
-                });
-                // Unmute on first click anywhere if muted
-                videoOverlay.addEventListener('click', function (e) {
-                    if (introVideo.muted) {
-                        introVideo.muted = false;
-                        soundIcon.textContent = '🔊';
-                        soundText.textContent = 'Sound On';
+                
+                introVideo.addEventListener('timeupdate', function () {
+                    if (introVideo.duration && (introVideo.duration - introVideo.currentTime) < 0.2) {
+                        endVideoIntro();
                     }
                 });
+                
+                introVideo.addEventListener('loadedmetadata', function() {
+                    if (introVideo.duration && introVideo.duration !== Infinity) {
+                        clearTimeout(fallbackTimer);
+                        fallbackTimer = setTimeout(endVideoIntro, (introVideo.duration * 1000) + 250);
+                    }
+                });
+                
+                if (skipBtn) {
+                    skipBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        endVideoIntro();
+                    });
+                }
+            }
+
+            // Check if video has already played this session
+            if (sessionStorage.getItem('introPlayed')) {
+                // Already played — skip immediately
+                videoOverlay.style.display = 'none';
+            } else if (introVideo) {
+                playIntroVideo();
             } else {
                 endVideoIntro();
             }
+
+            // Replay Animation button logic
+            const replayBtn = document.getElementById('replay-btn');
+            if (replayBtn && introVideo) {
+                replayBtn.addEventListener('click', function () {
+                    window.scrollTo(0, 0); // Scroll to top first
+                    playIntroVideo();
+                });
+            }
+
             // Scroll Reveal Animation (Intersection Observer)
             const revealElements = document.querySelectorAll('.reveal');
             const revealOptions = {
@@ -384,59 +400,7 @@
             });
         });
     </script>
-    <script>
-        // Temporary Coordinate Grid
-        (function () {
-            const grid = document.createElement('div');
-            grid.style.position = 'absolute';
-            grid.style.top = '0';
-            grid.style.left = '0';
-            grid.style.width = '100%';
-            grid.style.height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) + 'px';
-            grid.style.pointerEvents = 'none';
-            grid.style.zIndex = '99999';
-            grid.style.display = 'grid';
-            grid.style.gridTemplateColumns = 'repeat(10, 1fr)';
-            grid.style.gridTemplateRows = 'repeat(30, 1fr)';
 
-            for (let r = 1; r <= 30; r++) {
-                for (let c = 1; c <= 10; c++) {
-                    const cell = document.createElement('div');
-                    cell.style.border = '1px dashed rgba(255, 0, 0, 0.4)';
-                    cell.style.display = 'flex';
-                    cell.style.justifyContent = 'center';
-                    cell.style.alignItems = 'center';
-                    cell.style.color = 'rgba(255, 0, 0, 0.9)';
-                    cell.style.fontSize = '1.5rem';
-                    cell.style.fontWeight = '900';
-                    cell.style.textShadow = '0px 0px 4px #000';
-                    cell.style.fontFamily = 'monospace';
-                    cell.innerText = `${c},${r}`;
-                    grid.appendChild(cell);
-                }
-            }
-            document.body.appendChild(grid);
-
-            // Toggle Button
-            const btn = document.createElement('button');
-            btn.innerText = 'Toggle Grid';
-            btn.style.position = 'fixed';
-            btn.style.bottom = '20px';
-            btn.style.right = '20px';
-            btn.style.zIndex = '100000';
-            btn.style.padding = '10px 15px';
-            btn.style.background = '#121217';
-            btn.style.color = '#fff';
-            btn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
-            btn.style.borderRadius = '8px';
-            btn.style.cursor = 'pointer';
-            btn.style.fontFamily = 'monospace';
-            btn.onclick = () => {
-                grid.style.display = grid.style.display === 'none' ? 'grid' : 'none';
-            };
-            document.body.appendChild(btn);
-        })();
-    </script>
 </body>
 
 </html>
