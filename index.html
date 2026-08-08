@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trek</title>
-    <!-- Change your title bar icon (favicon) here by swapping out the href: -->
     <link rel="icon" type="image/png" href="images/logo.png">
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Fredoka:wght@600&family=Pacifico&family=Satisfy&family=Caveat:wght@700&family=Schoolbell&family=Lilita+One&display=swap"
@@ -14,14 +13,11 @@
 </head>
 
 <body class="" style="position: relative;">
-    <!-- Grid Placement System (matches the 10x30 coordinate system) -->
     <div id="placement-grid"
         style="position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(30, 1fr); pointer-events: none; z-index: 50;">
         <img src="whatitis.png"
             style="grid-column: 4 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scale(0.9);"
             alt="What it is">
-
-        <!-- Vehicles -->
         <img src="red_car.png"
             style="grid-column: 3; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-42.5%) scale(0.75);"
             alt="Red Car">
@@ -37,33 +33,23 @@
         <img src="jet.png"
             style="grid-column: 9; grid-row: 13; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scaleX(-1);"
             alt="Jet">
-
-        <!-- Guild Labels — directly adjacent to each vehicle -->
-
-        <!-- THE GUILDS SUBHEADING -->
         <div
             style="grid-column: 2 / span 6; grid-row: 12; align-self: center; pointer-events: auto; z-index: 10; transform: translateY(175%);">
             <h2
                 style="font-family: var(--hc-font-heading); font-weight: 700; font-size: clamp(32px, 5vw, 64px); color: #ffffff; text-shadow: 0 4px 16px rgba(0,0,0,0.8); margin: 0; letter-spacing: 0.02em;">
                 The Four Guilds!</h2>
         </div>
-
-        <!-- WATER GUILD → boat at (2, 15): label at col 3, same row -->
         <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15 / span 2; align-self: center;">
             <span class="gt-name">Water Guild</span>
             <span class="gt-line">Master the seas. Build boats, submarines, hovercraft, and aquatic machines that
                 conquer rivers, lakes, and oceans. If it floats, dives, or sails, you'll feel at home here.</span>
         </div>
-
-        <!-- LAND GUILD → cars at (4-5, 15): label directly above at col 4, row 14 -->
         <div class="guild-tag"
             style="grid-column: 2 / span 3; grid-row: 14; align-self: center; transform: scale(0.9); transform-origin: left center;">
             <span class="gt-name">Land Guild</span>
             <span class="gt-line">Conquer every terrain. From RC cars and rovers to walking robots and off-road
                 machines, the Land Guild is for builders who turn rough ideas into unstoppable vehicles.</span>
         </div>
-
-        <!-- FRONTIER GUILD → rocket at (7, 15): label directly right at col 8, same row -->
         <div class="guild-tag"
             style="grid-column: 8 / span 3; grid-row: 15; align-self: center; transform: scale(0.85); transform-origin: left center;">
             <span class="gt-name">Frontier Guild</span>
@@ -71,8 +57,6 @@
                 creations, futuristic concepts, or anything that doesn't fit the rules. Bold, ambitious, a little
                 crazy.</span>
         </div>
-
-        <!-- AIR GUILD → jet at (9, 13): slightly above the jet -->
         <div class="guild-tag" style="grid-column: 7 / span 3; grid-row: 13 / span 2; align-self: center;">
             <span class="gt-name">Air Guild</span>
             <span class="gt-line">Take to the skies. Build drones, planes, gliders, rockets, and anything that flies.
@@ -80,7 +64,6 @@
                 clouds.</span>
         </div>
     </div>
-
     <style>
         .guild-tag {
             background: rgba(255, 252, 245, 0.55);
@@ -118,7 +101,6 @@
             font-weight: 600;
         }
     </style>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             function syncGrid() {
@@ -131,12 +113,7 @@
         });
     </script>
     <script>
-        // ============================================================
-        // MAX SCROLL — change this number to wherever you want it to stop
-        // Current page height: ~5104px. Background image ends around 3800px.
-        // ============================================================
         var MAX_SCROLL = 4200;
-
         window.addEventListener('scroll', function () {
             if (window.scrollY > MAX_SCROLL) {
                 window.scrollTo({ top: MAX_SCROLL, behavior: 'instant' });
@@ -184,8 +161,6 @@
                     the room, it counts and you'll still earn twigs to spend in the shop. </p>
             </div>
         </section>
-
-        <!-- New Header exactly in the gap between sections, preserving the original cloud spacing -->
         <section class="story-section s-left reveal"
             style="min-height: auto; margin-top: 10vh; margin-bottom: -10vh; position: relative; z-index: 10;">
             <div class="story-text story-text--wide" style="max-width: 1000px;">
@@ -194,7 +169,6 @@
                     guild!</h2>
             </div>
         </section>
-
         <div class="clouds-layer marquee">
             <div class="marquee-content">
                 <div class="cloud-wrapper c-large air1">
@@ -275,9 +249,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </main>
     <footer class="trek-footer reveal">
         <h2 class="footer-heading">Start Building →</h2>
@@ -293,8 +264,6 @@
             const videoOverlay = document.getElementById('video-overlay');
             const introVideo = document.getElementById('intro-video');
             const skipBtn = document.getElementById('skip-btn');
-
-            // Block scrolling while video is playing
             function blockScroll(e) {
                 if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) e.preventDefault();
             }
@@ -308,54 +277,43 @@
                 document.documentElement.style.overflow = '';
                 window.removeEventListener('keydown', blockScroll);
             }
-
             function endVideoIntro() {
                 if (videoOverlay.classList.contains('fade-out')) return;
                 videoOverlay.classList.add('fade-out');
                 document.body.classList.remove('video-active');
                 unlockScroll();
-                // Mark as played for this session
                 sessionStorage.setItem('introPlayed', '1');
                 setTimeout(() => {
                     videoOverlay.style.display = 'none';
                 }, 800);
             }
-
             let fallbackTimer;
-
             function playIntroVideo() {
                 clearTimeout(fallbackTimer);
                 videoOverlay.classList.remove('fade-out');
                 videoOverlay.style.display = 'flex';
                 document.body.classList.add('video-active');
                 lockScroll();
-                
                 introVideo.muted = true;
                 introVideo.currentTime = 0;
                 introVideo.play().catch(endVideoIntro);
-                
                 if (introVideo.readyState >= 1 && introVideo.duration && introVideo.duration !== Infinity) {
                     fallbackTimer = setTimeout(endVideoIntro, (introVideo.duration * 1000) + 250);
                 }
             }
-
-            // Attach core listeners exactly once
             if (introVideo) {
                 introVideo.addEventListener('ended', endVideoIntro);
-                
                 introVideo.addEventListener('timeupdate', function () {
                     if (introVideo.duration && (introVideo.duration - introVideo.currentTime) < 0.2) {
                         endVideoIntro();
                     }
                 });
-                
-                introVideo.addEventListener('loadedmetadata', function() {
+                introVideo.addEventListener('loadedmetadata', function () {
                     if (introVideo.duration && introVideo.duration !== Infinity) {
                         clearTimeout(fallbackTimer);
                         fallbackTimer = setTimeout(endVideoIntro, (introVideo.duration * 1000) + 250);
                     }
                 });
-                
                 if (skipBtn) {
                     skipBtn.addEventListener('click', function (e) {
                         e.stopPropagation();
@@ -363,27 +321,20 @@
                     });
                 }
             }
-
-            // Check if video has already played this session
             if (sessionStorage.getItem('introPlayed')) {
-                // Already played — skip immediately
                 videoOverlay.style.display = 'none';
             } else if (introVideo) {
                 playIntroVideo();
             } else {
                 endVideoIntro();
             }
-
-            // Replay Animation button logic
             const replayBtn = document.getElementById('replay-btn');
             if (replayBtn && introVideo) {
                 replayBtn.addEventListener('click', function () {
-                    window.scrollTo(0, 0); // Scroll to top first
+                    window.scrollTo(0, 0);
                     playIntroVideo();
                 });
             }
-
-            // Scroll Reveal Animation (Intersection Observer)
             const revealElements = document.querySelectorAll('.reveal');
             const revealOptions = {
                 threshold: 0.15,
@@ -402,7 +353,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

@@ -29,13 +29,11 @@ html {
     color: var(--hc-white);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-body::-webkit-scrollbar, 
+body::-webkit-scrollbar,
 html::-webkit-scrollbar {
     display: none;
 }
@@ -177,7 +175,6 @@ body.video-active {
     width: 45%;
 }
 
-/* Standardized sizes bumped up slightly */
 .air1 {
     width: 520px;
     top: -120px;
@@ -216,7 +213,6 @@ body.video-active {
     animation-duration: 5.5s;
 }
 
-/* Moved up significantly */
 .space1 {
     width: 500px;
     top: -160px;
@@ -230,15 +226,14 @@ body.video-active {
     animation-direction: alternate-reverse;
 }
 
-/* Custom Prize Tweaks */
 .water2-prize {
-    bottom: 50%; /* Moved water2 prize up */
+    bottom: 50%;
 }
 
 .space4-prize {
     width: 22%;
-    bottom: 50%; /* Moved up */
-    right: 25%; /* Moved left */
+    bottom: 50%;
+    right: 25%;
 }
 
 .air3-prize {
