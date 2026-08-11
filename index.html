@@ -13,57 +13,7 @@
 </head>
 
 <body class="" style="position: relative;">
-    <div id="placement-grid"
-        style="position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(30, 1fr); pointer-events: none; z-index: 50;">
-        <img src="whatitis.png"
-            style="grid-column: 4 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scale(0.9);"
-            alt="What it is">
-        <img src="red_car.png"
-            style="grid-column: 3; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-42.5%) scale(0.75);"
-            alt="Red Car">
-        <img src="grey_car.png"
-            style="grid-column: 5; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-30%) scale(0.75);"
-            alt="Grey Car">
-        <img src="boat.png"
-            style="grid-column: 2; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(12.5%);"
-            alt="Boat">
-        <img src="rocket.png"
-            style="grid-column: 7; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-12.5%) scale(0.5);"
-            alt="Rocket">
-        <img src="jet.png"
-            style="grid-column: 9; grid-row: 13; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scaleX(-1);"
-            alt="Jet">
-        <div
-            style="grid-column: 2 / span 6; grid-row: 12; align-self: center; pointer-events: auto; z-index: 10; transform: translateY(175%);">
-            <h2
-                style="font-family: var(--hc-font-heading); font-weight: 700; font-size: clamp(32px, 5vw, 64px); color: #ffffff; text-shadow: 0 4px 16px rgba(0,0,0,0.8); margin: 0; letter-spacing: 0.02em;">
-                The Four Guilds!</h2>
-        </div>
-        <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15 / span 2; align-self: center;">
-            <span class="gt-name">Water Guild</span>
-            <span class="gt-line">Master the seas. Build boats, submarines, hovercraft, and aquatic machines that
-                conquer rivers, lakes, and oceans. If it floats, dives, or sails, you'll feel at home here.</span>
-        </div>
-        <div class="guild-tag"
-            style="grid-column: 2 / span 3; grid-row: 14; align-self: center; transform: scale(0.9); transform-origin: left center;">
-            <span class="gt-name">Land Guild</span>
-            <span class="gt-line">Conquer every terrain. From RC cars and rovers to walking robots and off-road
-                machines, the Land Guild is for builders who turn rough ideas into unstoppable vehicles.</span>
-        </div>
-        <div class="guild-tag"
-            style="grid-column: 8 / span 3; grid-row: 15; align-self: center; transform: scale(0.85); transform-origin: left center;">
-            <span class="gt-name">Frontier Guild</span>
-            <span class="gt-line">Push engineering beyond the ordinary. Build experimental vehicles, space-inspired
-                creations, futuristic concepts, or anything that doesn't fit the rules. Bold, ambitious, a little
-                crazy.</span>
-        </div>
-        <div class="guild-tag" style="grid-column: 7 / span 3; grid-row: 13 / span 2; align-self: center;">
-            <span class="gt-name">Air Guild</span>
-            <span class="gt-line">Take to the skies. Build drones, planes, gliders, rockets, and anything that flies.
-                Whether you're chasing speed, precision, or altitude, the Air Guild is for those who dream above the
-                clouds.</span>
-        </div>
-    </div>
+
     <style>
         .guild-tag {
             background: rgba(255, 252, 245, 0.55);
@@ -101,24 +51,7 @@
             font-weight: 600;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            function syncGrid() {
-                const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-                const grid = document.getElementById('placement-grid');
-                if (grid) grid.style.height = h + 'px';
-            }
-            syncGrid();
-            window.addEventListener('resize', syncGrid);
-            window.addEventListener('load', syncGrid); // Crucial for when hosted remotely
 
-            const bgImg = document.querySelector('.image-container img');
-            if (bgImg) {
-                if (bgImg.complete) syncGrid();
-                else bgImg.addEventListener('load', syncGrid);
-            }
-        });
-    </script>
     <script>
         var MAX_SCROLL = 4200;
         window.addEventListener('scroll', function () {
@@ -144,6 +77,57 @@
     </div>
     <div class="image-container">
         <img src="images/background.png" alt="High Quality Background">
+        <div id="placement-grid"
+            style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(30, 1fr); pointer-events: none; z-index: 50;">
+            <img src="whatitis.png"
+                style="grid-column: 4 / span 7; grid-row: 10 / span 4; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scale(0.9);"
+                alt="What it is">
+            <img src="red_car.png"
+                style="grid-column: 3; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-42.5%) scale(0.75);"
+                alt="Red Car">
+            <img src="grey_car.png"
+                style="grid-column: 5; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-30%) scale(0.75);"
+                alt="Grey Car">
+            <img src="boat.png"
+                style="grid-column: 2; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(12.5%);"
+                alt="Boat">
+            <img src="rocket.png"
+                style="grid-column: 7; grid-row: 15; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: translateY(-12.5%) scale(0.5);"
+                alt="Rocket">
+            <img src="jet.png"
+                style="grid-column: 9; grid-row: 13; width: 100%; height: 100%; object-fit: contain; pointer-events: auto; transform: scaleX(-1);"
+                alt="Jet">
+            <div
+                style="grid-column: 2 / span 6; grid-row: 12; align-self: center; pointer-events: auto; z-index: 10; transform: translateY(175%);">
+                <h2
+                    style="font-family: var(--hc-font-heading); font-weight: 700; font-size: clamp(32px, 5vw, 64px); color: #ffffff; text-shadow: 0 4px 16px rgba(0,0,0,0.8); margin: 0; letter-spacing: 0.02em;">
+                    The Four Guilds!</h2>
+            </div>
+            <div class="guild-tag" style="grid-column: 3 / span 3; grid-row: 15 / span 2; align-self: center;">
+                <span class="gt-name">Water Guild</span>
+                <span class="gt-line">Master the seas. Build boats, submarines, hovercraft, and aquatic machines that
+                    conquer rivers, lakes, and oceans. If it floats, dives, or sails, you'll feel at home here.</span>
+            </div>
+            <div class="guild-tag"
+                style="grid-column: 2 / span 3; grid-row: 14; align-self: center; transform: scale(0.9); transform-origin: left center;">
+                <span class="gt-name">Land Guild</span>
+                <span class="gt-line">Conquer every terrain. From RC cars and rovers to walking robots and off-road
+                    machines, the Land Guild is for builders who turn rough ideas into unstoppable vehicles.</span>
+            </div>
+            <div class="guild-tag"
+                style="grid-column: 8 / span 3; grid-row: 15; align-self: center; transform: scale(0.85); transform-origin: left center;">
+                <span class="gt-name">Frontier Guild</span>
+                <span class="gt-line">Push engineering beyond the ordinary. Build experimental vehicles, space-inspired
+                    creations, futuristic concepts, or anything that doesn't fit the rules. Bold, ambitious, a little
+                    crazy.</span>
+            </div>
+            <div class="guild-tag" style="grid-column: 7 / span 3; grid-row: 13 / span 2; align-self: center;">
+                <span class="gt-name">Air Guild</span>
+                <span class="gt-line">Take to the skies. Build drones, planes, gliders, rockets, and anything that flies.
+                    Whether you're chasing speed, precision, or altitude, the Air Guild is for those who dream above the
+                    clouds.</span>
+            </div>
+        </div>
     </div>
     <main class="story">
         <section class="story-section s-left reveal" style="margin-top: 15vh;">
