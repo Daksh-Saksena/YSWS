@@ -65,12 +65,30 @@
         </div>
     </div>
     <script>
-        const resizeObserver = new ResizeObserver(() => {
+        function syncGrid() {
             const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
             const grid = document.getElementById('placement-grid');
             if (grid) grid.style.height = h + 'px';
+        }
+
+        const resizeObserver = new ResizeObserver(syncGrid);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observe the body for image loads and normal flow changes
+            resizeObserver.observe(document.body);
+            
+            // Observe the story section for font loads and text wrapping changes
+            const story = document.querySelector('.story');
+            if (story) resizeObserver.observe(story);
+            
+            // Backup sync when custom fonts finish loading
+            if (document.fonts) {
+                document.fonts.ready.then(syncGrid);
+            }
         });
-        resizeObserver.observe(document.body);
+        
+        // Initial sync
+        syncGrid();
     </script>
 
     <style>
