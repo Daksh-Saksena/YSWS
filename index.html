@@ -105,11 +105,18 @@
         document.addEventListener('DOMContentLoaded', function () {
             function syncGrid() {
                 const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-                document.getElementById('placement-grid').style.height = h + 'px';
+                const grid = document.getElementById('placement-grid');
+                if (grid) grid.style.height = h + 'px';
             }
             syncGrid();
             window.addEventListener('resize', syncGrid);
-            setTimeout(syncGrid, 500);
+            window.addEventListener('load', syncGrid); // Crucial for when hosted remotely
+
+            const bgImg = document.querySelector('.image-container img');
+            if (bgImg) {
+                if (bgImg.complete) syncGrid();
+                else bgImg.addEventListener('load', syncGrid);
+            }
         });
     </script>
     <script>
