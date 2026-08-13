@@ -773,3 +773,13 @@ body.video-active {
     transform: scale(1.05);
     background: #ff4760;
 }
+
+/* Attempt to hide Fillout branding */
+a[href*="fillout.com"]:not([data-fillout-id]), 
+[class*="fillout-branding"], 
+[class*="fillout-watermark"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
