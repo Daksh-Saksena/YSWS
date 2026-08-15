@@ -783,3 +783,42 @@ a[href*="fillout.com"]:not([data-fillout-id]),
     visibility: hidden !important;
     pointer-events: none !important;
 }
+
+/* Hero section action buttons - matching shapes */
+.hero-btn-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    pointer-events: auto;
+}
+
+.hero-btn-container div[data-fillout-id] button,
+.hero-btn-container .hero-rsvp-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 44px !important;
+    padding: 0 24px !important;
+    border-radius: 6px !important;
+    font-family: var(--hc-font-heading), sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    box-sizing: border-box !important;
+    text-decoration: none !important;
+    border: none !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+}
+
+.hero-rsvp-btn {
+    background: var(--hc-red);
+    color: white;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.hero-rsvp-btn:hover {
+    transform: scale(1.05);
+    background: #ff4760;
+}
