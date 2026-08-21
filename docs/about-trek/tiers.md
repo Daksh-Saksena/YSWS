@@ -19,5 +19,5 @@ Streaks are applied as a multiplier to your usual payout when submitting. To inc
 | 7+ | 1.05x |
 | 14+ | 1.1x |
 | 30+ | 1.15x |
-| 60+ | 1.2x |
-| 100+ | 1.25x |
+| 50+ | 1.2x |
+| 80+ | 1.25x |

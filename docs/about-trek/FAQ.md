@@ -157,7 +157,7 @@ The streak system increases your payout according to your streak, which increase
 | 7+ days | 1.05x |
 | 14+ days | 1.10x |
 | 30+ days | 1.15x |
-| 60+ days | 1.20x |
-| 100+ days | 1.25x |
+| 50+ days | 1.20x |
+| 80+ days | 1.25x |
 
 </details>
