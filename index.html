@@ -178,7 +178,7 @@
                 gap: 4px !important;
                 width: 48% !important; /* Decreased by ~20% */
                 max-width: 200px !important;
-                margin-top: 24vh !important; /* Move slightly up */
+                margin-top: 28vh !important; /* Move slightly down */
                 margin-left: auto !important;
                 margin-right: auto !important;
             }
@@ -191,10 +191,19 @@
                 display: flex !important;
                 align-items: stretch !important;
             }
-            /* The fillout iframe/button inside should stretch */
-            .hero-btn-container > div[data-fillout-id] > button {
+            /* The fillout iframe/button inside should stretch and match text size */
+            .hero-btn-container > div[data-fillout-id] > button,
+            .hero-btn-container > div[data-fillout-id] > div > button {
                 height: 100% !important;
                 width: 100% !important;
+                font-size: 0.55rem !important;
+                padding: 0 2px !important;
+                border-radius: 4px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
             }
             
             .hero-btn-container > div:not([data-fillout-id]) {
