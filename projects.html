@@ -435,6 +435,19 @@
                     modeWeb.style.borderColor = 'rgba(255,255,255,0.12)';
                 });
 
+                // Guild Selection Cards
+                document.querySelectorAll('.guild-opt-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        this.selectedGuild = card.dataset.guild || 'frontier';
+                        document.querySelectorAll('.guild-opt-card').forEach(c => {
+                            c.style.background = 'rgba(255,255,255,0.04)';
+                            c.style.borderColor = 'rgba(255,255,255,0.12)';
+                        });
+                        card.style.background = 'rgba(236, 55, 80, 0.15)';
+                        card.style.borderColor = 'var(--hc-red)';
+                    });
+                });
+
                 const optDesign = document.getElementById('review-opt-design');
                 const optBuild = document.getElementById('review-opt-build');
                 const linkedGroup = document.getElementById('linked-project-group');
@@ -519,6 +532,7 @@
                     try {
                         const newProject = await api.createProject({
                             name,
+                            guild: this.selectedGuild || 'frontier',
                             tagline,
                             description: tagline,
                             devlogMode: this.selectedMode,
@@ -538,7 +552,19 @@
                 const modal = document.getElementById('create-project-modal');
                 document.getElementById('create-project-form')?.reset();
                 this.selectedMode = 'web';
+                this.selectedGuild = 'frontier';
+                this.selectedReviewType = 'design';
                 this.uploadedCoverUrl = null;
+
+                document.querySelectorAll('.guild-opt-card').forEach(c => {
+                    if (c.dataset.guild === 'frontier') {
+                        c.style.background = 'rgba(236, 55, 80, 0.15)';
+                        c.style.borderColor = 'var(--hc-red)';
+                    } else {
+                        c.style.background = 'rgba(255,255,255,0.04)';
+                        c.style.borderColor = 'rgba(255,255,255,0.12)';
+                    }
+                });
 
                 const modeWeb = document.getElementById('mode-opt-web');
                 const modeGit = document.getElementById('mode-opt-git');
