@@ -24,6 +24,7 @@ html {
     margin: 0;
     padding: 0;
     width: 100%;
+    overflow-x: hidden;
     background-color: var(--hc-darker);
     font-family: var(--hc-font-body);
     color: var(--hc-white);
