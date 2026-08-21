@@ -137,33 +137,52 @@
     <style>
         @media (max-width: 768px) {
 
-            /* ── Smaller hero text ── */
+            /* Hide the hack club flag in top right */
+            .flag {
+                display: none !important;
+            }
+
+            /* Push trek logo up */
+            .logo-container {
+                padding-top: 5vh !important;
+                justify-content: flex-start !important;
+            }
+            .logo {
+                margin-top: -30px !important;
+                transform: scale(0.8) !important;
+            }
+
+            /* ── Smaller hero text and spacing ── */
             .hero-text {
                 font-size: clamp(2rem, 8vw, 3.2rem) !important;
-                margin-top: -40px !important;
+                margin-top: -50px !important;
+                margin-bottom: 5px !important;
             }
             .sub-text {
-                font-size: 0.72rem !important;
-                letter-spacing: 0.05em !important;
+                display: none !important;
             }
 
             /* ── Smaller story headings + body ── */
             .s-heading {
-                font-size: clamp(1.4rem, 5.5vw, 2rem) !important;
+                font-size: clamp(1.2rem, 4.5vw, 1.8rem) !important;
                 white-space: normal !important;
             }
             .s-body {
-                font-size: 0.92rem !important;
-                line-height: 1.45 !important;
+                font-size: 0.85rem !important;
+                line-height: 1.4 !important;
             }
             .s-eyebrow {
-                font-size: 0.8rem !important;
+                font-size: 0.75rem !important;
                 margin-bottom: 4px !important;
             }
 
-            /* ── Reduce vertical margins between story sections ── */
+            /* Move "you are stranded" and everything below it up */
+            .story {
+                margin-top: -10vh !important;
+            }
             .story-section {
-                margin-top: 8vh !important;
+                margin-top: 3vh !important;
+                margin-bottom: 3vh !important;
             }
 
             /* ── Hide: Custom Prizes heading + clouds marquee ── */
@@ -179,27 +198,29 @@
 
             /* ── Buttons: 2×2 grid (Ship Project, Dashboard, Docs, Shop) ── */
             .hero-btn-container {
-                width: 100% !important;
-                align-items: stretch !important;
-            }
-
-            /* The Fillout "Ship Project" button wrapper */
-            .hero-btn-container > div[data-fillout-id] {
-                width: 100% !important;
-            }
-
-            /* Override the inline flex row to a 2×2 grid */
-            .hero-btn-container > div:not([data-fillout-id]) {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
                 gap: 10px !important;
                 width: 100% !important;
-                justify-content: unset !important;
+                max-width: 90vw !important;
+                margin-top: 10px !important;
             }
-
+            .hero-btn-container > script {
+                display: none !important;
+            }
+            .hero-btn-container > div[data-fillout-id] {
+                width: auto !important;
+                height: 100% !important;
+            }
+            .hero-btn-container > div:not([data-fillout-id]) {
+                display: contents !important;
+            }
+            
             /* Each button takes its grid cell */
             .hero-btn-container .footer-btn {
-                display: block !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
                 width: 100% !important;
                 text-align: center !important;
                 font-size: 0.95rem !important;
