@@ -157,7 +157,17 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { name, guild, tagline, description, coverImageUrl, devlogMode, reviewType, linkedDesignProjectId, repoUrl } = req.body;
-        if (!name?.trim()) return res.status(400).json({ error: 'Project name is required.' });
+        // Duplicate creation guard: prevent double-clicks/retries within 5 seconds
+        const duplicateCheck = await query(
+            `SELECT id FROM projects
+             WHERE user_id = $1 AND name = $2 AND deleted_at IS NULL AND created_at > NOW() - INTERVAL '5 seconds'
+             LIMIT 1`,
+            [req.user.id, name.trim()]
+        );
+        if (duplicateCheck.rows.length > 0) {
+            const existingProject = await getProjectWithEntries(duplicateCheck.rows[0].id, req.user.id);
+            return res.json(existingProject);
+        }
 
         // Generate slug-style ID, ensure uniqueness
         const baseId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `project-${Date.now()}`;

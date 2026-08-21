@@ -507,8 +507,11 @@
                 // Form Submit
                 document.getElementById('create-project-form')?.addEventListener('submit', async (e) => {
                     e.preventDefault();
+                    if (this.isCreatingProject) return;
                     
-                    const name = document.getElementById('new-project-name').value.trim();
+                    const name = document.getElementById('new-project-name')?.value.trim();
+                    const submitBtn = document.getElementById('submit-create-project-btn');
+
                     if (!name) {
                         alert('Please enter a project name.');
                         return;
@@ -525,9 +528,16 @@
                         }
                     }
 
-                    const tagline = document.getElementById('new-project-desc').value.trim();
-                    const repoUrl = document.getElementById('new-project-repo').value.trim() || null;
+                    const tagline = document.getElementById('new-project-desc')?.value.trim();
+                    const repoUrl = document.getElementById('new-project-repo')?.value.trim() || null;
                     const coverImageUrl = this.uploadedCoverUrl || 'jet.png';
+
+                    this.isCreatingProject = true;
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.style.opacity = '0.6';
+                        submitBtn.textContent = 'Creating Project...';
+                    }
 
                     try {
                         const newProject = await api.createProject({
@@ -544,6 +554,12 @@
                         window.location.href = `project.html?projectId=${encodeURIComponent(newProject.id)}`;
                     } catch (err) {
                         alert(`Failed to create project: ${err.message}`);
+                        this.isCreatingProject = false;
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            submitBtn.textContent = 'Create Project & Start Building →';
+                        }
                     }
                 });
             }
