@@ -45,7 +45,8 @@
                         JOURNAL</span>
                     <div style="margin-left: auto; display: flex; gap: 8px; align-items: center;">
                         <button class="action-btn-sm" id="open-team-modal-btn"
-                            style="background: rgba(54, 197, 240, 0.15); border: 1px solid rgba(54, 197, 240, 0.4); color: #36C5F0; cursor: pointer; padding: 5px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">👥 Team / Collab</button>
+                            style="background: rgba(54, 197, 240, 0.15); border: 1px solid rgba(54, 197, 240, 0.4); color: #36C5F0; cursor: pointer; padding: 5px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                            Team / Collab</button>
                         <button class="action-btn-sm edit-project-btn" id="open-edit-project-btn">Edit Project</button>
                         <button class="action-btn-sm" id="delete-current-project-btn"
                             style="background: rgba(236, 55, 80, 0.15); border: 1px solid rgba(236, 55, 80, 0.4); color: #ff6b81; cursor: pointer; padding: 5px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">Delete
@@ -54,7 +55,8 @@
                 </div>
                 <h1 class="project-title" id="project-name">My Trek Project</h1>
                 <p class="project-tagline" id="project-tagline"></p>
-                <div class="project-authors-row" id="project-authors-container" style="display: flex; align-items: center; gap: 10px; margin: 8px 0 16px 0; flex-wrap: wrap;"></div>
+                <div class="project-authors-row" id="project-authors-container"
+                    style="display: flex; align-items: center; gap: 10px; margin: 8px 0 16px 0; flex-wrap: wrap;"></div>
                 <div class="project-hero-bottom-row">
                     <div class="project-hero-metrics-actions">
                         <div class="metrics-row">
@@ -331,26 +333,32 @@
             </div>
             <div class="modal-body">
                 <p style="line-height: 1.4; color: var(--hc-muted); font-size: 0.88rem; margin-bottom: 20px;">
-                    Collaborate on hardware builds with friends. Teammates can post and edit devlogs, add build proof, and their names will be featured on the project!
+                    Collaborate on hardware builds with friends. Teammates can post and edit devlogs, add build proof,
+                    and their names will be featured on the project!
                 </p>
 
                 <!-- Invite Box -->
-                <form id="invite-collab-form" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px; margin-bottom: 24px;">
-                    <div style="font-weight: 600; font-size: 0.95rem; color: white; margin-bottom: 8px;">Invite a Teammate</div>
+                <form id="invite-collab-form"
+                    style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px; margin-bottom: 24px;">
+                    <div style="font-weight: 600; font-size: 0.95rem; color: white; margin-bottom: 8px;">Invite a
+                        Teammate</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <input type="text" id="collab-identifier-input" class="form-input" placeholder="Slack ID (e.g. U0AG...) or Email" style="flex: 1; min-width: 200px;" required>
+                        <input type="text" id="collab-identifier-input" class="form-input"
+                            placeholder="Slack ID (e.g. U0AG...) or Email" style="flex: 1; min-width: 200px;" required>
                         <select id="collab-role-select" class="form-select" style="width: auto; padding: 8px 12px;">
                             <option value="collaborator">Collaborator</option>
                             <option value="co_owner">Co-Owner</option>
                         </select>
-                        <button type="submit" id="collab-submit-btn" class="btn-primary" style="padding: 8px 16px; font-size: 0.88rem; white-space: nowrap;">Invite →</button>
+                        <button type="submit" id="collab-submit-btn" class="btn-primary"
+                            style="padding: 8px 16px; font-size: 0.88rem; white-space: nowrap;">Invite →</button>
                     </div>
                     <div id="collab-invite-status" style="font-size: 0.82rem; margin-top: 8px;"></div>
                 </form>
 
                 <!-- Team Members List -->
                 <div>
-                    <div style="font-weight: 600; font-size: 0.95rem; color: white; margin-bottom: 12px;">Team Members</div>
+                    <div style="font-weight: 600; font-size: 0.95rem; color: white; margin-bottom: 12px;">Team Members
+                    </div>
                     <div id="team-members-list" style="display: flex; flex-direction: column; gap: 10px;">
                         <div style="color: var(--hc-muted); font-size: 0.85rem;">Loading team members...</div>
                     </div>
