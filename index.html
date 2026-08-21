@@ -142,27 +142,53 @@
                 display: none !important;
             }
 
-            /* Push trek logo up */
-            .logo-container {
-                padding-top: 1vh !important;
-                justify-content: flex-start !important;
-            }
-            .logo {
-                margin-top: -50px !important;
-                transform: scale(0.8) !important;
+            /* Make the background image absolute so it doesn't push the story down */
+            .image-container {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                z-index: -1 !important;
             }
 
-            /* ── Smaller hero text and spacing ── */
+            /* Make logo-container flow naturally so the story can follow it immediately */
+            .logo-container {
+                position: relative !important;
+                height: auto !important;
+                padding-top: 5vh !important;
+                padding-bottom: 20px !important;
+                justify-content: flex-start !important;
+                pointer-events: auto !important;
+            }
+
+            /* Size adjustments */
+            .logo {
+                margin-top: 0 !important;
+                transform: scale(0.85) !important;
+                margin-bottom: -15px !important;
+            }
+
             .hero-text {
                 font-size: clamp(2rem, 8vw, 3.2rem) !important;
-                margin-top: -80px !important;
-                margin-bottom: 0px !important;
+                margin-top: 0 !important;
+                margin-bottom: 15px !important;
             }
+
             .sub-text {
                 display: none !important;
             }
 
-            /* ── Smaller story headings + body ── */
+            /* The story now perfectly flows right after the buttons */
+            .story {
+                margin-top: 5vh !important;
+                position: relative;
+                z-index: 10;
+            }
+
+            .story-section {
+                margin-top: 2vh !important;
+                margin-bottom: 2vh !important;
+            }
+
             .s-heading {
                 font-size: clamp(1.2rem, 4.5vw, 1.8rem) !important;
                 white-space: normal !important;
@@ -174,17 +200,6 @@
             .s-eyebrow {
                 font-size: 0.75rem !important;
                 margin-bottom: 4px !important;
-            }
-
-            /* Move "you are stranded" and everything below it up WAY up */
-            .story {
-                margin-top: -350px !important; /* using px to ensure it goes up reliably */
-                position: relative;
-                z-index: 10;
-            }
-            .story-section {
-                margin-top: 2vh !important;
-                margin-bottom: 2vh !important;
             }
 
             /* ── Hide: Custom Prizes heading + clouds marquee ── */
@@ -206,7 +221,7 @@
                 gap: 10px !important;
                 width: 100% !important;
                 max-width: 90vw !important;
-                margin-top: 10px !important; /* moved slightly down as requested */
+                margin-top: 5px !important;
             }
             .hero-btn-container > script {
                 display: none !important;
@@ -243,6 +258,7 @@
                 margin: 0 !important;
             }
         }
+
     </style>
 
     <script>
