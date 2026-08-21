@@ -14,27 +14,33 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { query } from '../db.js';
 
-const router = Router();
+const DEFAULT_SLACK_CLIENT_ID = '2210535565.11871399547573';
+const DEFAULT_SLACK_CLIENT_SECRET = 'b059068691f6d9123ffd121627900d7b';
 
-const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
-const SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET;
-const REDIRECT_URI = `${process.env.SERVER_URL}/auth/callback`;
-const FRONTEND_URL = process.env.FRONTEND_URL;
-const JWT_SECRET = process.env.JWT_SECRET;
+function getAuthContext(req) {
+    const clientId = process.env.SLACK_CLIENT_ID || DEFAULT_SLACK_CLIENT_ID;
+    const clientSecret = process.env.SLACK_CLIENT_SECRET || DEFAULT_SLACK_CLIENT_SECRET;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'ysws-sigma.vercel.app';
+    const origin = `${protocol}://${host}`;
+    const serverUrl = process.env.SERVER_URL || origin;
+    const frontendUrl = process.env.FRONTEND_URL || origin;
+    const redirectUri = `${serverUrl}/auth/callback`;
+    const jwtSecret = process.env.JWT_SECRET || 'trek_ysws_jwt_secret_fallback_key_2024';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// GET /auth/login
-// Redirects the user to Hack Club Slack to authorize Trek
-// ─────────────────────────────────────────────────────────────────────────────
+    return { clientId, clientSecret, serverUrl, frontendUrl, redirectUri, jwtSecret };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // GET /auth/login
 // Redirects the user to Hack Club Slack to authorize Trek
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/login', (req, res) => {
+    const { clientId, redirectUri } = getAuthContext(req);
     const params = new URLSearchParams({
-        client_id: SLACK_CLIENT_ID,
+        client_id: clientId,
         user_scope: 'identity.basic,identity.avatar,identity.email,openid,profile,email',
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: redirectUri,
     });
     res.redirect(`https://slack.com/oauth/v2/authorize?${params}`);
 });
@@ -45,10 +51,11 @@ router.get('/login', (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/callback', async (req, res) => {
     const { code, error } = req.query;
+    const { clientId, clientSecret, frontendUrl, redirectUri, jwtSecret } = getAuthContext(req);
 
     if (error || !code) {
         console.error('[Auth] Slack returned error in callback:', error);
-        return res.redirect(`${FRONTEND_URL}/login.html?error=${encodeURIComponent(error || 'slack_denied')}`);
+        return res.redirect(`${frontendUrl}/login.html?error=${encodeURIComponent(error || 'slack_denied')}`);
     }
 
     try {
@@ -57,10 +64,10 @@ router.get('/callback', async (req, res) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
-                client_id: SLACK_CLIENT_ID,
-                client_secret: SLACK_CLIENT_SECRET,
+                client_id: clientId,
+                client_secret: clientSecret,
                 code,
-                redirect_uri: REDIRECT_URI,
+                redirect_uri: redirectUri,
             }),
         });
         const tokenData = await tokenRes.json();
