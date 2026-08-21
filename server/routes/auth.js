@@ -100,15 +100,15 @@ router.get('/callback', async (req, res) => {
         }
         console.log('[Auth] HC Auth identity payload:', JSON.stringify(identityData, null, 2));
 
-        const userObj = identityData.user || identityData;
+        const userObj = identityData.identity || identityData.user || identityData;
 
         let slackId = userObj.slack_id || userObj.slackId;
         if (!slackId) {
             if (userObj.id) {
                 slackId = `hc_${userObj.id}`;
                 console.warn(`[Auth] No Slack ID provided by HC Auth. Falling back to HC Auth ID: ${slackId}`);
-            } else if (userObj.email) {
-                slackId = `hc_email_${userObj.email}`;
+            } else if (userObj.email || userObj.primary_email) {
+                slackId = `hc_email_${userObj.email || userObj.primary_email}`;
                 console.warn(`[Auth] No Slack ID or HC Auth ID provided. Falling back to email: ${slackId}`);
             } else {
                 console.error('[Auth] NO STABLE IDENTIFIER PROVIDED BY HC AUTH!', identityData);
@@ -117,9 +117,15 @@ router.get('/callback', async (req, res) => {
             }
         }
 
-        const displayName = userObj.name || 'Trek Builder';
+        let displayName = 'Trek Builder';
+        if (userObj.first_name || userObj.last_name) {
+            displayName = `${userObj.first_name || ''} ${userObj.last_name || ''}`.trim();
+        } else if (userObj.name) {
+            displayName = userObj.name;
+        }
+
         const avatarUrl = userObj.avatar || userObj.avatar_url || null;
-        const email = userObj.email || null;
+        const email = userObj.primary_email || userObj.email || null;
 
         // 3. Upsert user in DB
         const upsertResult = await query(
