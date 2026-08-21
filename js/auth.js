@@ -39,20 +39,26 @@ export function handleLoginCallback() {
 
     if (error) {
         const el = document.getElementById('login-error');
-        if (el) el.textContent = `Login failed: ${error}. Please try again.`;
+        if (el) el.textContent = `Login failed: ${decodeURIComponent(error)}. Please try again.`;
         return;
     }
 
-    if (token && userJson) {
-        try {
-            const user = JSON.parse(decodeURIComponent(userJson));
-            api.setToken(token);
-            api.setCurrentUser(user);
-            // Redirect to dashboard
-            window.location.href = 'projects.html';
-        } catch (e) {
-            console.error('[Auth] Failed to parse user data from login:', e);
+    if (token) {
+        api.setToken(token);
+        if (userJson) {
+            try {
+                let user;
+                try {
+                    user = JSON.parse(userJson);
+                } catch {
+                    user = JSON.parse(decodeURIComponent(userJson));
+                }
+                if (user) api.setCurrentUser(user);
+            } catch (e) {
+                console.warn('[Auth] User parse warning:', e);
+            }
         }
+        window.location.href = 'projects.html';
     }
 }
 

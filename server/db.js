@@ -17,10 +17,12 @@ import { fileURLToPath } from 'url';
 const { Pool } = pg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const isLocalhost = process.env.DATABASE_URL?.includes('localhost') || process.env.DATABASE_URL?.includes('127.0.0.1');
+const DEFAULT_DATABASE_URL = 'postgresql://postgres.hklcnmzddyijakovufsl:Acuaword2812@aws-0-ap-southeast-2.pooler.supabase.com:6543/postgres';
+const dbUrl = process.env.DATABASE_URL || DEFAULT_DATABASE_URL;
+const isLocalhost = dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1');
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: dbUrl,
     ssl: isLocalhost ? false : { rejectUnauthorized: false },
     // Safety: keep connections alive and retry
     max: 20,

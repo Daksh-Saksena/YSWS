@@ -7,6 +7,8 @@
 
 import jwt from 'jsonwebtoken';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'trek_ysws_jwt_secret_fallback_key_2024';
+
 export function requireAuth(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -15,7 +17,7 @@ export function requireAuth(req, res, next) {
 
     const token = authHeader.slice(7);
     try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        const payload = jwt.verify(token, JWT_SECRET);
         req.user = payload;
         next();
     } catch (err) {
