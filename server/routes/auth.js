@@ -98,17 +98,23 @@ router.get('/callback', async (req, res) => {
              console.error('[Auth] HC Auth user info fetch failed:', identityData);
              return res.redirect(`${frontendUrl}/login.html?error=could_not_read_user`);
         }
-        
-        const slackId = identityData.slackId;
+        console.log('[Auth] HC Auth identity payload:', identityData);
+
+        // API might return snake_case or camelCase. Fallback to HC Auth ID if slack_id is missing.
+        let slackId = identityData.slack_id || identityData.slackId;
+        if (!slackId) {
+            if (identityData.id) {
+                slackId = `hc_${identityData.id}`;
+                console.warn(`[Auth] No Slack ID provided by HC Auth. Falling back to HC Auth ID: ${slackId}`);
+            } else {
+                console.error('[Auth] No Slack ID and no HC Auth ID provided!', identityData);
+                return res.redirect(`${frontendUrl}/login.html?error=no_slack_id`);
+            }
+        }
+
         const displayName = identityData.name || 'Trek Builder';
         const avatarUrl = identityData.avatar || null;
         const email = identityData.email || null;
-
-        if (!slackId) {
-            // Slack ID is used as primary lookup
-            console.warn('[Auth] No Slack ID provided by HC Auth', identityData);
-            return res.redirect(`${frontendUrl}/login.html?error=no_slack_id`);
-        }
 
         // 3. Upsert user in DB
         const upsertResult = await query(
