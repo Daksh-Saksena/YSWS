@@ -56,11 +56,11 @@
             line-height: 1.5;
         }
 
-        .slack-login-btn {
+        .hc-login-btn {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: #4A154B;
+            background: var(--hc-red, #ec3750);
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -75,14 +75,15 @@
             justify-content: center;
         }
 
-        .slack-login-btn:hover {
-            background: #611f64;
+        .hc-login-btn:hover {
+            background: #d6243d;
             transform: translateY(-2px);
         }
 
-        .slack-icon {
+        .hc-icon {
             width: 24px;
             height: 24px;
+            fill: currentColor;
         }
 
         .login-error {
@@ -106,23 +107,14 @@
     <div class="login-card">
         <img src="images/logo.png" alt="Trek Logo" class="login-logo">
         <h1 class="login-title">Login to Trek</h1>
-        <p class="login-subtitle">Log in with your Hack Club Slack account to access your projects and build logs.</p>
+        <p class="login-subtitle">Log in with Hack Club Auth to access your projects and build logs.</p>
 
-        <a id="slack-login-link" href="#" class="slack-login-btn">
-            <!-- Slack logo SVG -->
-            <svg class="slack-icon" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-                <g fill="none" fill-rule="evenodd">
-                    <path d="M19.712 28.137c0 2.157-1.76 3.914-3.92 3.914-2.16 0-3.919-1.757-3.919-3.914 0-2.158 1.759-3.914 3.919-3.914h3.92v3.914z" fill="#E01E5A"/>
-                    <path d="M21.67 28.137c0-2.158 1.76-3.914 3.92-3.914 2.16 0 3.919 1.756 3.919 3.914v9.796c0 2.158-1.76 3.914-3.92 3.914-2.16 0-3.919-1.756-3.919-3.914V28.137z" fill="#E01E5A"/>
-                    <path d="M25.59 19.712c-2.16 0-3.92-1.76-3.92-3.92 0-2.16 1.76-3.919 3.919-3.919 2.16 0 3.919 1.759 3.919 3.919v3.92H25.59z" fill="#36C5F0"/>
-                    <path d="M25.59 21.671c2.16 0 3.919 1.759 3.919 3.919 0 2.16-1.759 3.919-3.919 3.919H15.794c-2.16 0-3.919-1.759-3.919-3.919 0-2.16 1.759-3.919 3.919-3.919H25.59z" fill="#36C5F0"/>
-                    <path d="M34.015 25.59c0-2.16 1.76-3.919 3.92-3.919 2.159 0 3.919 1.759 3.919 3.919 0 2.16-1.76 3.919-3.92 3.919h-3.919V25.59z" fill="#2EB67D"/>
-                    <path d="M32.056 25.59c0 2.16-1.759 3.919-3.919 3.919-2.16 0-3.919-1.759-3.919-3.919V15.794c0-2.16 1.759-3.919 3.919-3.919 2.16 0 3.919 1.759 3.919 3.919V25.59z" fill="#2EB67D"/>
-                    <path d="M28.137 34.015c2.16 0 3.919 1.76 3.919 3.92 0 2.159-1.759 3.919-3.919 3.919-2.16 0-3.919-1.76-3.919-3.92v-3.919h3.919z" fill="#ECB22E"/>
-                    <path d="M28.137 32.056c-2.16 0-3.919-1.759-3.919-3.919 0-2.16 1.759-3.919 3.919-3.919h9.796c2.16 0 3.919 1.759 3.919 3.919 0 2.16-1.759 3.919-3.919 3.919H28.137z" fill="#ECB22E"/>
-                </g>
+        <a id="hc-login-link" href="#" class="hc-login-btn">
+            <!-- Hack Club 'H' logo SVG -->
+            <svg class="hc-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
             </svg>
-            Sign in with Hack Club Slack
+            Sign in with Hack Club
         </a>
 
         <p id="login-error" class="login-error"></p>
@@ -145,9 +137,9 @@
         // Set login link to the backend OAuth start URL
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const TREK_API_BASE = window.TREK_API_BASE || (isLocal ? 'http://localhost:3001' : '');
-        document.getElementById('slack-login-link').href = `${TREK_API_BASE}/auth/login`;
+        document.getElementById('hc-login-link').href = `${TREK_API_BASE}/auth/login`;
 
-        // Handle redirect back from Slack (token is in the URL)
+        // Handle redirect back from Hack Club Auth (token is in the URL)
         handleLoginCallback();
     </script>
 </body>

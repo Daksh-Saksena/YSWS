@@ -1,11 +1,11 @@
 /**
- * Trek YSWS — Hack Club Slack OAuth Routes
+ * Trek YSWS — Hack Club Auth Routes
  *
  * Flow:
- *   1. GET /auth/login  → redirects browser to Slack authorization page
- *   2. Slack calls GET /auth/callback?code=xxx
- *   3. Server exchanges code for Slack access token
- *   4. Server fetches user identity from Slack
+ *   1. GET /auth/login  → redirects browser to Hack Club Auth authorization page
+ *   2. HC Auth calls GET /auth/callback?code=xxx
+ *   3. Server exchanges code for HC Auth access token
+ *   4. Server fetches user identity from HC Auth
  *   5. Upsert user into DB
  *   6. Sign a JWT and send it back to the frontend via redirect
  */
@@ -16,12 +16,9 @@ import { query } from '../db.js';
 
 const router = Router();
 
-const DEFAULT_SLACK_CLIENT_ID = '2210535565.11871399547573';
-const DEFAULT_SLACK_CLIENT_SECRET = 'b059068691f6d9123ffd121627900d7b';
-
 function getAuthContext(req) {
-    const clientId = process.env.SLACK_CLIENT_ID || DEFAULT_SLACK_CLIENT_ID;
-    const clientSecret = process.env.SLACK_CLIENT_SECRET || DEFAULT_SLACK_CLIENT_SECRET;
+    const clientId = process.env.HC_AUTH_CLIENT_ID || 'your_hc_auth_client_id_here';
+    const clientSecret = process.env.HC_AUTH_CLIENT_SECRET || 'your_hc_auth_client_secret_here';
     const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'ysws-sigma.vercel.app';
     const origin = `${protocol}://${host}`;
@@ -35,37 +32,40 @@ function getAuthContext(req) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GET /auth/login
-// Redirects the user to Hack Club Slack to authorize Trek
+// Redirects the user to Hack Club Auth to authorize Trek
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/login', (req, res) => {
     const { clientId, redirectUri } = getAuthContext(req);
     const params = new URLSearchParams({
         client_id: clientId,
-        user_scope: 'identity.basic,identity.avatar,identity.email,openid,profile,email',
+        response_type: 'code',
         redirect_uri: redirectUri,
     });
-    res.redirect(`https://slack.com/oauth/v2/authorize?${params}`);
+    // Optional: add scope parameter if needed, but 'profile' is default.
+    // params.append('scope', 'profile');
+    res.redirect(`https://auth.hackclub.com/oauth/authorize?${params}`);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GET /auth/callback
-// Slack redirects here with ?code=xxx after the user authorizes
+// HC Auth redirects here with ?code=xxx after the user authorizes
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/callback', async (req, res) => {
     const { code, error } = req.query;
     const { clientId, clientSecret, frontendUrl, redirectUri, jwtSecret } = getAuthContext(req);
 
     if (error || !code) {
-        console.error('[Auth] Slack returned error in callback:', error);
-        return res.redirect(`${frontendUrl}/login.html?error=${encodeURIComponent(error || 'slack_denied')}`);
+        console.error('[Auth] HC Auth returned error in callback:', error);
+        return res.redirect(`${frontendUrl}/login.html?error=${encodeURIComponent(error || 'hc_auth_denied')}`);
     }
 
     try {
         // 1. Exchange code for access token
-        const tokenRes = await fetch('https://slack.com/api/oauth.v2.access', {
+        const tokenRes = await fetch('https://auth.hackclub.com/oauth/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
+                grant_type: 'authorization_code',
                 client_id: clientId,
                 client_secret: clientSecret,
                 code,
@@ -74,47 +74,33 @@ router.get('/callback', async (req, res) => {
         });
         const tokenData = await tokenRes.json();
 
-        if (!tokenData.ok) {
-            console.error('[Auth] Slack token exchange failed:', tokenData.error);
+        if (tokenData.error || !tokenData.access_token) {
+            console.error('[Auth] HC Auth token exchange failed:', tokenData.error || tokenData);
             return res.redirect(`${frontendUrl}/login.html?error=${encodeURIComponent(tokenData.error || 'token_exchange_failed')}`);
         }
 
-        // 2. Fetch user identity using the authed_user.access_token
-        const userToken = tokenData.authed_user?.access_token || tokenData.access_token;
-        let slackId = tokenData.authed_user?.id;
-        let displayName = 'Trek Builder';
-        let avatarUrl = null;
-        let email = null;
+        const userToken = tokenData.access_token;
 
-        if (userToken) {
-            // Try users.identity first
-            const identityRes = await fetch('https://slack.com/api/users.identity', {
-                headers: { Authorization: `Bearer ${userToken}` },
-            });
-            const identity = await identityRes.json();
+        // 2. Fetch user identity using the access_token
+        const identityRes = await fetch('https://auth.hackclub.com/api/v1/me', {
+            headers: { Authorization: `Bearer ${userToken}` },
+        });
+        const identityData = await identityRes.json();
 
-            if (identity.ok && identity.user) {
-                slackId = identity.user.id || slackId;
-                displayName = identity.user.name || displayName;
-                avatarUrl = identity.user.image_192 || identity.user.image_72 || null;
-                email = identity.user.email || null;
-            } else {
-                // Try openid.connect.userInfo if identity wasn't enabled
-                const oidcRes = await fetch('https://slack.com/api/openid.connect.userInfo', {
-                    headers: { Authorization: `Bearer ${userToken}` },
-                });
-                const oidcData = await oidcRes.json();
-                if (oidcData.ok) {
-                    slackId = oidcData['https://slack.com/user_id'] || oidcData.sub || slackId;
-                    displayName = oidcData.name || displayName;
-                    avatarUrl = oidcData.picture || null;
-                    email = oidcData.email || null;
-                }
-            }
+        if (!identityRes.ok || !identityData) {
+             console.error('[Auth] HC Auth user info fetch failed:', identityData);
+             return res.redirect(`${frontendUrl}/login.html?error=could_not_read_user`);
         }
+        
+        const slackId = identityData.slackId;
+        const displayName = identityData.name || 'Trek Builder';
+        const avatarUrl = identityData.avatar || null;
+        const email = identityData.email || null;
 
         if (!slackId) {
-            return res.redirect(`${frontendUrl}/login.html?error=could_not_read_user_id`);
+            // Slack ID is used as primary lookup
+            console.warn('[Auth] No Slack ID provided by HC Auth', identityData);
+            return res.redirect(`${frontendUrl}/login.html?error=no_slack_id`);
         }
 
         // 3. Upsert user in DB
@@ -167,10 +153,11 @@ router.get('/callback', async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /auth/dev-login (Instant local dev testing without Slack app setup)
+// GET /auth/dev-login (Instant local dev testing without Auth app setup)
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/dev-login', async (req, res) => {
     try {
+        const { frontendUrl, jwtSecret } = getAuthContext(req);
         const slackId = 'U_TREK_DEV_BUILDER';
         const displayName = 'Trek Builder (Dev)';
         const avatarUrl = 'images/flag.png';
@@ -196,14 +183,15 @@ router.get('/dev-login', async (req, res) => {
                 display_name: user.display_name,
                 avatar_url: user.avatar_url,
             },
-            JWT_SECRET,
+            jwtSecret,
             { expiresIn: '30d' }
         );
 
-        res.redirect(`${FRONTEND_URL}/login.html?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, display_name: user.display_name, avatar_url: user.avatar_url }))}`);
+        res.redirect(`${frontendUrl}/login.html?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, display_name: user.display_name, avatar_url: user.avatar_url }))}`);
     } catch (err) {
         console.error('[Auth] Dev login error:', err);
-        res.redirect(`${FRONTEND_URL}/login.html?error=dev_login_failed`);
+        const { frontendUrl } = getAuthContext(req);
+        res.redirect(`${frontendUrl}/login.html?error=dev_login_failed`);
     }
 });
 
@@ -212,12 +200,13 @@ router.get('/dev-login', async (req, res) => {
 // Returns current user info from the JWT
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/me', async (req, res) => {
+    const { jwtSecret } = getAuthContext(req);
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({ error: 'Not authenticated.' });
     }
     try {
-        const payload = jwt.verify(authHeader.slice(7), JWT_SECRET);
+        const payload = jwt.verify(authHeader.slice(7), jwtSecret);
         res.json({ user: payload });
     } catch {
         res.status(401).json({ error: 'Token expired. Please log in again.' });
