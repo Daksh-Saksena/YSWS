@@ -14,6 +14,8 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { query } from '../db.js';
 
+const router = Router();
+
 const DEFAULT_SLACK_CLIENT_ID = '2210535565.11871399547573';
 const DEFAULT_SLACK_CLIENT_SECRET = 'b059068691f6d9123ffd121627900d7b';
 
