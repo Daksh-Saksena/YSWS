@@ -19,8 +19,8 @@ router.use(requireAuth);
 // Configure Cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'orsdhud2',
-    api_key:    process.env.CLOUDINARY_API_KEY || '926299377752337',
-    api_secret: process.env.CLOUDINARY_API_SECRET || '1P-uFQ33TuVu7DwzTZGaGH6tUdg',
+    api_key:    process.env.CLOUDINARY_API_KEY || '899325484423145',
+    api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true,
 });
 
