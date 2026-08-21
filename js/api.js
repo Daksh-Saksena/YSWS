@@ -105,6 +105,9 @@ export class TrekApiService {
 
         if (!res.ok) {
             const body = await res.json().catch(() => ({}));
+            if (res.status === 401) {
+                this.logout();
+            }
             throw Object.assign(new Error(body.error || `HTTP ${res.status}`), { status: res.status });
         }
         return res.json();
