@@ -19,6 +19,11 @@ const router = Router();
 function getAuthContext(req) {
     const clientId = process.env.HC_AUTH_CLIENT_ID;
     const clientSecret = process.env.HC_AUTH_CLIENT_SECRET;
+
+    if (!clientId || !clientSecret) {
+        console.error('[Auth] ERROR: Environment variables HC_AUTH_CLIENT_ID or HC_AUTH_CLIENT_SECRET are missing in this Vercel deployment!');
+    }
+
     const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'ysws-sigma.vercel.app';
     const origin = `${protocol}://${host}`;
@@ -60,9 +65,14 @@ router.get('/callback', async (req, res) => {
 
     try {
         // 1. Exchange code for access token
+        const authHeader = `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`;
+        
         const tokenRes = await fetch('https://auth.hackclub.com/oauth/token', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': authHeader
+            },
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
                 client_id: clientId,
