@@ -418,59 +418,57 @@ export class TrekApiService {
                 });
             }
 
-            const fallbackLocal = () => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const dataUrl = reader.result;
-                    const ext = file.name ? file.name.split('.').pop() || 'png' : 'png';
-                    const randomHash = Math.random().toString(36).substring(2, 8);
-                    const timeStamp = Date.now().toString(36);
-                    const shortUrl = `https://cdn.hackclub.com/trek/${timeStamp}_${randomHash}.${ext}`;
+            const reader = new FileReader();
+            reader.onload = () => {
+                const dataUrl = reader.result;
+                const ext = file.name ? file.name.split('.').pop() || 'png' : 'png';
+                const randomHash = Math.random().toString(36).substring(2, 8);
+                const timeStamp = Date.now().toString(36);
+                const shortUrl = `https://cdn.hackclub.com/trek/${timeStamp}_${randomHash}.${ext}`;
+                const safeName = file.name ? file.name.replace(/[^\w.-]+/g, '_') : `image_${randomHash}.png`;
 
+                const fallbackLocal = () => {
                     const assets = ls(ASSETS_STORAGE_KEY, {});
                     assets[shortUrl] = dataUrl;
                     lsSet(ASSETS_STORAGE_KEY, assets);
-
-                    const safeName = file.name ? file.name.replace(/[^\w.-]+/g, '_') : `image_${randomHash}.png`;
                     resolve({ url: shortUrl, markdown: `![${safeName}](${shortUrl})` });
                 };
-                reader.onerror = () => {
-                    resolve({ url: '', markdown: '![upload failed]()' });
-                };
-                reader.readAsDataURL(file);
-            };
 
-            if (!navigator.onLine) {
-                return fallbackLocal();
-            }
+                if (!navigator.onLine) {
+                    return fallbackLocal();
+                }
 
-            // Online: try Cloudinary via backend
-            const formData = new FormData();
-            formData.append('file', file);
-            if (projectId) formData.append('projectId', projectId);
-
-            const token = this.getToken();
-            fetch(`${API_BASE}/api/uploads`, {
-                method: 'POST',
-                headers: token ? { Authorization: `Bearer ${token}` } : {},
-                body: formData,
-            })
-                .then(r => r.json())
-                .then(data => {
-                    if (data && data.url && !data.error) {
-                        const assets = ls(ASSETS_STORAGE_KEY, {});
-                        assets[data.url] = data.storageUrl || data.url;
-                        lsSet(ASSETS_STORAGE_KEY, assets);
-                        resolve({ url: data.url, markdown: data.markdown });
-                    } else {
-                        console.warn('[Upload] Cloudinary upload returned error, using local fallback:', data?.error);
-                        fallbackLocal();
-                    }
+                // Online: Send as base64 JSON to bypass Vercel multer/stream issues
+                const token = this.getToken();
+                fetch(`${API_BASE}/api/uploads`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {})
+                    },
+                    body: JSON.stringify({ file: dataUrl, projectId, originalname: file.name }),
                 })
-                .catch(err => {
-                    console.warn('[Upload] Backend upload network failed, using local fallback:', err.message);
-                    fallbackLocal();
-                });
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && data.url && !data.error) {
+                            const assets = ls(ASSETS_STORAGE_KEY, {});
+                            assets[data.url] = data.storageUrl || data.url;
+                            lsSet(ASSETS_STORAGE_KEY, assets);
+                            resolve({ url: data.url, markdown: data.markdown });
+                        } else {
+                            console.warn('[Upload] Backend upload returned error, using local fallback:', data?.error);
+                            fallbackLocal();
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('[Upload] Backend network failed, using local fallback:', err.message);
+                        fallbackLocal();
+                    });
+            };
+            reader.onerror = () => {
+                resolve({ url: '', markdown: '![upload failed]()' });
+            };
+            reader.readAsDataURL(file);
         });
     }
 
