@@ -433,10 +433,12 @@ class TrekProjectController {
 
     async handleEntryFormSubmit(e) {
         e.preventDefault();
+        if (this.isSubmittingEntry) return;
 
-        const title = document.getElementById('entry-title-input').value.trim();
-        const timeSpent = document.getElementById('entry-time-input').value.trim();
-        const content = document.getElementById('entry-content-input').value.trim();
+        const title = document.getElementById('entry-title-input')?.value.trim();
+        const timeSpent = document.getElementById('entry-time-input')?.value.trim();
+        const content = document.getElementById('entry-content-input')?.value.trim();
+        const submitBtn = document.getElementById('save-entry-btn');
 
         if (!title) {
             alert('Please provide an entry title.');
@@ -457,9 +459,17 @@ class TrekProjectController {
             extractedImages.push(match[1]);
         }
 
+        this.isSubmittingEntry = true;
+        const originalBtnText = submitBtn ? submitBtn.textContent : 'Post DevLog →';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+            submitBtn.textContent = this.editingEntryId ? 'Updating...' : 'Posting...';
+        }
+
         try {
             if (this.editingEntryId) {
-                const existing = this.currentProject.journalEntries.find(e => e.id === this.editingEntryId);
+                const existing = this.currentProject?.journalEntries?.find(e => e.id === this.editingEntryId);
                 await api.updateJournalEntry(this.currentProjectId, this.editingEntryId, {
                     title,
                     date: existing ? existing.date : new Date().toISOString().split('T')[0],
@@ -481,6 +491,13 @@ class TrekProjectController {
             await this.loadProject();
         } catch (err) {
             alert(`Error saving entry: ${err.message}`);
+        } finally {
+            this.isSubmittingEntry = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.textContent = originalBtnText;
+            }
         }
     }
 

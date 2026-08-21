@@ -85,6 +85,17 @@ router.post('/:projectId', async (req, res) => {
         const checksum = computeChecksum(content);
         const parsedHours = parseFloat(timeHours) || 0;
 
+        // Duplicate guard: prevent double-clicks/retries within 5 seconds
+        const duplicateCheck = await query(
+            `SELECT * FROM journal_entries
+             WHERE project_id = $1 AND title = $2 AND checksum = $3 AND deleted_at IS NULL AND created_at > NOW() - INTERVAL '5 seconds'
+             LIMIT 1`,
+            [projectId, title.trim(), checksum]
+        );
+        if (duplicateCheck.rows.length > 0) {
+            return res.json(rowToEntry(duplicateCheck.rows[0]));
+        }
+
         const entry = await withTransaction(async (client) => {
             const insertRes = await client.query(
                 `INSERT INTO journal_entries
