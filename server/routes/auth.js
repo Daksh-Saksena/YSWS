@@ -112,7 +112,8 @@ router.get('/callback', async (req, res) => {
                 console.warn(`[Auth] No Slack ID or HC Auth ID provided. Falling back to email: ${slackId}`);
             } else {
                 console.error('[Auth] NO STABLE IDENTIFIER PROVIDED BY HC AUTH!', identityData);
-                return res.redirect(`${frontendUrl}/login.html?error=no_slack_id`);
+                const debugStr = encodeURIComponent(JSON.stringify(identityData));
+                return res.redirect(`${frontendUrl}/login.html?error=no_slack_id&details=${debugStr}`);
             }
         }
 
