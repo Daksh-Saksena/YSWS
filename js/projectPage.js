@@ -38,6 +38,10 @@ class TrekProjectController {
     }
 
     async init() {
+        if (!api.isLoggedIn()) {
+            window.location.href = 'login.html';
+            return;
+        }
         this.bindGlobalEvents();
         this.bindProjectEditEvents();
         this.setupInlineDevlogEditor();

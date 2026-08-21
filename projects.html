@@ -231,6 +231,18 @@
         <div class="projects-grid" id="projects-grid">
             <div style="color: var(--hc-muted); padding: 30px; text-align: center; grid-column: 1 / -1;">Loading your projects...</div>
         </div>
+
+        <!-- User Account Footer Bar -->
+        <div id="user-account-footer" style="margin-top: 48px; padding: 16px 24px; background: rgba(18, 18, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div id="user-avatar-badge" style="width: 36px; height: 36px; border-radius: 50%; background: var(--hc-red); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; overflow: hidden;">⚡</div>
+                <div>
+                    <div style="font-size: 0.75rem; color: var(--hc-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Logged In Account</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: var(--hc-white);" id="user-display-name">Loading...</div>
+                </div>
+            </div>
+            <button type="button" id="logout-btn" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--hc-smoke); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Log Out</button>
+        </div>
     </main>
 
     <!-- Modal: Create New Project -->
@@ -346,8 +358,31 @@
             }
 
             async init() {
+                if (!api.isLoggedIn()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
                 this.bindEvents();
+                this.renderUserAccount();
                 await this.loadAndRenderProjects();
+            }
+
+            renderUserAccount() {
+                const user = api.getCurrentUser();
+                const nameEl = document.getElementById('user-display-name');
+                const avatarEl = document.getElementById('user-avatar-badge');
+                const logoutBtn = document.getElementById('logout-btn');
+
+                if (user && nameEl) {
+                    nameEl.textContent = user.display_name || user.slack_id || 'Trek Builder';
+                }
+                if (user && user.avatar_url && avatarEl) {
+                    avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                logoutBtn?.addEventListener('click', () => {
+                    api.logout();
+                    window.location.href = 'login.html';
+                });
             }
 
             bindEvents() {
