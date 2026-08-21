@@ -17,8 +17,8 @@ import { query } from '../db.js';
 const router = Router();
 
 function getAuthContext(req) {
-    const clientId = (process.env.HC_AUTH_CLIENT_ID || '').trim();
-    const clientSecret = (process.env.HC_AUTH_CLIENT_SECRET || '').trim();
+    const clientId = (process.env.HC_AUTH_CLIENT_ID || 'aa288d4a48d688e65c9ae81a0b2f64ac').trim();
+    const clientSecret = (process.env.HC_AUTH_CLIENT_SECRET || 'ba83dd4cbf41b7135eafff414ae31dede35225939640915f2cfb38fa80ca1420').trim();
 
     if (!clientId || !clientSecret) {
         console.error('[Auth] ERROR: Environment variables HC_AUTH_CLIENT_ID or HC_AUTH_CLIENT_SECRET are missing in this Vercel deployment!');
