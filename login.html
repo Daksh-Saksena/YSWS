@@ -119,16 +119,6 @@
             Sign in with Hack Club Slack
         </a>
 
-        <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
-            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
-            <span style="font-size: 0.8rem; color: var(--hc-muted); text-transform: uppercase; letter-spacing: 0.05em;">or</span>
-            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
-        </div>
-
-        <a id="dev-login-link" href="#" style="display: block; padding: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--hc-smoke); font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;">
-            ⚡ Quick Dev Login (Local Testing)
-        </a>
-
         <p id="login-error" class="login-error"></p>
 
         <p class="login-footer">
@@ -150,7 +140,6 @@
         const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const TREK_API_BASE = window.TREK_API_BASE || (isLocal ? 'http://localhost:3001' : '');
         document.getElementById('slack-login-link').href = `${TREK_API_BASE}/auth/login`;
-        document.getElementById('dev-login-link').href = `${TREK_API_BASE}/auth/dev-login`;
 
         // Handle redirect back from Slack (token is in the URL)
         handleLoginCallback();

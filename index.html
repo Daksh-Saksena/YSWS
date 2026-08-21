@@ -355,7 +355,7 @@
                 videoOverlay.classList.add('fade-out');
                 document.body.classList.remove('video-active');
                 unlockScroll();
-                sessionStorage.setItem('introPlayed', '1');
+                localStorage.setItem('trek_intro_played', '1');
                 setTimeout(() => {
                     videoOverlay.style.display = 'none';
                 }, 800);
@@ -394,7 +394,7 @@
                     });
                 }
             }
-            if (sessionStorage.getItem('introPlayed')) {
+            if (localStorage.getItem('trek_intro_played')) {
                 videoOverlay.style.display = 'none';
             } else if (introVideo) {
                 playIntroVideo();

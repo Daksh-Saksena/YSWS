@@ -90,10 +90,42 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).json({ error: err.message || 'Internal server error.' });
 });
 
+async function start() {
+    try {
+        await initSchema();
+        const server = app.listen(PORT, () => {
+            console.log(`\n🚀 Trek backend running on http://localhost:${PORT}`);
+            console.log(`   Frontend URL: ${FRONTEND_URL}`);
+            console.log(`   Environment:  ${process.env.NODE_ENV || 'development'}\n`);
+        });
+
+        // Safety Layer 8: Schedule pg_dump backup every 6 hours
+        cron.schedule('0 */6 * * *', () => {
+            console.log('[Cron] Running scheduled backup...');
+            runBackup().catch(e => console.error('[Cron] Backup failed:', e));
+        });
+
+        const shutdown = async (signal) => {
+            console.log(`\n[Server] ${signal} received. Shutting down gracefully...`);
+            server.close(() => {
+                console.log('[Server] HTTP server closed. Bye!');
+                process.exit(0);
+            });
+            setTimeout(() => process.exit(1), 10_000).unref();
+        };
+
+        process.on('SIGTERM', () => shutdown('SIGTERM'));
+        process.on('SIGINT',  () => shutdown('SIGINT'));
+    } catch (err) {
+        console.error('[Server] Failed to start:', err);
+        process.exit(1);
+    }
+}
+
 export { app, start };
 export default app;
 
 // Run standalone only if executed directly
-if (process.argv[1] && process.argv[1].endsWith('server.js')) {
+if (process.argv[1] && (process.argv[1].endsWith('server.js') || process.argv[1].endsWith('server'))) {
     start();
 }

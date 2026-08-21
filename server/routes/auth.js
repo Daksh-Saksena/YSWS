@@ -132,7 +132,7 @@ router.get('/callback', async (req, res) => {
                 avatar_url: user.avatar_url,
             },
             JWT_SECRET,
-            { expiresIn: '30d' }
+            { expiresIn: '365d' }
         );
 
         // 5. Send JWT back to frontend via URL (frontend stores it)
