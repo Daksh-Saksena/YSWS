@@ -40,9 +40,8 @@ router.get('/login', (req, res) => {
         client_id: clientId,
         response_type: 'code',
         redirect_uri: redirectUri,
+        scope: 'openid email name profile verification_status slack_id'
     });
-    // Optional: add scope parameter if needed, but 'profile' is default.
-    // params.append('scope', 'profile');
     res.redirect(`https://auth.hackclub.com/oauth/authorize?${params}`);
 });
 
