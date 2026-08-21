@@ -17,8 +17,8 @@ import { query } from '../db.js';
 const router = Router();
 
 function getAuthContext(req) {
-    const clientId = process.env.HC_AUTH_CLIENT_ID;
-    const clientSecret = process.env.HC_AUTH_CLIENT_SECRET;
+    const clientId = (process.env.HC_AUTH_CLIENT_ID || '').trim();
+    const clientSecret = (process.env.HC_AUTH_CLIENT_SECRET || '').trim();
 
     if (!clientId || !clientSecret) {
         console.error('[Auth] ERROR: Environment variables HC_AUTH_CLIENT_ID or HC_AUTH_CLIENT_SECRET are missing in this Vercel deployment!');
@@ -65,14 +65,9 @@ router.get('/callback', async (req, res) => {
 
     try {
         // 1. Exchange code for access token
-        const authHeader = `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`;
-        
         const tokenRes = await fetch('https://auth.hackclub.com/oauth/token', {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': authHeader
-            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
                 client_id: clientId,
