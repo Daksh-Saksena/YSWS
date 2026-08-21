@@ -67,14 +67,17 @@ router.get('/callback', async (req, res) => {
         // 1. Exchange code for access token
         const tokenRes = await fetch('https://auth.hackclub.com/oauth/token', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
                 client_id: clientId,
                 client_secret: clientSecret,
                 code,
                 redirect_uri: redirectUri,
-            }),
+            }).toString(),
         });
         const tokenData = await tokenRes.json();
 
