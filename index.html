@@ -130,6 +130,87 @@
         }
     </style>
 
+    <!-- ═══════════════════════════════════════
+         MOBILE-ONLY OVERRIDES (≤ 768px)
+         Does NOT affect desktop/laptop.
+    ═══════════════════════════════════════ -->
+    <style>
+        @media (max-width: 768px) {
+
+            /* ── Smaller hero text ── */
+            .hero-text {
+                font-size: clamp(2rem, 8vw, 3.2rem) !important;
+                margin-top: -40px !important;
+            }
+            .sub-text {
+                font-size: 0.72rem !important;
+                letter-spacing: 0.05em !important;
+            }
+
+            /* ── Smaller story headings + body ── */
+            .s-heading {
+                font-size: clamp(1.4rem, 5.5vw, 2rem) !important;
+                white-space: normal !important;
+            }
+            .s-body {
+                font-size: 0.92rem !important;
+                line-height: 1.45 !important;
+            }
+            .s-eyebrow {
+                font-size: 0.8rem !important;
+                margin-bottom: 4px !important;
+            }
+
+            /* ── Reduce vertical margins between story sections ── */
+            .story-section {
+                margin-top: 8vh !important;
+            }
+
+            /* ── Hide: Custom Prizes heading + clouds marquee ── */
+            .story-section:nth-child(3),
+            .clouds-layer.marquee {
+                display: none !important;
+            }
+
+            /* ── Hide: entire "Start Building" footer ── */
+            .trek-footer {
+                display: none !important;
+            }
+
+            /* ── Buttons: 2×2 grid (Ship Project, Dashboard, Docs, Shop) ── */
+            .hero-btn-container {
+                width: 100% !important;
+                align-items: stretch !important;
+            }
+
+            /* The Fillout "Ship Project" button wrapper */
+            .hero-btn-container > div[data-fillout-id] {
+                width: 100% !important;
+            }
+
+            /* Override the inline flex row to a 2×2 grid */
+            .hero-btn-container > div:not([data-fillout-id]) {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+                width: 100% !important;
+                justify-content: unset !important;
+            }
+
+            /* Each button takes its grid cell */
+            .hero-btn-container .footer-btn {
+                display: block !important;
+                width: 100% !important;
+                text-align: center !important;
+                font-size: 0.95rem !important;
+                padding: 12px 8px !important;
+                border-radius: 10px !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+
     <script>
         var MAX_SCROLL = 4200;
         window.addEventListener('scroll', function () {
