@@ -139,13 +139,14 @@
 
             /* Change Background Image for Mobile */
             .image-container img {
-                display: none !important;
+                content: url('images/mobile%20bg.png') !important;
+                width: 100% !important;
+                height: auto !important;
+                display: block !important;
             }
             .image-container {
-                background-image: url('images/mobile%20bg.png') !important;
-                background-size: cover !important;
-                background-position: center top !important;
-                height: 100vh !important;
+                height: auto !important;
+                background: none !important;
             }
 
             /* Hide everything except buttons */
@@ -173,11 +174,13 @@
             .hero-btn-container {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
-                grid-auto-rows: 48px !important; /* Force all buttons to exactly same height */
-                gap: 10px !important;
-                width: 100% !important;
-                max-width: 90vw !important;
-                margin-top: 5px !important;
+                grid-auto-rows: 36px !important; /* Smaller height (was 48px) */
+                gap: 8px !important;
+                width: 75% !important; /* Smaller width */
+                max-width: 300px !important;
+                margin-top: 8vh !important; /* Move slightly down */
+                margin-left: auto !important;
+                margin-right: auto !important;
             }
             .hero-btn-container > script {
                 display: none !important;
@@ -207,9 +210,9 @@
                 width: 100% !important;
                 height: 100% !important;
                 text-align: center !important;
-                font-size: 0.95rem !important;
-                padding: 0 8px !important;
-                border-radius: 8px !important;
+                font-size: 0.75rem !important; /* Smaller text */
+                padding: 0 4px !important;
+                border-radius: 6px !important;
                 box-sizing: border-box !important;
                 margin: 0 !important;
             }
