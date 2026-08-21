@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Trek YSWS</title>
+    <link rel="icon" type="image/x-icon" href="images/flag.png">
+    <link rel="stylesheet" href="css/project.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--hc-bg, #0e0e11);
+            font-family: var(--hc-font-body, 'Inter', sans-serif);
+        }
+
+        .login-card {
+            background: rgba(18, 18, 23, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .login-logo {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        .login-title {
+            font-family: var(--hc-font-heading, 'Inter', sans-serif);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+
+        .login-subtitle {
+            color: var(--hc-muted, #8b9ab8);
+            font-size: 0.95rem;
+            margin: 0 0 32px 0;
+            line-height: 1.5;
+        }
+
+        .slack-login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #4A154B;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .slack-login-btn:hover {
+            background: #611f64;
+            transform: translateY(-2px);
+        }
+
+        .slack-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .login-error {
+            margin-top: 16px;
+            color: #ff6b81;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .login-error:not(:empty) {
+            display: block;
+        }
+
+        .login-footer {
+            margin-top: 28px;
+            font-size: 0.82rem;
+            color: var(--hc-muted, #8b9ab8);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <img src="images/logo.png" alt="Trek Logo" class="login-logo">
+        <h1 class="login-title">Login to Trek</h1>
+        <p class="login-subtitle">Log in with your Hack Club Slack account to access your projects and build logs.</p>
+
+        <a id="slack-login-link" href="#" class="slack-login-btn">
+            <!-- Slack logo SVG -->
+            <svg class="slack-icon" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                    <path d="M19.712 28.137c0 2.157-1.76 3.914-3.92 3.914-2.16 0-3.919-1.757-3.919-3.914 0-2.158 1.759-3.914 3.919-3.914h3.92v3.914z" fill="#E01E5A"/>
+                    <path d="M21.67 28.137c0-2.158 1.76-3.914 3.92-3.914 2.16 0 3.919 1.756 3.919 3.914v9.796c0 2.158-1.76 3.914-3.92 3.914-2.16 0-3.919-1.756-3.919-3.914V28.137z" fill="#E01E5A"/>
+                    <path d="M25.59 19.712c-2.16 0-3.92-1.76-3.92-3.92 0-2.16 1.76-3.919 3.919-3.919 2.16 0 3.919 1.759 3.919 3.919v3.92H25.59z" fill="#36C5F0"/>
+                    <path d="M25.59 21.671c2.16 0 3.919 1.759 3.919 3.919 0 2.16-1.759 3.919-3.919 3.919H15.794c-2.16 0-3.919-1.759-3.919-3.919 0-2.16 1.759-3.919 3.919-3.919H25.59z" fill="#36C5F0"/>
+                    <path d="M34.015 25.59c0-2.16 1.76-3.919 3.92-3.919 2.159 0 3.919 1.759 3.919 3.919 0 2.16-1.76 3.919-3.92 3.919h-3.919V25.59z" fill="#2EB67D"/>
+                    <path d="M32.056 25.59c0 2.16-1.759 3.919-3.919 3.919-2.16 0-3.919-1.759-3.919-3.919V15.794c0-2.16 1.759-3.919 3.919-3.919 2.16 0 3.919 1.759 3.919 3.919V25.59z" fill="#2EB67D"/>
+                    <path d="M28.137 34.015c2.16 0 3.919 1.76 3.919 3.92 0 2.159-1.759 3.919-3.919 3.919-2.16 0-3.919-1.76-3.919-3.92v-3.919h3.919z" fill="#ECB22E"/>
+                    <path d="M28.137 32.056c-2.16 0-3.919-1.759-3.919-3.919 0-2.16 1.759-3.919 3.919-3.919h9.796c2.16 0 3.919 1.759 3.919 3.919 0 2.16-1.759 3.919-3.919 3.919H28.137z" fill="#ECB22E"/>
+                </g>
+            </svg>
+            Sign in with Hack Club Slack
+        </a>
+
+        <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
+            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+            <span style="font-size: 0.8rem; color: var(--hc-muted); text-transform: uppercase; letter-spacing: 0.05em;">or</span>
+            <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+        </div>
+
+        <a id="dev-login-link" href="#" style="display: block; padding: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--hc-smoke); font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;">
+            ⚡ Quick Dev Login (Local Testing)
+        </a>
+
+        <p id="login-error" class="login-error"></p>
+
+        <p class="login-footer">
+            By logging in you agree to keep your projects kind and your builds safe.<br>
+            Trek is a <a href="https://hackclub.com" target="_blank" style="color: var(--hc-red, #ec3750);">Hack Club</a> YSWS.
+        </p>
+    </div>
+
+    <script type="module">
+        import { handleLoginCallback } from './js/auth.js';
+        import { api } from './js/api.js';
+
+        // If already logged in, go straight to projects
+        if (api.isLoggedIn()) {
+            window.location.href = 'projects.html';
+        }
+
+        // Set login link to the backend OAuth start URL
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const TREK_API_BASE = window.TREK_API_BASE || (isLocal ? 'http://localhost:3001' : '');
+        document.getElementById('slack-login-link').href = `${TREK_API_BASE}/auth/login`;
+        document.getElementById('dev-login-link').href = `${TREK_API_BASE}/auth/dev-login`;
+
+        // Handle redirect back from Slack (token is in the URL)
+        handleLoginCallback();
+    </script>
+</body>
+</html>

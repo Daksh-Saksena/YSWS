@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs - Trek YSWS</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/project.css">
+    
+    <!-- Marked.js for parsing markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        .docs-layout {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto 60px auto;
+            padding: 0 24px;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .docs-sidebar {
+            background: rgba(14, 14, 17, 0.7);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 24px;
+            position: sticky;
+            top: 40px;
+            align-self: start;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .docs-sidebar h3 {
+            font-family: var(--hc-font-heading);
+            font-size: 1.1rem;
+            color: var(--hc-red);
+            margin: 0 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .docs-category {
+            margin-bottom: 24px;
+        }
+
+        .docs-category-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--hc-muted);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .docs-nav-link {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .docs-nav-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .docs-nav-link.active {
+            background: rgba(236, 55, 80, 0.15);
+            color: var(--hc-red);
+            font-weight: 600;
+        }
+
+        .docs-content {
+            background: rgba(14, 14, 17, 0.7);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+            }
+            .docs-sidebar {
+                position: static;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="trek-app">
+    <!-- Top Navigation Bar -->
+    <nav class="trek-nav">
+        <div class="trek-nav-left">
+            <a href="index.html" class="trek-nav-brand">
+                <span style="font-size: 1.05rem; font-weight: 700; color: var(--hc-smoke);">← Go Back to</span>
+                <img src="images/logo.png" alt="Trek Logo" class="trek-nav-logo">
+            </a>
+            <div class="trek-nav-links">
+                <a href="projects.html" class="trek-nav-link">Projects</a>
+                <a href="docs.html" class="trek-nav-link active">Docs</a>
+                <a href="shop.html" class="trek-nav-link">Shop</a>
+            </div>
+        </div>
+        <div class="trek-nav-actions">
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar" id="docs-sidebar-container">
+            <!-- Rendered by docsPage.js -->
+        </aside>
+
+        <!-- Markdown Content -->
+        <article class="docs-content devlog-md-content" id="docs-markdown-container">
+            <div style="color: var(--hc-muted); text-align: center; padding: 40px;">
+                Loading document...
+            </div>
+        </article>
+    </main>
+
+    <!-- Script: Docs Controller -->
+    <script type="module" src="js/docsPage.js"></script>
+</body>
+</html>

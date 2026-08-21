@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Environment variables & secrets (NEVER commit to GitHub)
+.env
+server/.env
+*.env
+*.env.local
+
+# Backups
+server/backups/
+*.sql.gz
+*.sql
+
+# System & IDE files
+.DS_Store
+.vscode/
+.idea/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

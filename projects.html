@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Projects - Trek YSWS</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="css/project.css">
+    <style>
+        .projects-dashboard-wrap {
+            max-width: 1120px;
+            width: 100%;
+            margin: 40px auto 60px auto;
+            padding: 0 24px;
+            box-sizing: border-box;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title {
+            font-family: var(--hc-font-heading);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--hc-white);
+            margin: 0 0 8px 0;
+            letter-spacing: -0.02em;
+        }
+
+        .dashboard-sub {
+            color: var(--hc-muted);
+            font-size: 1.05rem;
+            margin: 0;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        .dashboard-stats-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(23, 23, 29, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 24px;
+            min-width: 140px;
+            flex: 1;
+        }
+
+        .stat-card-val {
+            font-family: var(--hc-font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--hc-white);
+            margin-bottom: 4px;
+        }
+
+        .stat-card-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--hc-muted);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: rgba(23, 23, 29, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(236, 55, 80, 0.6);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-card-cover-wrap {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            background: #121217;
+            overflow: hidden;
+        }
+
+        .project-card-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-card-cover {
+            transform: scale(1.03);
+        }
+
+        .project-card-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .project-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .project-card-name {
+            font-family: var(--hc-font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--hc-white);
+            margin: 0 0 6px 0;
+            line-height: 1.3;
+        }
+
+        .project-card-tagline {
+            color: var(--hc-muted);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0 0 16px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .project-card-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-top: 14px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.88rem;
+            color: var(--hc-smoke);
+        }
+
+        .project-card-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .empty-state-box {
+            text-align: center;
+            padding: 60px 24px;
+            background: rgba(23, 23, 29, 0.5);
+            border: 2px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+
+<body class="trek-app">
+    <!-- Top Navigation Bar -->
+    <nav class="trek-nav">
+        <div class="trek-nav-left">
+            <a href="index.html" class="trek-nav-brand">
+                <span style="font-size: 1.05rem; font-weight: 700; color: var(--hc-smoke);">← Go Back to</span>
+                <img src="images/logo.png" alt="Trek Logo" class="trek-nav-logo">
+            </a>
+            <div class="trek-nav-links">
+                <a href="projects.html" class="trek-nav-link active">Projects</a>
+                <a href="docs.html" class="trek-nav-link">Docs</a>
+                <a href="shop.html" class="trek-nav-link">Shop</a>
+            </div>
+        </div>
+        <div class="trek-nav-actions">
+        </div>
+    </nav>
+
+    <!-- Main Content Dashboard -->
+    <main class="projects-dashboard-wrap">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="dashboard-title">Your Projects</h1>
+            </div>
+            <button id="header-new-project-btn" class="btn-primary" style="padding: 10px 22px; font-size: 1rem;">+ New Project</button>
+        </div>
+
+        <!-- Metric Summary Bar -->
+        <div class="dashboard-stats-bar" id="dashboard-stats-bar">
+            <div class="stat-card">
+                <div class="stat-card-val" id="stats-total-projects">0</div>
+                <div class="stat-card-label">Total Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-val" id="stats-total-hours">0h</div>
+                <div class="stat-card-label">Logged Hours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-val" id="stats-total-logs">0</div>
+                <div class="stat-card-label">Total DevLogs</div>
+            </div>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-grid">
+            <div style="color: var(--hc-muted); padding: 30px; text-align: center; grid-column: 1 / -1;">Loading your projects...</div>
+        </div>
+    </main>
+
+    <!-- Modal: Create New Project -->
+    <div class="modal-backdrop" id="create-project-modal">
+        <div class="modal-card" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Project</h3>
+                <button class="modal-close-btn" id="close-create-project-modal-btn" type="button">&times;</button>
+            </div>
+            <form id="create-project-form">
+                <div class="modal-body">
+                    <!-- Method Selection -->
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label">Journal Method *</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div id="mode-opt-web" style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Web Journal</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Write devlogs & upload photos directly on Trek.</div>
+                            </div>
+                            <div id="mode-opt-git" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Git Journal</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Track progress via GitHub & JOURNAL.md.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review Type Selection -->
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label">Review Type *</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div id="review-opt-design" style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Design Review</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Pitching or designing a new project from scratch.</div>
+                            </div>
+                            <div id="review-opt-build" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Build Review</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Building a project from an approved design review.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linked Project (Only shown for Build Review) -->
+                    <div class="form-group" id="linked-project-group" style="display: none; margin-bottom: 20px;">
+                        <label class="form-label" for="linked-project-select">Select Design Project *</label>
+                        <select id="linked-project-select" class="form-input" style="background-color: rgba(14, 14, 17, 0.8);">
+                            <option value="">-- Select an approved design project --</option>
+                        </select>
+                    </div>
+
+                    <!-- Project Name (Only Mandatory Field) -->
+                    <div class="form-group">
+                        <label class="form-label" for="new-project-name">Project Name *</label>
+                        <input type="text" id="new-project-name" class="form-input" placeholder="e.g. AeroVane Drone" required>
+                    </div>
+
+                    <!-- Description / Tagline (Optional) -->
+                    <div class="form-group">
+                        <label class="form-label" for="new-project-desc">Description / Tagline</label>
+                        <textarea id="new-project-desc" class="form-textarea" rows="2" placeholder="Brief summary of what you are building..."></textarea>
+                    </div>
+
+                    <!-- GitHub Repo Link (Optional) -->
+                    <div class="form-group">
+                        <label class="form-label" for="new-project-repo">GitHub Repository Link</label>
+                        <input type="url" id="new-project-repo" class="form-input" placeholder="https://github.com/username/my-trek-hardware">
+                    </div>
+
+                    <!-- Cover Image (Optional) -->
+                    <div class="form-group">
+                        <label class="form-label">Cover Image</label>
+                        <div class="drop-zone" id="new-cover-drop-zone" style="padding: 14px;">
+                            <input type="file" id="new-cover-file-input" accept="image/*" style="display: none;">
+                            <div id="new-cover-drop-text" style="font-size: 0.85rem; color: var(--hc-muted);">Click to upload a project cover photo (defaults to Jet)</div>
+                            <div id="new-cover-preview-wrap" style="display: none; margin-top: 8px;">
+                                <img id="new-cover-preview-img" src="" alt="Cover preview" style="max-height: 90px; border-radius: 6px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancel-create-project-btn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submit-create-project-btn">Create Project & Start Building →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script: Projects Controller -->
+    <script type="module">
+        import { api } from './js/api.js?v=5';
+
+        class ProjectsDashboard {
+            constructor() {
+                this.projects = [];
+                this.selectedMode = 'web';
+                this.uploadedCoverUrl = null;
+
+                this.init();
+            }
+
+            resolveAsset(url) {
+                if (!url) return '';
+                if (typeof api?.resolveAssetUrl === 'function') {
+                    return api.resolveAssetUrl(url);
+                }
+                try {
+                    const raw = localStorage.getItem('trek_ysws_assets_db_v1');
+                    if (raw) {
+                        const db = JSON.parse(raw);
+                        if (db && db[url]) return db[url];
+                    }
+                } catch (e) {}
+                return url;
+            }
+
+            async init() {
+                this.bindEvents();
+                await this.loadAndRenderProjects();
+            }
+
+            bindEvents() {
+                document.getElementById('header-new-project-btn')?.addEventListener('click', () => this.openCreateModal());
+
+                document.getElementById('close-create-project-modal-btn')?.addEventListener('click', () => this.closeCreateModal());
+                document.getElementById('cancel-create-project-btn')?.addEventListener('click', () => this.closeCreateModal());
+
+                const modeWeb = document.getElementById('mode-opt-web');
+                const modeGit = document.getElementById('mode-opt-git');
+
+                modeWeb?.addEventListener('click', () => {
+                    this.selectedMode = 'web';
+                    modeWeb.style.background = 'rgba(236, 55, 80, 0.15)';
+                    modeWeb.style.borderColor = 'var(--hc-red)';
+                    modeGit.style.background = 'rgba(255,255,255,0.04)';
+                    modeGit.style.borderColor = 'rgba(255,255,255,0.12)';
+                });
+
+                modeGit?.addEventListener('click', () => {
+                    this.selectedMode = 'git';
+                    modeGit.style.background = 'rgba(236, 55, 80, 0.15)';
+                    modeGit.style.borderColor = 'var(--hc-red)';
+                    modeWeb.style.background = 'rgba(255,255,255,0.04)';
+                    modeWeb.style.borderColor = 'rgba(255,255,255,0.12)';
+                });
+
+                const optDesign = document.getElementById('review-opt-design');
+                const optBuild = document.getElementById('review-opt-build');
+                const linkedGroup = document.getElementById('linked-project-group');
+                const linkedSelect = document.getElementById('linked-project-select');
+
+                optDesign?.addEventListener('click', () => {
+                    this.selectedReviewType = 'design';
+                    optDesign.style.background = 'rgba(236, 55, 80, 0.15)';
+                    optDesign.style.borderColor = 'var(--hc-red)';
+                    optBuild.style.background = 'rgba(255,255,255,0.04)';
+                    optBuild.style.borderColor = 'rgba(255,255,255,0.12)';
+                    if (linkedGroup) linkedGroup.style.display = 'none';
+                });
+
+                optBuild?.addEventListener('click', () => {
+                    this.selectedReviewType = 'build';
+                    optBuild.style.background = 'rgba(236, 55, 80, 0.15)';
+                    optBuild.style.borderColor = 'var(--hc-red)';
+                    optDesign.style.background = 'rgba(255,255,255,0.04)';
+                    optDesign.style.borderColor = 'rgba(255,255,255,0.12)';
+                    
+                    // Populate select options
+                    if (linkedSelect && linkedGroup) {
+                        const designProjects = this.projects.filter(p => p.reviewType !== 'build');
+                        linkedSelect.innerHTML = '<option value="">-- Select an approved design project --</option>' + 
+                            designProjects.map(p => `<option value="${p.id}">${this.escapeHtml(p.name)}</option>`).join('');
+                        linkedGroup.style.display = 'block';
+                    }
+                });
+
+                // Cover Image Upload
+                const dropZone = document.getElementById('new-cover-drop-zone');
+                const fileInput = document.getElementById('new-cover-file-input');
+                const previewWrap = document.getElementById('new-cover-preview-wrap');
+                const previewImg = document.getElementById('new-cover-preview-img');
+                const dropText = document.getElementById('new-cover-drop-text');
+
+                if (dropZone && fileInput) {
+                    dropZone.addEventListener('click', () => fileInput.click());
+                    fileInput.addEventListener('change', async () => {
+                        if (fileInput.files?.length) {
+                            try {
+                                const uploaded = await api.uploadEvidence(fileInput.files[0]);
+                                this.uploadedCoverUrl = uploaded.url;
+                                if (previewImg && previewWrap) {
+                                    previewImg.src = uploaded.url;
+                                    previewWrap.style.display = 'block';
+                                    if (dropText) dropText.style.display = 'none';
+                                }
+                            } catch (err) {
+                                alert(`Failed to load image: ${err.message}`);
+                            }
+                        }
+                    });
+                }
+
+                // Form Submit
+                document.getElementById('create-project-form')?.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('new-project-name').value.trim();
+                    if (!name) {
+                        alert('Please enter a project name.');
+                        return;
+                    }
+                    
+                    let linkedDesignProjectId = null;
+                    if (this.selectedReviewType === 'build') {
+                        const selectEl = document.getElementById('linked-project-select');
+                        if (selectEl && selectEl.value) {
+                            linkedDesignProjectId = selectEl.value;
+                        } else {
+                            alert('Please select an approved design project to link this build review to.');
+                            return;
+                        }
+                    }
+
+                    const tagline = document.getElementById('new-project-desc').value.trim();
+                    const repoUrl = document.getElementById('new-project-repo').value.trim() || null;
+                    const coverImageUrl = this.uploadedCoverUrl || 'jet.png';
+
+                    try {
+                        const newProject = await api.createProject({
+                            name,
+                            tagline,
+                            description: tagline,
+                            devlogMode: this.selectedMode,
+                            reviewType: this.selectedReviewType || 'design',
+                            linkedDesignProjectId,
+                            repoUrl,
+                            coverImageUrl
+                        });
+                        window.location.href = `project.html?projectId=${encodeURIComponent(newProject.id)}`;
+                    } catch (err) {
+                        alert(`Failed to create project: ${err.message}`);
+                    }
+                });
+            }
+
+            openCreateModal() {
+                const modal = document.getElementById('create-project-modal');
+                document.getElementById('create-project-form')?.reset();
+                this.selectedMode = 'web';
+                this.uploadedCoverUrl = null;
+
+                const modeWeb = document.getElementById('mode-opt-web');
+                const modeGit = document.getElementById('mode-opt-git');
+                if (modeWeb) {
+                    modeWeb.style.background = 'rgba(236, 55, 80, 0.15)';
+                    modeWeb.style.borderColor = 'var(--hc-red)';
+                }
+                if (modeGit) {
+                    modeGit.style.background = 'rgba(255,255,255,0.04)';
+                    modeGit.style.borderColor = 'rgba(255,255,255,0.12)';
+                }
+
+                const previewWrap = document.getElementById('new-cover-preview-wrap');
+                const dropText = document.getElementById('new-cover-drop-text');
+                if (previewWrap) previewWrap.style.display = 'none';
+                if (dropText) dropText.style.display = 'block';
+
+                if (modal) modal.classList.add('active');
+            }
+
+            closeCreateModal() {
+                document.getElementById('create-project-modal')?.classList.remove('active');
+            }
+
+            async loadAndRenderProjects() {
+                const grid = document.getElementById('projects-grid');
+                if (!grid) return;
+
+                try {
+                    this.projects = await api.getProjects();
+                    this.updateStats();
+
+                    if (!this.projects || this.projects.length === 0) {
+                        grid.innerHTML = `
+                            <div class="empty-state-box">
+                                <h3 style="font-family: var(--hc-font-heading); font-size: 1.4rem; color: white; margin: 0 0 8px 0;">No Projects Created Yet</h3>
+                                <p style="color: var(--hc-muted); font-size: 0.95rem; margin: 0 0 20px 0;">Start logging your first hardware vehicle prototype, electronics, or 3D print.</p>
+                                <button class="btn-primary" id="empty-state-create-btn" style="padding: 12px 28px; font-size: 1rem;">+ Create Your First Project</button>
+                            </div>
+                        `;
+                        document.getElementById('empty-state-create-btn')?.addEventListener('click', () => this.openCreateModal());
+                        return;
+                    }
+
+                    grid.innerHTML = this.projects.map(p => {
+                        const coverImg = this.resolveAsset(p.coverImageUrl || 'jet.png');
+                        const modeTag = p.devlogMode === 'git' ? 'GIT JOURNAL' : 'WEB JOURNAL';
+                        const statusTag = (p.status || 'draft').toUpperCase();
+                        const entryCount = p.journalEntries ? p.journalEntries.length : 0;
+                        const hours = p.totalHours || 0;
+
+                        return `
+                            <div class="project-card" data-project-id="${p.id}">
+                                <div class="project-card-cover-wrap">
+                                    <img src="${coverImg}" alt="${this.escapeHtml(p.name)}" class="project-card-cover">
+                                    <div class="project-card-badges">
+                                        <span class="status-pill status-${p.status || 'draft'}">${statusTag}</span>
+                                        <span class="status-pill" style="background: rgba(0,0,0,0.65); border-color: rgba(255,255,255,0.2); color: var(--hc-smoke);">${modeTag}</span>
+                                    </div>
+                                </div>
+                                <div class="project-card-body">
+                                    <h3 class="project-card-name">${this.escapeHtml(p.name)}</h3>
+                                    <p class="project-card-tagline">${this.escapeHtml(p.tagline || 'Documenting physical build progress on Trek')}</p>
+                                    
+                                    <div class="project-card-stats">
+                                        <span><strong>${hours}h</strong> Logged</span>
+                                        <span><strong>${entryCount}</strong> DevLogs</span>
+                                    </div>
+
+                                    <div class="project-card-actions">
+                                        <a href="project.html?projectId=${encodeURIComponent(p.id)}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; padding: 8px 14px; font-size: 0.9rem;">Open Project →</a>
+                                        <button type="button" class="delete-project-btn" data-id="${p.id}" data-name="${this.escapeHtml(p.name)}" style="background: rgba(236, 55, 80, 0.15); border: 1px solid rgba(236, 55, 80, 0.35); color: #ff6b81; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--hc-red)'; this.style.color='white';" onmouseout="this.style.background='rgba(236, 55, 80, 0.15)'; this.style.color='#ff6b81';">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Attach delete listeners
+                    grid.querySelectorAll('.delete-project-btn').forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            e.stopPropagation();
+                            const pid = btn.dataset.id;
+                            const pname = btn.dataset.name;
+                            const confirmed = confirm(`Are you sure you want to delete "${pname}"? This action cannot be undone.`);
+                            if (confirmed) {
+                                try {
+                                    if (typeof api.deleteProject === 'function') {
+                                        await api.deleteProject(pid);
+                                    } else {
+                                        const STORAGE_KEY = 'trek_ysws_projects_db_v2';
+                                        let raw = localStorage.getItem(STORAGE_KEY);
+                                        if (raw) {
+                                            let list = JSON.parse(raw);
+                                            list = list.filter(p => p.id !== pid);
+                                            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+                                        }
+                                    }
+                                    await this.loadAndRenderProjects();
+                                } catch (err) {
+                                    alert(`Failed to delete project: ${err.message}`);
+                                }
+                            }
+                        });
+                    });
+
+                } catch (err) {
+                    if (err.status === 401 || !api.isLoggedIn()) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    grid.innerHTML = `<div style="color: #ff6b81; padding: 20px; grid-column: 1 / -1;">Failed to load projects: ${err.message}</div>`;
+                }
+            }
+
+            updateStats() {
+                const totalProjects = this.projects.length;
+                const totalHours = this.projects.reduce((sum, p) => sum + (p.totalHours || 0), 0);
+                const totalLogs = this.projects.reduce((sum, p) => sum + (p.journalEntries ? p.journalEntries.length : 0), 0);
+
+                const elProjects = document.getElementById('stats-total-projects');
+                const elHours = document.getElementById('stats-total-hours');
+                const elLogs = document.getElementById('stats-total-logs');
+
+                if (elProjects) elProjects.textContent = totalProjects;
+                if (elHours) elHours.textContent = `${totalHours}h`;
+                if (elLogs) elLogs.textContent = totalLogs;
+            }
+
+            escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProjectsDashboard();
+        });
+    </script>
+</body>
+
+</html>
