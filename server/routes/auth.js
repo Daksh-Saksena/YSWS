@@ -17,10 +17,8 @@ import { query } from '../db.js';
 const router = Router();
 
 function getAuthContext(req) {
-    // HARDCODED FALLBACKS added because Vercel env vars are currently empty.
-    // WARNING: This exposes your OAuth secret to anyone who looks at the GitHub repo!
-    const clientId = process.env.HC_AUTH_CLIENT_ID || 'aa288d4a48d688e65c9ae81a0b2f64ac';
-    const clientSecret = process.env.HC_AUTH_CLIENT_SECRET || 'ba83dd4cbf41b7135eafff414ae31dede35225939640915f2cfb38fa80ca1420';
+    const clientId = process.env.HC_AUTH_CLIENT_ID;
+    const clientSecret = process.env.HC_AUTH_CLIENT_SECRET;
     const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'ysws-sigma.vercel.app';
     const origin = `${protocol}://${host}`;
