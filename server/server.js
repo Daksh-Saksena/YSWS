@@ -22,6 +22,7 @@ import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
 import journalRoutes from './routes/journals.js';
 import uploadRoutes from './routes/uploads.js';
+import exploreRoutes from './routes/explore.js';
 import { runBackup } from './jobs/backup.js';
 
 const app = express();
@@ -78,6 +79,7 @@ app.use('/auth', authLimiter, authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/journals', journalRoutes);
 app.use('/api/uploads', uploadRoutes);
+app.use('/api/explore', exploreRoutes);
 
 // 404 handler
 app.use((req, res) => {

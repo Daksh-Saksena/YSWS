@@ -189,6 +189,15 @@ export class TrekApiService {
         }
     }
 
+    async getExploreData() {
+        try {
+            return await this._fetch('/api/explore');
+        } catch (err) {
+            console.error('[Trek] Failed to fetch explore data:', err);
+            return { projects: [], leaderboard: [] };
+        }
+    }
+
     async getProject(projectId) {
         try {
             const project = await this._fetch(`/api/projects/${projectId}`);
