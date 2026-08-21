@@ -81,6 +81,21 @@ async function recalcTotalHours(client, projectId) {
     );
 }
 
+function getContentText(text) {
+    if (!text) return '';
+    return text
+        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+        .replace(/[<>]/g, '')
+        .trim();
+}
+
+function checkHasImage(text, images) {
+    if (Array.isArray(images) && images.length > 0) return true;
+    if (!text) return false;
+    return (text.includes('![') && text.includes('](')) || text.includes('<img');
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/journals/:projectId
 // ─────────────────────────────────────────────────────────────────────────────
@@ -92,6 +107,15 @@ router.post('/:projectId', async (req, res) => {
         const { title, content, date, timeSpent, timeHours, milestone, images, tags, lapseUrl } = req.body;
         if (!title?.trim()) return res.status(400).json({ error: 'Title is required.' });
         if (!content?.trim()) return res.status(400).json({ error: 'Content is required.' });
+
+        const textOnly = getContentText(content);
+        if (textOnly.length < 80) {
+            return res.status(400).json({ error: `Build log is too short (${textOnly.length}/80 characters). Please write at least 80 characters.` });
+        }
+
+        if (!checkHasImage(content, images)) {
+            return res.status(400).json({ error: 'Please attach at least 1 image/photo proof of your build progress.' });
+        }
 
         const entryId = `entry-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
         const checksum = computeChecksum(content);

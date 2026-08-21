@@ -457,6 +457,19 @@ class TrekProjectController {
             return;
         }
 
+        const textWithoutLinks = this.getContentWithoutLinks(content);
+        const hasImg = this.hasImage(content);
+
+        if (textWithoutLinks.length < 80) {
+            alert(`Your build log is too short (${textWithoutLinks.length}/80 characters). Please write at least 80 characters describing what you worked on.`);
+            return;
+        }
+
+        if (!hasImg) {
+            alert('Please attach at least 1 image/photo proof of your build progress (paste or click Browse).');
+            return;
+        }
+
         // Extract image URLs from markdown content
         const extractedImages = [];
         const imgRegex = /!\[.*?\]\((.*?)\)/g;
