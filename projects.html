@@ -208,7 +208,8 @@
             <div>
                 <h1 class="dashboard-title">Your Projects</h1>
             </div>
-            <button id="header-new-project-btn" class="btn-primary" style="padding: 10px 22px; font-size: 1rem;">+ New Project</button>
+            <button id="header-new-project-btn" class="btn-primary" style="padding: 10px 22px; font-size: 1rem;">+ New
+                Project</button>
         </div>
 
         <!-- Metric Summary Bar -->
@@ -229,19 +230,28 @@
 
         <!-- Projects Grid -->
         <div class="projects-grid" id="projects-grid">
-            <div style="color: var(--hc-muted); padding: 30px; text-align: center; grid-column: 1 / -1;">Loading your projects...</div>
+            <div style="color: var(--hc-muted); padding: 30px; text-align: center; grid-column: 1 / -1;">Loading your
+                projects...</div>
         </div>
 
         <!-- User Account Footer Bar -->
-        <div id="user-account-footer" style="margin-top: 48px; padding: 16px 24px; background: rgba(18, 18, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <div id="user-account-footer"
+            style="margin-top: 48px; padding: 16px 24px; background: rgba(18, 18, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div id="user-avatar-badge" style="width: 36px; height: 36px; border-radius: 50%; background: var(--hc-red); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; overflow: hidden;">⚡</div>
+                <div id="user-avatar-badge"
+                    style="width: 36px; height: 36px; border-radius: 50%; background: var(--hc-red); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; overflow: hidden;">
+                    ⚡</div>
                 <div>
-                    <div style="font-size: 0.75rem; color: var(--hc-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Logged In Account</div>
-                    <div style="font-size: 0.95rem; font-weight: 700; color: var(--hc-white);" id="user-display-name">Loading...</div>
+                    <div
+                        style="font-size: 0.75rem; color: var(--hc-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">
+                        Logged In Account</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: var(--hc-white);" id="user-display-name">
+                        Loading...</div>
                 </div>
             </div>
-            <button type="button" id="logout-btn" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--hc-smoke); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Log Out</button>
+            <button type="button" id="logout-btn"
+                style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--hc-smoke); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">Log
+                Out</button>
         </div>
     </main>
 
@@ -258,35 +268,60 @@
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label class="form-label">Journal Method *</label>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div id="mode-opt-web" style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Web Journal</div>
-                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Write devlogs & upload photos directly on Trek.</div>
+                            <div id="mode-opt-web"
+                                style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Web Journal</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Write devlogs & upload
+                                    photos directly on Trek.</div>
                             </div>
-                            <div id="mode-opt-git" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Git Journal</div>
-                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Track progress via GitHub & JOURNAL.md.</div>
+                            <div id="mode-opt-git"
+                                style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Git Journal</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Track progress via
+                                    GitHub & JOURNAL.md.</div>
                             </div>
                         </div>
                     </div>
                     <!-- Guild Selection -->
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label class="form-label">Select Guild *</label>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;" id="guild-selector-grid">
-                            <div class="guild-opt-card" data-guild="frontier" style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">⚡ Frontier Guild</div>
-                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">3D printing, electronics & experimental</div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"
+                            id="guild-selector-grid">
+                            <div class="guild-opt-card" data-guild="frontier"
+                                style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Frontier Guild</div>
+                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">3D printing,
+                                    electronics & experimental</div>
                             </div>
-                            <div class="guild-opt-card" data-guild="air" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">🚀 Air Guild</div>
-                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Planes, drones & flight hardware</div>
+                            <div class="guild-opt-card" data-guild="air"
+                                style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Air Guild</div>
+                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Planes, drones &
+                                    flight hardware</div>
                             </div>
-                            <div class="guild-opt-card" data-guild="land" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">🚜 Land Guild</div>
-                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Rovers, ground vehicles & robotics</div>
+                            <div class="guild-opt-card" data-guild="land"
+                                style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Land Guild</div>
+                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Rovers, ground
+                                    vehicles & robotics</div>
                             </div>
-                            <div class="guild-opt-card" data-guild="water" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">⛵ Water Guild</div>
-                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Boats, submersibles & aquatic builds</div>
+                            <div class="guild-opt-card" data-guild="water"
+                                style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Water Guild</div>
+                                <div style="font-size: 0.75rem; color: #e0e6ed; line-height: 1.3;">Boats, submersibles &
+                                    aquatic builds</div>
                             </div>
                         </div>
                     </div>
@@ -295,13 +330,21 @@
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label class="form-label">Review Type *</label>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div id="review-opt-design" style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Design Review</div>
-                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Pitching or designing a new project from scratch.</div>
+                            <div id="review-opt-design"
+                                style="background: rgba(236, 55, 80, 0.15); border: 2px solid var(--hc-red); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Design Review</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Pitching or designing
+                                    a new project from scratch.</div>
                             </div>
-                            <div id="review-opt-build" style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
-                                <div style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">Build Review</div>
-                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Building a project from an approved design review.</div>
+                            <div id="review-opt-build"
+                                style="background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;">
+                                <div
+                                    style="font-family: var(--hc-font-heading); font-size: 1rem; font-weight: 700; color: white; margin-bottom: 2px;">
+                                    Build Review</div>
+                                <div style="font-size: 0.8rem; color: #e0e6ed; line-height: 1.3;">Building a project
+                                    from an approved design review.</div>
                             </div>
                         </div>
                     </div>
@@ -309,7 +352,8 @@
                     <!-- Linked Project (Only shown for Build Review) -->
                     <div class="form-group" id="linked-project-group" style="display: none; margin-bottom: 20px;">
                         <label class="form-label" for="linked-project-select">Select Design Project *</label>
-                        <select id="linked-project-select" class="form-input" style="background-color: rgba(14, 14, 17, 0.8);">
+                        <select id="linked-project-select" class="form-input"
+                            style="background-color: rgba(14, 14, 17, 0.8);">
                             <option value="">-- Select an approved design project --</option>
                         </select>
                     </div>
@@ -317,19 +361,22 @@
                     <!-- Project Name (Only Mandatory Field) -->
                     <div class="form-group">
                         <label class="form-label" for="new-project-name">Project Name *</label>
-                        <input type="text" id="new-project-name" class="form-input" placeholder="e.g. AeroVane Drone" required>
+                        <input type="text" id="new-project-name" class="form-input" placeholder="e.g. AeroVane Drone"
+                            required>
                     </div>
 
                     <!-- Description / Tagline (Optional) -->
                     <div class="form-group">
                         <label class="form-label" for="new-project-desc">Description / Tagline</label>
-                        <textarea id="new-project-desc" class="form-textarea" rows="2" placeholder="Brief summary of what you are building..."></textarea>
+                        <textarea id="new-project-desc" class="form-textarea" rows="2"
+                            placeholder="Brief summary of what you are building..."></textarea>
                     </div>
 
                     <!-- GitHub Repo Link (Optional) -->
                     <div class="form-group">
                         <label class="form-label" for="new-project-repo">GitHub Repository Link</label>
-                        <input type="url" id="new-project-repo" class="form-input" placeholder="https://github.com/username/my-trek-hardware">
+                        <input type="url" id="new-project-repo" class="form-input"
+                            placeholder="https://github.com/username/my-trek-hardware">
                     </div>
 
                     <!-- Cover Image (Optional) -->
@@ -337,16 +384,19 @@
                         <label class="form-label">Cover Image</label>
                         <div class="drop-zone" id="new-cover-drop-zone" style="padding: 14px;">
                             <input type="file" id="new-cover-file-input" accept="image/*" style="display: none;">
-                            <div id="new-cover-drop-text" style="font-size: 0.85rem; color: var(--hc-muted);">Click to upload a project cover photo (defaults to Jet)</div>
+                            <div id="new-cover-drop-text" style="font-size: 0.85rem; color: var(--hc-muted);">Click to
+                                upload a project cover photo (defaults to Jet)</div>
                             <div id="new-cover-preview-wrap" style="display: none; margin-top: 8px;">
-                                <img id="new-cover-preview-img" src="" alt="Cover preview" style="max-height: 90px; border-radius: 6px; object-fit: cover;">
+                                <img id="new-cover-preview-img" src="" alt="Cover preview"
+                                    style="max-height: 90px; border-radius: 6px; object-fit: cover;">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" id="cancel-create-project-btn">Cancel</button>
-                    <button type="submit" class="btn-primary" id="submit-create-project-btn">Create Project & Start Building →</button>
+                    <button type="submit" class="btn-primary" id="submit-create-project-btn">Create Project & Start
+                        Building →</button>
                 </div>
             </form>
         </div>
@@ -378,7 +428,7 @@
                         const db = JSON.parse(raw);
                         if (db && db[url]) return db[url];
                     }
-                } catch (e) {}
+                } catch (e) { }
                 return url;
             }
 
@@ -468,11 +518,11 @@
                     optBuild.style.borderColor = 'var(--hc-red)';
                     optDesign.style.background = 'rgba(255,255,255,0.04)';
                     optDesign.style.borderColor = 'rgba(255,255,255,0.12)';
-                    
+
                     // Populate select options
                     if (linkedSelect && linkedGroup) {
                         const designProjects = this.projects.filter(p => p.reviewType !== 'build');
-                        linkedSelect.innerHTML = '<option value="">-- Select an approved design project --</option>' + 
+                        linkedSelect.innerHTML = '<option value="">-- Select an approved design project --</option>' +
                             designProjects.map(p => `<option value="${p.id}">${this.escapeHtml(p.name)}</option>`).join('');
                         linkedGroup.style.display = 'block';
                     }
@@ -508,7 +558,7 @@
                 document.getElementById('create-project-form')?.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     if (this.isCreatingProject) return;
-                    
+
                     const name = document.getElementById('new-project-name')?.value.trim();
                     const submitBtn = document.getElementById('submit-create-project-btn');
 
@@ -516,7 +566,7 @@
                         alert('Please enter a project name.');
                         return;
                     }
-                    
+
                     let linkedDesignProjectId = null;
                     if (this.selectedReviewType === 'build') {
                         const selectEl = document.getElementById('linked-project-select');
