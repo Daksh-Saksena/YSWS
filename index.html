@@ -137,69 +137,35 @@
     <style>
         @media (max-width: 768px) {
 
-            /* Hide the hack club flag in top right */
-            .flag {
+            /* Change Background Image for Mobile */
+            .image-container img {
+                display: none !important;
+            }
+            .image-container {
+                background-image: url('images/mobile%20bg.png') !important;
+                background-size: cover !important;
+                background-position: center top !important;
+                height: 100vh !important;
+            }
+
+            /* Hide everything except buttons */
+            .flag,
+            .logo,
+            .hero-text,
+            .sub-text,
+            .story,
+            .trek-footer,
+            .clouds-layer,
+            .map-arrow,
+            #video-overlay {
                 display: none !important;
             }
 
-            /* Push trek logo up */
+            /* Container for the buttons */
             .logo-container {
-                padding-top: 1vh !important;
-                padding-bottom: 0 !important;
-                justify-content: flex-start !important;
-            }
-
-            /* Size adjustments */
-            .logo {
-                margin-top: 0 !important;
-                transform: scale(0.85) !important;
-                margin-bottom: -15px !important;
-            }
-
-            .hero-text {
-                font-size: clamp(2rem, 8vw, 3.2rem) !important;
-                margin-top: 0 !important;
-                margin-bottom: 15px !important;
-            }
-
-            .sub-text {
-                display: none !important;
-            }
-
-            /* Move the story section WAY UP over the background image so it sits beneath buttons */
-            .story {
-                margin-top: -60vh !important;
-                position: relative;
-                z-index: 10;
-            }
-
-            .story-section {
-                margin-top: 2vh !important;
-                margin-bottom: 2vh !important;
-            }
-
-            .s-heading {
-                font-size: clamp(1.2rem, 4.5vw, 1.8rem) !important;
-                white-space: normal !important;
-            }
-            .s-body {
-                font-size: 0.85rem !important;
-                line-height: 1.4 !important;
-            }
-            .s-eyebrow {
-                font-size: 0.75rem !important;
-                margin-bottom: 4px !important;
-            }
-
-            /* ── Hide: Custom Prizes heading + clouds marquee ── */
-            .story-section:nth-child(3),
-            .clouds-layer.marquee {
-                display: none !important;
-            }
-
-            /* ── Hide: entire "Start Building" footer ── */
-            .trek-footer {
-                display: none !important;
+                padding-top: 0 !important;
+                padding-bottom: 15vh !important; /* Position buttons near bottom */
+                justify-content: flex-end !important;
             }
 
             /* ── Buttons: 2×2 grid (Ship Project, Dashboard, Docs, Shop) ── */
