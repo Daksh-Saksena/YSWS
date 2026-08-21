@@ -133,7 +133,9 @@
     <script>
         var MAX_SCROLL = 4200;
         window.addEventListener('scroll', function () {
-            if (window.scrollY > MAX_SCROLL) {
+            // Skip cap on mobile — on narrow screens the page is taller
+            // than 4200px once content reflows, so we let it scroll freely.
+            if (window.innerWidth > 768 && window.scrollY > MAX_SCROLL) {
                 window.scrollTo({ top: MAX_SCROLL, behavior: 'instant' });
             }
         }, { passive: false });
