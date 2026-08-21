@@ -134,7 +134,10 @@
     <script>
         var MAX_SCROLL = 4200;
         window.addEventListener('scroll', function () {
-            if (window.scrollY > MAX_SCROLL) {
+            // Only enforce scroll cap on desktop (> 768px wide).
+            // On mobile the page reflowed into normal flow so the cap
+            // would block reaching the footer.
+            if (window.innerWidth > 768 && window.scrollY > MAX_SCROLL) {
                 window.scrollTo({ top: MAX_SCROLL, behavior: 'instant' });
             }
         }, { passive: false });

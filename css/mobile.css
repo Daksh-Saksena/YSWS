@@ -1,16 +1,24 @@
 /**
  * Trek YSWS — Mobile Responsive Fixes
  * =====================================================================
- * ALL rules here are scoped inside @media (max-width: 768px).
- * This file does NOT affect desktop/laptop rendering in any way.
+ * EVERY rule is inside @media (max-width: 768px).
+ * Desktop/laptop (> 768px) is completely unaffected.
  * =====================================================================
  */
 
 /* =========================================================================
-   INDEX / HOMEPAGE — index.html + index.css
+   HOMEPAGE — index.html
+   The homepage uses absolute positioning + 100vh tricks designed for desktop.
+   On mobile we convert everything to a normal flow document.
    ========================================================================= */
 
 @media (max-width: 768px) {
+
+    /* ── Root body ── */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
 
     /* ── Intro video controls ── */
     .video-controls {
@@ -23,146 +31,263 @@
         padding: 6px 12px;
     }
 
-    /* ── Hero logo & text ── */
-    .logo {
-        width: 92vw;
-        margin-top: -60px;
-    }
-    .hero-text {
-        font-size: clamp(2.8rem, 10vw, 5rem);
-        margin-top: -60px;
-    }
-    .sub-text {
-        font-size: clamp(0.75rem, 3.2vw, 1rem);
-        padding: 0 12px;
-    }
-    .logo-container {
-        padding-bottom: 12vh;
+    /* ── Flag / corner logo ── */
+    .flag {
+        max-width: 60px;
+        top: 10px;
+        left: 10px;
+        z-index: 21;
     }
 
-    /* ── Hero CTA buttons ── */
-    .hero-btn-container {
-        gap: 10px;
-        padding: 0 16px;
+    /* ── Background image: still full-width ── */
+    .image-container {
+        position: relative;
+        z-index: 1;
     }
+
+    /* ── Hero logo container: convert from fixed-center to normal flow ── */
+    .logo-container {
+        position: relative;          /* was absolute-centered on desktop */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 80px 16px 40px 16px;
+        box-sizing: border-box;
+        pointer-events: auto;
+        z-index: 10;
+        padding-bottom: 32px;
+    }
+
+    .logo {
+        width: 80vw;
+        max-width: 340px;
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+
+    .hero-text {
+        font-size: clamp(2.4rem, 9vw, 4rem);
+        margin: 0 0 8px 0;
+        text-align: center;
+    }
+
+    .sub-text {
+        font-size: 0.78rem !important;
+        padding: 0 16px;
+        text-align: center;
+        margin: 0 0 16px 0;
+    }
+
+    /* ── Hero CTA button row: stack vertically ── */
+    .hero-btn-container {
+        width: 100%;
+        padding: 0;
+        gap: 10px;
+    }
+
+    /* The inner div holding Dash/Docs/Shop buttons */
+    .hero-btn-container > div:last-of-type {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 8px !important;
+    }
+
     .footer-btn {
         display: block !important;
-        width: 100%;
-        text-align: center;
+        width: 100% !important;
+        max-width: 320px;
+        text-align: center !important;
         font-size: 1rem !important;
         padding: 12px 20px !important;
         border-radius: 8px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
     }
 
-    /* ── Clouds/marquee layer ── */
-    .clouds-layer.marquee {
-        height: 28vh;
-        margin-top: 12vh;
+    /* ── Story section: convert from absolute-overlay to normal flow ── */
+    /* The .story div is position:absolute on desktop, overlapping the background.
+       On mobile we pull it into the normal flow so it appears BELOW the hero. */
+    .story {
+        position: relative !important;    /* override absolute */
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        padding-top: 20px !important;     /* desktop had padding-top: 100vh */
+        padding-bottom: 40px !important;
+        z-index: 5;
+        box-sizing: border-box;
+        background: rgba(18, 18, 23, 0.9);
     }
-    .air1  { width: 240px; top: -50px; }
-    .air2  { width: 220px; top: 40px; }
-    .land1 { width: 210px; top: -10px; }
-    .land2 { width: 250px; top: 60px; }
-    .water1 { width: 240px; top: -40px; }
-    .water2 { width: 200px; top: -10px; }
-    .space1 { width: 230px; top: -70px; }
-    .space2 { width: 220px; top: 20px; }
 
-    /* ── Story / scroll sections ── */
     .story-section {
         flex-direction: column;
-        padding: 28px 16px;
+        padding: 28px 20px;
+        min-height: auto !important;
+        margin-top: 0 !important;         /* kill the huge margin-top: 15vh */
+        margin-bottom: 0 !important;
         align-items: flex-start;
     }
+
     .story-text {
         max-width: 100%;
         padding: 0;
     }
+
     .story-text--wide {
         max-width: 100%;
     }
-    .s-heading {
-        font-size: clamp(1.6rem, 6vw, 2.2rem);
-    }
-    .s-body {
-        font-size: 1rem;
+
+    /* Kill the "whitespace: nowrap" on the prizes heading */
+    .story-text--wide h2[style*="white-space"] {
+        white-space: normal !important;
     }
 
-    /* ── Build list: 2-col → 1-col on mobile ── */
+    .s-heading {
+        font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
+        margin-bottom: 10px;
+    }
+
+    .s-body {
+        font-size: 1rem !important;
+        line-height: 1.5;
+    }
+
+    .s-eyebrow {
+        margin-bottom: 6px;
+    }
+
+    /* ── Build list: 2 col → 1 col ── */
     .build-list {
         columns: 1;
         column-gap: 0;
     }
 
-    /* ── Modes grid: cards stack vertically ── */
+    /* ── Modes grid: single column ── */
     .modes-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 16px;
     }
 
-    /* ── Map arrows: hide on mobile (visual-only) ── */
+    /* ── Map arrows: hide (visual-only decoration) ── */
     .map-arrow {
         display: none;
     }
 
-    /* ── Guild overlay cards (index absolute grid) — hide on mobile ── */
+    /* ── Guild overlay grid: hide (pixel-perfect absolute layout breaks on mobile) ── */
     #placement-grid {
         display: none !important;
     }
 
-    /* ── Flag logo ── */
-    .flag {
-        max-width: 72px;
-        top: 12px;
-        left: 12px;
+    /* ── Clouds/prizes marquee ── */
+    .clouds-layer.marquee {
+        height: 200px;
+        margin-top: 0;
+        overflow-x: hidden;
     }
 
-    /* ── Footer ── */
-    .trek-footer {
-        padding: 40px 16px;
+    .cloud-wrapper {
+        margin-left: -15px;
+        margin-right: -15px;
     }
+
+    /* Scale clouds down on mobile */
+    .air1  { width: 200px; top: -30px; }
+    .air2  { width: 180px; top: 30px; }
+    .land1 { width: 180px; top: -10px; }
+    .land2 { width: 200px; top: 50px; }
+    .water1 { width: 200px; top: -30px; }
+    .water2 { width: 170px; top: -5px; }
+    .space1 { width: 190px; top: -50px; }
+    .space2 { width: 185px; top: 20px; }
+
+    /* ── Footer: convert from position:absolute at bottom:5% to normal flow ── */
+    .trek-footer {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        padding: 40px 16px 60px 16px;
+        text-align: center;
+    }
+
     .footer-heading {
         font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: 8px;
+    }
+
+    .footer-sub {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+
+    /* Footer button row: stack vertically */
+    .trek-footer > div[style*="display: flex"] {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .trek-footer .footer-btn {
+        display: block !important;
+        width: 100%;
+        max-width: 300px;
+        text-align: center !important;
+        font-size: 1rem !important;
+        padding: 12px 20px !important;
+        border-radius: 8px !important;
+        margin: 0 auto !important;
     }
 }
 
 
 /* =========================================================================
-   NAVIGATION — shared .trek-nav across all app pages
+   NAVIGATION — shared .trek-nav (projects.html / project.html)
    ========================================================================= */
 
 @media (max-width: 768px) {
 
     .trek-nav {
-        padding: 8px 14px;
-        flex-wrap: nowrap;
+        padding: 8px 12px;
         gap: 8px;
+        flex-wrap: nowrap;
     }
+
     .trek-nav-left {
-        gap: 12px;
+        gap: 10px;
         flex: 1;
         min-width: 0;
     }
+
     .trek-nav-brand {
         gap: 6px;
         min-width: 0;
     }
+
+    /* Hide "← Go Back to" text, keep just the logo */
     .trek-nav-brand > span {
         display: none;
     }
+
     .trek-nav-logo {
-        height: 30px;
+        height: 28px;
     }
+
     .trek-nav-title {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .trek-nav-links {
         gap: 10px;
     }
+
     .trek-nav-link {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 }
 
@@ -175,47 +300,65 @@
 
     .projects-dashboard-wrap {
         padding: 0 12px;
-        margin: 20px auto 40px auto;
+        margin: 16px auto 40px auto;
     }
+
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
-        margin-bottom: 20px;
-    }
-    .dashboard-title {
-        font-size: 1.6rem;
-    }
-    .dashboard-stats-bar {
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-    .stat-card {
-        min-width: 0;
-        flex: 1 1 calc(33% - 10px);
-        padding: 12px 14px;
-    }
-    .stat-card-val {
-        font-size: 1.4rem;
+        margin-bottom: 18px;
     }
 
-    /* Single-column project grid */
+    .dashboard-header .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dashboard-title {
+        font-size: 1.6rem;
+        margin-bottom: 4px;
+    }
+
+    .dashboard-stats-bar {
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .stat-card {
+        min-width: 0;
+        flex: 1 1 0;
+        padding: 10px 12px;
+    }
+
+    .stat-card-val {
+        font-size: 1.3rem;
+    }
+
+    .stat-card-label {
+        font-size: 0.72rem;
+    }
+
+    /* Single-column project cards */
     .projects-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 14px;
     }
 
     .project-card-actions {
         flex-wrap: wrap;
     }
+
     .project-card-actions .btn-primary {
         flex: 1;
+        text-align: center;
     }
 
+    /* Account footer */
     #user-account-footer {
-        flex-direction: column;
+        flex-direction: column !important;
         gap: 12px;
-        align-items: flex-start;
+        align-items: flex-start !important;
     }
 }
 
@@ -227,70 +370,75 @@
 @media (max-width: 768px) {
 
     .project-header-wrapper {
-        padding: 0 12px;
-        margin-top: 14px;
+        padding: 0 10px;
+        margin-top: 12px;
     }
 
-    /* Hero top row: let badges and buttons wrap */
+    /* Top row: wrap so team/edit/delete go below badges */
     .project-hero-top-row {
         gap: 6px;
         flex-wrap: wrap;
     }
 
-    /* Push action buttons to their own row */
     .project-hero-top-row > div[style*="margin-left"] {
         margin-left: 0 !important;
         width: 100%;
         flex-wrap: wrap;
         gap: 6px;
+        display: flex !important;
     }
 
     .action-btn-sm {
-        padding: 6px 10px !important;
-        font-size: 0.78rem !important;
+        padding: 7px 10px !important;
+        font-size: 0.76rem !important;
     }
 
     .project-hero-content {
-        padding: 14px 14px 18px 14px;
-    }
-    .project-title {
-        font-size: 1.4rem;
-    }
-    .project-tagline {
-        font-size: 0.9rem;
-    }
-    .project-authors-row {
-        font-size: 0.8rem;
+        padding: 12px 12px 16px 12px;
     }
 
-    /* Metrics + submit: stack vertically */
+    .project-title {
+        font-size: 1.35rem;
+        word-break: break-word;
+    }
+
+    .project-tagline {
+        font-size: 0.88rem;
+    }
+
+    /* Metrics + submit button: stack */
     .project-hero-bottom-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
+        gap: 10px;
     }
+
     .project-hero-metrics-actions {
         width: 100%;
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
+
     .metrics-row {
         width: 100%;
+        gap: 8px;
     }
+
     .metric-box {
         flex: 1;
     }
+
     .project-hero-metrics-actions > .btn-primary {
         width: 100%;
         justify-content: center;
     }
 
-    /* Project body / timeline */
+    /* Timeline area */
     .project-body {
-        padding: 0 12px;
-        margin: 20px auto 40px auto;
-        gap: 14px;
+        padding: 0 10px;
+        margin: 14px auto 40px auto;
+        gap: 12px;
     }
 
     .journal-toolbar {
@@ -298,40 +446,47 @@
         align-items: flex-start;
         gap: 10px;
     }
+
     .journal-toolbar .btn-primary {
         width: 100%;
         justify-content: center;
     }
 
     .journal-card {
-        padding: 14px;
+        padding: 12px 12px;
     }
+
     .entry-title {
         font-size: 1rem;
+        word-break: break-word;
     }
+
     .entry-meta {
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 5px;
     }
 
     .entry-gallery {
         grid-template-columns: repeat(2, 1fr);
         gap: 6px;
     }
+
     .entry-gallery-img {
         height: 100px;
     }
 
     .entry-actions {
         justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .review-banner {
-        margin: 12px 12px 0 12px;
-        padding: 12px 14px;
+        margin: 10px 0 0 0;
+        padding: 10px 12px;
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 6px;
     }
 }
 
@@ -344,42 +499,48 @@
 
     .modal-backdrop {
         padding: 0;
-        align-items: flex-end;
+        align-items: flex-end;         /* slide up from bottom edge */
     }
 
     .modal-card {
-        max-height: 92vh;
+        max-height: 90vh;
         border-radius: 20px 20px 0 0;
         max-width: 100% !important;
         width: 100%;
     }
 
     .modal-body {
-        padding: 14px 16px;
+        padding: 14px 14px;
         gap: 12px;
     }
+
     .modal-header {
-        padding: 14px 16px;
+        padding: 14px 14px;
     }
+
     .modal-footer {
-        padding: 12px 16px 20px 16px;
+        padding: 10px 14px 20px 14px;
         flex-wrap: wrap;
         gap: 8px;
     }
+
     .modal-footer .btn-primary,
     .modal-footer .btn-secondary {
         flex: 1;
         justify-content: center;
+        min-height: 40px;
     }
 
-    /* Collab invite: stack vertically */
+    /* Collab invite form: stack on mobile */
     #collab-identifier-input {
         min-width: 0 !important;
         width: 100% !important;
     }
+
     #collab-role-select {
         width: 100% !important;
     }
+
     #collab-submit-btn {
         width: 100%;
         justify-content: center;
@@ -396,12 +557,15 @@
     .login-card {
         padding: 28px 18px;
     }
+
     .login-title {
         font-size: 1.5rem;
     }
+
     .login-subtitle {
         font-size: 0.88rem;
     }
+
     .slack-login-btn {
         font-size: 0.95rem;
         padding: 12px 16px;
@@ -410,12 +574,12 @@
 
 
 /* =========================================================================
-   TOUCH & GLOBAL FIXES — mobile only
+   TOUCH & GLOBAL MOBILE FIXES
    ========================================================================= */
 
 @media (max-width: 768px) {
 
-    /* Prevent iOS from zooming into form inputs */
+    /* Prevent iOS from zooming into form inputs (must be >= 16px or 1rem) */
     input,
     select,
     textarea,
@@ -425,30 +589,45 @@
         font-size: 1rem !important;
     }
 
-    /* Larger tap targets */
+    /* Comfortable tap targets everywhere */
     button,
     .btn-primary,
-    .btn-secondary {
+    .btn-secondary,
+    a.btn-primary {
         min-height: 40px;
     }
 
-    /* Disable hover-lift animations (they glitch on touch) */
-    .project-card:hover,
-    .mode-card:hover,
-    .btn-primary:hover,
-    .footer-btn:hover {
+    /* Disable hover-lift animations (glitchy on touch) */
+    .project-card:hover {
         transform: none;
     }
 
-    /* Full-width devlog images */
+    .mode-card.air:hover,
+    .mode-card.water:hover,
+    .mode-card.land:hover,
+    .mode-card.frontier:hover {
+        transform: none;
+    }
+
+    .btn-primary:hover {
+        transform: none;
+    }
+
+    /* Make devlog markdown images full-width */
     .devlog-md-img {
         width: 100%;
         max-width: 100%;
     }
 
-    /* Prevent horizontal overflow */
-    body, main, section {
-        overflow-x: hidden;
-        max-width: 100vw;
+    /* Prevent any element from causing horizontal scroll */
+    * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Ensure the status-pill badges wrap properly */
+    .project-card-badges {
+        flex-wrap: wrap;
+        gap: 4px;
     }
 }
