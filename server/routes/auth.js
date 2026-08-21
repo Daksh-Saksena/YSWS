@@ -76,7 +76,7 @@ router.get('/callback', async (req, res) => {
 
         if (!tokenData.ok) {
             console.error('[Auth] Slack token exchange failed:', tokenData.error);
-            return res.redirect(`${FRONTEND_URL}/login.html?error=${encodeURIComponent(tokenData.error || 'token_exchange_failed')}`);
+            return res.redirect(`${frontendUrl}/login.html?error=${encodeURIComponent(tokenData.error || 'token_exchange_failed')}`);
         }
 
         // 2. Fetch user identity using the authed_user.access_token
@@ -114,7 +114,7 @@ router.get('/callback', async (req, res) => {
         }
 
         if (!slackId) {
-            return res.redirect(`${FRONTEND_URL}/login.html?error=could_not_read_user_id`);
+            return res.redirect(`${frontendUrl}/login.html?error=could_not_read_user_id`);
         }
 
         // 3. Upsert user in DB
@@ -132,7 +132,7 @@ router.get('/callback', async (req, res) => {
 
         const user = upsertResult.rows[0];
 
-        // 4. Issue a JWT (expires in 30 days)
+        // 4. Issue a JWT (expires in 365 days)
         const token = jwt.sign(
             {
                 id: user.id,
@@ -140,15 +140,15 @@ router.get('/callback', async (req, res) => {
                 display_name: user.display_name,
                 avatar_url: user.avatar_url,
             },
-            JWT_SECRET,
+            jwtSecret,
             { expiresIn: '365d' }
         );
 
         // 5. Send JWT back to frontend via URL (frontend stores it)
-        res.redirect(`${FRONTEND_URL}/login.html?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, display_name: user.display_name, avatar_url: user.avatar_url }))}`);
+        res.redirect(`${frontendUrl}/login.html?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify({ id: user.id, display_name: user.display_name, avatar_url: user.avatar_url }))}`);
     } catch (err) {
         console.error('[Auth] OAuth callback error:', err);
-        res.redirect(`${FRONTEND_URL}/login.html?error=server_error`);
+        res.redirect(`${frontendUrl}/login.html?error=server_error`);
     }
 });
 
