@@ -296,6 +296,28 @@ export class TrekApiService {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+    // COLLABORATOR OPERATIONS
+    // ─────────────────────────────────────────────────────────────────────────
+
+    async getCollaborators(projectId) {
+        return await this._fetch(`/api/projects/${projectId}/collaborators`);
+    }
+
+    async inviteCollaborator(projectId, identifier, role = 'collaborator') {
+        const collab = await this._fetch(`/api/projects/${projectId}/collaborators`, {
+            method: 'POST',
+            body: JSON.stringify({ identifier, role }),
+        });
+        return collab;
+    }
+
+    async removeCollaborator(projectId, collaboratorId) {
+        return await this._fetch(`/api/projects/${projectId}/collaborators/${collaboratorId}`, {
+            method: 'DELETE',
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     // JOURNAL ENTRY OPERATIONS
     // ─────────────────────────────────────────────────────────────────────────
 

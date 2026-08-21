@@ -155,6 +155,12 @@ class TrekProjectController {
         document.getElementById('close-review-modal-btn')?.addEventListener('click', () => this.closeReviewModal());
         document.getElementById('cancel-review-modal-btn')?.addEventListener('click', () => this.closeReviewModal());
         document.getElementById('confirm-submit-review-btn')?.addEventListener('click', () => this.handleSubmitReview());
+
+        // Team / Collaborator Modal triggers
+        document.getElementById('open-team-modal-btn')?.addEventListener('click', () => this.openTeamModal());
+        document.getElementById('close-team-modal-btn')?.addEventListener('click', () => this.closeTeamModal());
+        document.getElementById('done-team-modal-btn')?.addEventListener('click', () => this.closeTeamModal());
+        document.getElementById('invite-collab-form')?.addEventListener('submit', (e) => this.handleInviteCollabSubmit(e));
     }
 
     setupInlineDevlogEditor() {
@@ -651,6 +657,38 @@ class TrekProjectController {
             document.getElementById('project-tagline').textContent = taglineText;
         }
 
+        // Render Authors / Collaborators Row
+        const authorsContainer = document.getElementById('project-authors-container');
+        if (authorsContainer) {
+            const collabs = p.collaborators || [];
+            const activeCollabs = collabs.filter(c => c.status === 'active');
+            const pendingCollabs = collabs.filter(c => c.status === 'invited');
+
+            const namesList = [
+                `<span style="color: white; font-weight: 600;">${this.escapeHtml(p.authorName || 'Trek Builder')}</span>`
+            ];
+            for (const c of activeCollabs) {
+                namesList.push(`<span style="color: white; font-weight: 600;">${this.escapeHtml(c.display_name || c.slack_id || 'Teammate')}</span>`);
+            }
+            for (const c of pendingCollabs) {
+                namesList.push(`<span style="opacity: 0.65;">${this.escapeHtml(c.display_name || c.slack_id || c.email)} <em style="font-size: 0.8em;">(Pending)</em></span>`);
+            }
+
+            authorsContainer.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 4px 12px 4px 6px;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="${this.escapeHtml(p.authorAvatar || 'images/flag.png')}" alt="Owner" title="Owner: ${this.escapeHtml(p.authorName)}" style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ec3750; object-fit: cover; z-index: 5;">
+                        ${activeCollabs.map((c, i) => `
+                            <img src="${this.escapeHtml(c.avatar_url || 'images/flag.png')}" alt="Collab" title="${this.escapeHtml(c.display_name || c.slack_id)}" style="width: 24px; height: 24px; border-radius: 50%; border: 2px solid #36C5F0; object-fit: cover; margin-left: -8px; z-index: ${4 - i};">
+                        `).join('')}
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--hc-smoke);">
+                        Project made by ${namesList.join(' & ')}
+                    </span>
+                </div>
+            `;
+        }
+
         document.getElementById('project-cover-img').src = this.resolveAsset(p.coverImageUrl || 'jet.png');
 
         // Status Pill
@@ -732,14 +770,23 @@ class TrekProjectController {
             const formattedDate = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const renderedHtml = this.parseMarkdown(entry.content);
 
+            const hasTeam = (this.currentProject.collaborators && this.currentProject.collaborators.length > 0);
+            const authorTag = (entry.authorName && (hasTeam || entry.authorName !== this.currentProject.authorName))
+                ? `<span style="color: #36C5F0; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                     ${entry.authorAvatar ? `<img src="${this.escapeHtml(entry.authorAvatar)}" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">` : ''}
+                     ${this.escapeHtml(entry.authorName)}
+                   </span>`
+                : '';
+
             return `
                 <article class="journal-card" data-entry-id="${entry.id}">
                     <div class="entry-header">
                         <div>
                             <h3 class="entry-title">${this.escapeHtml(entry.title)}</h3>
-                            <div class="entry-meta">
+                            <div class="entry-meta" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                 <span>${formattedDate}</span>
                                 <span class="hours-tag">${entry.timeSpent} (${entry.timeHours}h)</span>
+                                ${authorTag}
                             </div>
                         </div>
                     </div>
@@ -763,6 +810,129 @@ class TrekProjectController {
         timeline.querySelectorAll('.delete-entry-btn').forEach(btn => {
             btn.addEventListener('click', () => this.handleDeleteEntry(btn.dataset.id));
         });
+    }
+
+    async openTeamModal() {
+        const modal = document.getElementById('team-modal');
+        const statusEl = document.getElementById('collab-invite-status');
+        if (statusEl) statusEl.textContent = '';
+        if (modal) modal.classList.add('active');
+        await this.renderTeamMembers();
+    }
+
+    closeTeamModal() {
+        document.getElementById('team-modal')?.classList.remove('active');
+    }
+
+    async renderTeamMembers() {
+        const container = document.getElementById('team-members-list');
+        if (!container) return;
+
+        try {
+            const collabs = await api.getCollaborators(this.currentProjectId);
+            this.currentProject.collaborators = collabs;
+
+            let html = `
+                <!-- Project Owner -->
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="${this.escapeHtml(this.currentProject.authorAvatar || 'images/flag.png')}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 600; color: white; font-size: 0.9rem;">${this.escapeHtml(this.currentProject.authorName || 'Project Creator')}</div>
+                            <div style="font-size: 0.75rem; color: var(--hc-muted);">Project Owner</div>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.75rem; background: rgba(236, 55, 80, 0.2); color: var(--hc-red); border: 1px solid var(--hc-red); border-radius: 4px; padding: 2px 8px; font-weight: 700;">OWNER</span>
+                </div>
+            `;
+
+            if (collabs.length === 0) {
+                html += `
+                    <div style="text-align: center; padding: 16px; color: var(--hc-muted); font-size: 0.85rem;">
+                        No collaborators yet. Enter a teammate's Slack ID or email above to invite them!
+                    </div>
+                `;
+            } else {
+                html += collabs.map(c => {
+                    const isPending = c.status === 'invited';
+                    const name = c.display_name || c.slack_id || c.email || 'Teammate';
+                    const avatar = c.avatar_url || 'images/flag.png';
+                    const roleLabel = c.role === 'co_owner' ? 'Co-Owner' : 'Collaborator';
+
+                    return `
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <img src="${this.escapeHtml(avatar)}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; ${isPending ? 'opacity: 0.5;' : ''}">
+                                <div>
+                                    <div style="font-weight: 600; color: white; font-size: 0.9rem;">${this.escapeHtml(name)}</div>
+                                    <div style="font-size: 0.75rem; color: var(--hc-muted);">
+                                        ${roleLabel} ${isPending ? '• <span style="color: #ECB22E;">Pending Login</span>' : '• <span style="color: #33d6a6;">Active</span>'}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="remove-collab-btn" data-id="${c.id}" style="background: rgba(236,55,80,0.15); border: 1px solid rgba(236,55,80,0.3); color: #ff6b81; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer;">Remove</button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            container.innerHTML = html;
+
+            container.querySelectorAll('.remove-collab-btn').forEach(btn => {
+                btn.addEventListener('click', () => this.handleRemoveCollab(btn.dataset.id));
+            });
+
+            await this.renderProjectHero();
+        } catch (err) {
+            container.innerHTML = `<div style="color: #ff6b81; font-size: 0.85rem;">Failed to load team: ${err.message}</div>`;
+        }
+    }
+
+    async handleInviteCollabSubmit(e) {
+        e.preventDefault();
+        const input = document.getElementById('collab-identifier-input');
+        const roleSelect = document.getElementById('collab-role-select');
+        const submitBtn = document.getElementById('collab-submit-btn');
+        const statusEl = document.getElementById('collab-invite-status');
+
+        const identifier = input?.value.trim();
+        const role = roleSelect?.value || 'collaborator';
+
+        if (!identifier) return;
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Inviting...';
+        }
+        if (statusEl) statusEl.textContent = '';
+
+        try {
+            await api.inviteCollaborator(this.currentProjectId, identifier, role);
+            if (input) input.value = '';
+            if (statusEl) {
+                statusEl.innerHTML = `<span style="color: #33d6a6;">✓ Teammate invited successfully!</span>`;
+            }
+            await this.renderTeamMembers();
+        } catch (err) {
+            if (statusEl) {
+                statusEl.innerHTML = `<span style="color: #ff6b81;">Error: ${err.message}</span>`;
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Invite →';
+            }
+        }
+    }
+
+    async handleRemoveCollab(collabId) {
+        if (!confirm('Remove this collaborator from the project?')) return;
+        try {
+            await api.removeCollaborator(this.currentProjectId, collabId);
+            await this.renderTeamMembers();
+        } catch (err) {
+            alert(`Failed to remove: ${err.message}`);
+        }
     }
 
     openReviewModal() {

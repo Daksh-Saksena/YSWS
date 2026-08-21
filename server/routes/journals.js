@@ -48,12 +48,24 @@ function rowToEntry(row) {
     };
 }
 
-async function assertProjectOwner(projectId, userId) {
+async function assertProjectAccess(projectId, userId) {
     const res = await query(
-        `SELECT id FROM projects WHERE id = $1 AND user_id = $2 AND deleted_at IS NULL`,
+        `SELECT p.id, p.user_id,
+                (p.user_id = $2) as is_owner,
+                EXISTS (
+                    SELECT 1 FROM project_collaborators c
+                    WHERE c.project_id = p.id AND c.user_id = $2 AND c.status = 'active'
+                ) as is_collaborator
+         FROM projects p
+         WHERE p.id = $1 AND p.deleted_at IS NULL
+           AND (p.user_id = $2 OR EXISTS (
+               SELECT 1 FROM project_collaborators c
+               WHERE c.project_id = p.id AND c.user_id = $2 AND c.status = 'active'
+           ))`,
         [projectId, userId]
     );
-    if (res.rows.length === 0) throw Object.assign(new Error('Project not found.'), { status: 404 });
+    if (res.rows.length === 0) throw Object.assign(new Error('Project not found or access denied.'), { status: 404 });
+    return res.rows[0];
 }
 
 async function recalcTotalHours(client, projectId) {
@@ -75,7 +87,7 @@ async function recalcTotalHours(client, projectId) {
 router.post('/:projectId', async (req, res) => {
     const { projectId } = req.params;
     try {
-        await assertProjectOwner(projectId, req.user.id);
+        await assertProjectAccess(projectId, req.user.id);
 
         const { title, content, date, timeSpent, timeHours, milestone, images, tags, lapseUrl } = req.body;
         if (!title?.trim()) return res.status(400).json({ error: 'Title is required.' });
@@ -99,11 +111,11 @@ router.post('/:projectId', async (req, res) => {
         const entry = await withTransaction(async (client) => {
             const insertRes = await client.query(
                 `INSERT INTO journal_entries
-                    (id, project_id, title, content, entry_date, time_spent, time_hours, milestone, images, tags, lapse_url, checksum)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                    (id, project_id, author_id, title, content, entry_date, time_spent, time_hours, milestone, images, tags, lapse_url, checksum)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                  RETURNING *`,
                 [
-                    entryId, projectId,
+                    entryId, projectId, req.user.id,
                     title.trim(), content.trim(),
                     date || new Date().toISOString().split('T')[0],
                     timeSpent || '1 hr', parsedHours,
@@ -126,6 +138,10 @@ router.post('/:projectId', async (req, res) => {
             return insertRes.rows[0];
         });
 
+        // Attach author info
+        entry.author_name = req.user.display_name;
+        entry.author_avatar = req.user.avatar_url;
+
         res.status(201).json(rowToEntry(entry));
     } catch (err) {
         if (err.status) return res.status(err.status).json({ error: err.message });
@@ -140,7 +156,7 @@ router.post('/:projectId', async (req, res) => {
 router.patch('/:projectId/:entryId', async (req, res) => {
     const { projectId, entryId } = req.params;
     try {
-        await assertProjectOwner(projectId, req.user.id);
+        await assertProjectAccess(projectId, req.user.id);
 
         // Fetch current entry for history snapshot
         const currentRes = await query(

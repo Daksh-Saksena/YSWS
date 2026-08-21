@@ -132,6 +132,20 @@ router.get('/callback', async (req, res) => {
 
         const user = upsertResult.rows[0];
 
+        // 3b. Auto-link pending collaborator invitations matching Slack ID or Email
+        try {
+            await query(
+                `UPDATE project_collaborators
+                 SET user_id = $1, status = 'active', updated_at = NOW()
+                 WHERE user_id IS NULL AND (
+                     UPPER(slack_id) = UPPER($2) OR (email IS NOT NULL AND LOWER(email) = LOWER($3))
+                 )`,
+                [user.id, slackId, email || '']
+            );
+        } catch (e) {
+            console.warn('[Auth] Error linking pending collaborator invites:', e.message);
+        }
+
         // 4. Issue a JWT (expires in 365 days)
         const token = jwt.sign(
             {

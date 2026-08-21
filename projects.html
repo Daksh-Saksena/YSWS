@@ -681,6 +681,17 @@
                         const statusTag = (p.status || 'draft').toUpperCase();
                         const entryCount = p.journalEntries ? p.journalEntries.length : 0;
                         const hours = p.totalHours || 0;
+                        const collabs = p.collaborators || [];
+                        const activeCollabs = collabs.filter(c => c.status === 'active');
+                        
+                        let teamNames = [this.escapeHtml(p.authorName || 'Builder')];
+                        for (const c of activeCollabs) {
+                            teamNames.push(this.escapeHtml(c.display_name || c.slack_id || 'Teammate'));
+                        }
+
+                        const collabBadge = !p.isOwner
+                            ? `<span class="status-pill" style="background: rgba(54,197,240,0.25); border-color: #36C5F0; color: #36C5F0; font-weight: 700;">COLLABORATING</span>`
+                            : '';
 
                         return `
                             <div class="project-card" data-project-id="${p.id}">
@@ -688,6 +699,7 @@
                                     <img src="${coverImg}" alt="${this.escapeHtml(p.name)}" class="project-card-cover">
                                     <div class="project-card-badges">
                                         <span class="status-pill status-${p.status || 'draft'}">${statusTag}</span>
+                                        ${collabBadge}
                                         <span class="status-pill" style="background: rgba(0,0,0,0.65); border-color: rgba(255,255,255,0.2); color: var(--hc-smoke);">${modeTag}</span>
                                     </div>
                                 </div>
@@ -695,6 +707,16 @@
                                     <h3 class="project-card-name">${this.escapeHtml(p.name)}</h3>
                                     <p class="project-card-tagline">${this.escapeHtml(p.tagline || 'Documenting physical build progress on Trek')}</p>
                                     
+                                    <div style="font-size: 0.8rem; color: var(--hc-muted); margin: -4px 0 10px 0; display: flex; align-items: center; gap: 6px;">
+                                        <div style="display: flex; align-items: center;">
+                                            <img src="${this.escapeHtml(p.authorAvatar || 'images/flag.png')}" style="width: 18px; height: 18px; border-radius: 50%; border: 1px solid #ec3750; object-fit: cover;">
+                                            ${activeCollabs.map(c => `
+                                                <img src="${this.escapeHtml(c.avatar_url || 'images/flag.png')}" style="width: 18px; height: 18px; border-radius: 50%; border: 1px solid #36C5F0; object-fit: cover; margin-left: -5px;">
+                                            `).join('')}
+                                        </div>
+                                        <span>By ${teamNames.join(' & ')}</span>
+                                    </div>
+
                                     <div class="project-card-stats">
                                         <span><strong>${hours}h</strong> Logged</span>
                                         <span><strong>${entryCount}</strong> DevLogs</span>
@@ -702,7 +724,11 @@
 
                                     <div class="project-card-actions">
                                         <a href="project.html?projectId=${encodeURIComponent(p.id)}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; padding: 8px 14px; font-size: 0.9rem;">Open Project →</a>
-                                        <button type="button" class="delete-project-btn" data-id="${p.id}" data-name="${this.escapeHtml(p.name)}" style="background: rgba(236, 55, 80, 0.15); border: 1px solid rgba(236, 55, 80, 0.35); color: #ff6b81; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--hc-red)'; this.style.color='white';" onmouseout="this.style.background='rgba(236, 55, 80, 0.15)'; this.style.color='#ff6b81';">Delete</button>
+                                        ${p.isOwner ? `
+                                            <button type="button" class="delete-project-btn" data-id="${p.id}" data-name="${this.escapeHtml(p.name)}" style="background: rgba(236, 55, 80, 0.15); border: 1px solid rgba(236, 55, 80, 0.35); color: #ff6b81; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--hc-red)'; this.style.color='white';" onmouseout="this.style.background='rgba(236, 55, 80, 0.15)'; this.style.color='#ff6b81';">Delete</button>
+                                        ` : `
+                                            <button type="button" class="leave-collab-btn" data-id="${p.id}" data-name="${this.escapeHtml(p.name)}" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: var(--hc-smoke); padding: 8px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">Leave</button>
+                                        `}
                                     </div>
                                 </div>
                             </div>
@@ -718,20 +744,32 @@
                             const confirmed = confirm(`Are you sure you want to delete "${pname}"? This action cannot be undone.`);
                             if (confirmed) {
                                 try {
-                                    if (typeof api.deleteProject === 'function') {
-                                        await api.deleteProject(pid);
-                                    } else {
-                                        const STORAGE_KEY = 'trek_ysws_projects_db_v2';
-                                        let raw = localStorage.getItem(STORAGE_KEY);
-                                        if (raw) {
-                                            let list = JSON.parse(raw);
-                                            list = list.filter(p => p.id !== pid);
-                                            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-                                        }
-                                    }
+                                    await api.deleteProject(pid);
                                     await this.loadAndRenderProjects();
                                 } catch (err) {
                                     alert(`Failed to delete project: ${err.message}`);
+                                }
+                            }
+                        });
+                    });
+
+                    // Attach leave listeners
+                    grid.querySelectorAll('.leave-collab-btn').forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            e.stopPropagation();
+                            const pid = btn.dataset.id;
+                            const pname = btn.dataset.name;
+                            if (confirm(`Leave team for "${pname}"?`)) {
+                                try {
+                                    const collabs = await api.getCollaborators(pid);
+                                    const me = api.getCurrentUser();
+                                    const myCollab = collabs.find(c => c.user_id === me?.id || c.slack_id === me?.slack_id);
+                                    if (myCollab) {
+                                        await api.removeCollaborator(pid, myCollab.id);
+                                    }
+                                    await this.loadAndRenderProjects();
+                                } catch (err) {
+                                    alert(`Failed to leave: ${err.message}`);
                                 }
                             }
                         });

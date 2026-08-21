@@ -15,17 +15,21 @@
 import { Router } from 'express';
 import { query, withTransaction } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
+import collaboratorRoutes from './collaborators.js';
 
 const router = Router();
 
 // All project routes require auth
 router.use(requireAuth);
 
+// Mount collaborator sub-router
+router.use('/:projectId/collaborators', collaboratorRoutes);
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-function rowToProject(row, entries = []) {
+function rowToProject(row, entries = [], collaborators = []) {
     return {
         id: row.id,
         userId: row.user_id,
@@ -46,6 +50,8 @@ function rowToProject(row, entries = []) {
         updatedAt: row.updated_at,
         authorName: row.display_name || 'Trek Builder',
         authorAvatar: row.avatar_url || 'images/flag.png',
+        isOwner: row.is_owner !== undefined ? row.is_owner : true,
+        collaborators: collaborators,
         journalEntries: entries,
     };
 }
@@ -63,6 +69,9 @@ function rowToEntry(row) {
     return {
         id: row.id,
         projectId: row.project_id,
+        authorId: row.author_id,
+        authorName: row.author_name || null,
+        authorAvatar: row.author_avatar || null,
         title: row.title,
         content: row.content,
         date: dateStr,
@@ -79,23 +88,39 @@ function rowToEntry(row) {
 }
 
 async function getProjectWithEntries(projectId, userId) {
-    const [pRes, eRes, aRes] = await Promise.all([
+    const [pRes, eRes, aRes, cRes] = await Promise.all([
         query(
-            `SELECT p.*, u.display_name, u.avatar_url
+            `SELECT p.*, u.display_name, u.avatar_url,
+                    (p.user_id = $2) as is_owner
              FROM projects p
              JOIN users u ON u.id = p.user_id
-             WHERE p.id = $1 AND p.user_id = $2 AND p.deleted_at IS NULL`,
+             WHERE p.id = $1 AND p.deleted_at IS NULL
+               AND (p.user_id = $2 OR EXISTS (
+                   SELECT 1 FROM project_collaborators c
+                   WHERE c.project_id = p.id AND c.user_id = $2 AND c.status = 'active'
+               ))`,
             [projectId, userId]
         ),
         query(
-            `SELECT * FROM journal_entries
-             WHERE project_id = $1 AND deleted_at IS NULL
-             ORDER BY created_at DESC`,
+            `SELECT j.*, u.display_name as author_name, u.avatar_url as author_avatar
+             FROM journal_entries j
+             LEFT JOIN users u ON u.id = j.author_id
+             WHERE j.project_id = $1 AND j.deleted_at IS NULL
+             ORDER BY j.created_at DESC`,
             [projectId]
         ),
         query(
             `SELECT short_url, storage_url FROM assets WHERE project_id = $1 OR uploaded_by = $2`,
             [projectId, userId]
+        ),
+        query(
+            `SELECT c.id, c.project_id, c.user_id, c.slack_id, c.email, c.role, c.status, c.created_at,
+                    u.display_name, u.avatar_url
+             FROM project_collaborators c
+             LEFT JOIN users u ON u.id = c.user_id
+             WHERE c.project_id = $1
+             ORDER BY c.created_at ASC`,
+            [projectId]
         )
     ]);
 
@@ -106,7 +131,11 @@ async function getProjectWithEntries(projectId, userId) {
         assetsMap[a.short_url] = a.storage_url;
     }
 
-    const project = rowToProject(pRes.rows[0], eRes.rows.map(rowToEntry));
+    const project = rowToProject(
+        pRes.rows[0],
+        eRes.rows.map(rowToEntry),
+        cRes.rows
+    );
     project.assets = assetsMap;
     return project;
 }
@@ -116,20 +145,42 @@ async function getProjectWithEntries(projectId, userId) {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/', async (req, res) => {
     try {
-        const [projectsRes, entriesRes] = await Promise.all([
+        const [projectsRes, entriesRes, collabsRes] = await Promise.all([
             query(
-                `SELECT p.*, u.display_name, u.avatar_url
+                `SELECT p.*, u.display_name, u.avatar_url,
+                        (p.user_id = $1) as is_owner
                  FROM projects p
                  JOIN users u ON u.id = p.user_id
-                 WHERE p.user_id = $1 AND p.deleted_at IS NULL
+                 WHERE (p.user_id = $1 OR EXISTS (
+                     SELECT 1 FROM project_collaborators c
+                     WHERE c.project_id = p.id AND c.user_id = $1 AND c.status = 'active'
+                 )) AND p.deleted_at IS NULL
                  ORDER BY p.created_at DESC`,
                 [req.user.id]
             ),
             query(
-                `SELECT j.* FROM journal_entries j
+                `SELECT j.*, u.display_name as author_name, u.avatar_url as author_avatar
+                 FROM journal_entries j
                  JOIN projects p ON p.id = j.project_id
-                 WHERE p.user_id = $1 AND j.deleted_at IS NULL AND p.deleted_at IS NULL
+                 LEFT JOIN users u ON u.id = j.author_id
+                 WHERE (p.user_id = $1 OR EXISTS (
+                     SELECT 1 FROM project_collaborators c
+                     WHERE c.project_id = p.id AND c.user_id = $1 AND c.status = 'active'
+                 )) AND j.deleted_at IS NULL AND p.deleted_at IS NULL
                  ORDER BY j.created_at DESC`,
+                [req.user.id]
+            ),
+            query(
+                `SELECT c.id, c.project_id, c.user_id, c.slack_id, c.email, c.role, c.status,
+                        u.display_name, u.avatar_url
+                 FROM project_collaborators c
+                 JOIN projects p ON p.id = c.project_id
+                 LEFT JOIN users u ON u.id = c.user_id
+                 WHERE (p.user_id = $1 OR EXISTS (
+                     SELECT 1 FROM project_collaborators c2
+                     WHERE c2.project_id = p.id AND c2.user_id = $1 AND c2.status = 'active'
+                 )) AND p.deleted_at IS NULL
+                 ORDER BY c.created_at ASC`,
                 [req.user.id]
             )
         ]);
@@ -140,8 +191,14 @@ router.get('/', async (req, res) => {
             entriesByProject[e.project_id].push(rowToEntry(e));
         }
 
+        const collabsByProject = {};
+        for (const c of collabsRes.rows) {
+            if (!collabsByProject[c.project_id]) collabsByProject[c.project_id] = [];
+            collabsByProject[c.project_id].push(c);
+        }
+
         const projects = projectsRes.rows.map(row => {
-            return rowToProject(row, entriesByProject[row.id] || []);
+            return rowToProject(row, entriesByProject[row.id] || [], collabsByProject[row.id] || []);
         });
 
         res.json(projects);
