@@ -227,6 +227,10 @@
                 <div class="stat-card-val" id="stats-total-logs">0</div>
                 <div class="stat-card-label">Total DevLogs</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-card-val" id="stats-current-streak">0🔥</div>
+                <div class="stat-card-label">Day Streak</div>
+            </div>
         </div>
 
         <!-- Projects Grid -->
@@ -752,13 +756,61 @@
                 const totalHours = this.projects.reduce((sum, p) => sum + (p.totalHours || 0), 0);
                 const totalLogs = this.projects.reduce((sum, p) => sum + (p.journalEntries ? p.journalEntries.length : 0), 0);
 
+                const streak = this.calculateStreak();
+
                 const elProjects = document.getElementById('stats-total-projects');
                 const elHours = document.getElementById('stats-total-hours');
                 const elLogs = document.getElementById('stats-total-logs');
+                const elStreak = document.getElementById('stats-current-streak');
 
                 if (elProjects) elProjects.textContent = totalProjects;
                 if (elHours) elHours.textContent = `${totalHours}h`;
                 if (elLogs) elLogs.textContent = totalLogs;
+                if (elStreak) elStreak.textContent = `${streak}🔥`;
+            }
+
+            calculateStreak() {
+                const allDates = new Set();
+                this.projects.forEach(p => {
+                    if (p.journalEntries) {
+                        p.journalEntries.forEach(e => {
+                            if (e.date) allDates.add(e.date.split('T')[0]);
+                        });
+                    }
+                });
+
+                if (allDates.size === 0) return 0;
+
+                const dates = Array.from(allDates).sort((a, b) => b.localeCompare(a));
+                
+                const today = new Date();
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                const todayStr = today.toISOString().split('T')[0];
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                let streak = 0;
+                let expectedDate = new Date();
+
+                if (dates[0] !== todayStr && dates[0] !== yesterdayStr) {
+                    return 0;
+                }
+
+                if (dates[0] === yesterdayStr) {
+                    expectedDate = yesterday;
+                }
+
+                for (const dateStr of dates) {
+                    const expectedDateStr = expectedDate.toISOString().split('T')[0];
+                    if (dateStr === expectedDateStr) {
+                        streak++;
+                        expectedDate.setDate(expectedDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+                return streak;
             }
 
             escapeHtml(str) {
