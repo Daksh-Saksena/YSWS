@@ -173,6 +173,34 @@
             margin-top: 16px;
         }
 
+        .devlog-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--hc-muted);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .dashboard-stats-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .stat-card {
+                width: 100%;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .empty-state-box {
             text-align: center;
             padding: 60px 24px;

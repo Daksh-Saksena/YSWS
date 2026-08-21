@@ -273,6 +273,34 @@
             font-size: 0.85rem;
             font-weight: 700;
         }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .lb-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                position: relative;
+            }
+            .lb-stats {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 20px;
+                margin-top: 4px;
+                flex-wrap: wrap;
+            }
+            .lb-rank {
+                position: absolute;
+                top: 16px;
+                right: 24px;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
