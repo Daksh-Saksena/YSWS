@@ -144,19 +144,19 @@
 
             /* Push trek logo up */
             .logo-container {
-                padding-top: 5vh !important;
+                padding-top: 1vh !important;
                 justify-content: flex-start !important;
             }
             .logo {
-                margin-top: -30px !important;
+                margin-top: -50px !important;
                 transform: scale(0.8) !important;
             }
 
             /* ── Smaller hero text and spacing ── */
             .hero-text {
                 font-size: clamp(2rem, 8vw, 3.2rem) !important;
-                margin-top: -50px !important;
-                margin-bottom: 5px !important;
+                margin-top: -80px !important;
+                margin-bottom: 0px !important;
             }
             .sub-text {
                 display: none !important;
@@ -176,13 +176,15 @@
                 margin-bottom: 4px !important;
             }
 
-            /* Move "you are stranded" and everything below it up */
+            /* Move "you are stranded" and everything below it up WAY up */
             .story {
-                margin-top: -10vh !important;
+                margin-top: -30vh !important;
+                position: relative;
+                z-index: 10;
             }
             .story-section {
-                margin-top: 3vh !important;
-                margin-bottom: 3vh !important;
+                margin-top: 2vh !important;
+                margin-bottom: 2vh !important;
             }
 
             /* ── Hide: Custom Prizes heading + clouds marquee ── */
@@ -200,18 +202,28 @@
             .hero-btn-container {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
+                grid-auto-rows: 48px !important; /* Force all buttons to exactly same height */
                 gap: 10px !important;
                 width: 100% !important;
                 max-width: 90vw !important;
-                margin-top: 10px !important;
+                margin-top: -15px !important;
             }
             .hero-btn-container > script {
                 display: none !important;
             }
             .hero-btn-container > div[data-fillout-id] {
-                width: auto !important;
+                width: 100% !important;
                 height: 100% !important;
+                display: flex !important;
+                align-items: stretch !important;
             }
+            /* The fillout iframe/button inside should stretch */
+            .hero-btn-container > div[data-fillout-id] iframe, 
+            .hero-btn-container > div[data-fillout-id] button {
+                height: 100% !important;
+                width: 100% !important;
+            }
+            
             .hero-btn-container > div:not([data-fillout-id]) {
                 display: contents !important;
             }
@@ -222,10 +234,11 @@
                 align-items: center !important;
                 justify-content: center !important;
                 width: 100% !important;
+                height: 100% !important;
                 text-align: center !important;
                 font-size: 0.95rem !important;
-                padding: 12px 8px !important;
-                border-radius: 10px !important;
+                padding: 0 8px !important;
+                border-radius: 8px !important;
                 box-sizing: border-box !important;
                 margin: 0 !important;
             }
