@@ -79,26 +79,28 @@ function rowToEntry(row) {
 }
 
 async function getProjectWithEntries(projectId, userId) {
-    const pRes = await query(
-        `SELECT p.*, u.display_name, u.avatar_url
-         FROM projects p
-         JOIN users u ON u.id = p.user_id
-         WHERE p.id = $1 AND p.user_id = $2 AND p.deleted_at IS NULL`,
-        [projectId, userId]
-    );
+    const [pRes, eRes, aRes] = await Promise.all([
+        query(
+            `SELECT p.*, u.display_name, u.avatar_url
+             FROM projects p
+             JOIN users u ON u.id = p.user_id
+             WHERE p.id = $1 AND p.user_id = $2 AND p.deleted_at IS NULL`,
+            [projectId, userId]
+        ),
+        query(
+            `SELECT * FROM journal_entries
+             WHERE project_id = $1 AND deleted_at IS NULL
+             ORDER BY created_at DESC`,
+            [projectId]
+        ),
+        query(
+            `SELECT short_url, storage_url FROM assets WHERE project_id = $1 OR uploaded_by = $2`,
+            [projectId, userId]
+        )
+    ]);
+
     if (pRes.rows.length === 0) return null;
 
-    const eRes = await query(
-        `SELECT * FROM journal_entries
-         WHERE project_id = $1 AND deleted_at IS NULL
-         ORDER BY created_at DESC`,
-        [projectId]
-    );
-
-    const aRes = await query(
-        `SELECT short_url, storage_url FROM assets WHERE project_id = $1 OR uploaded_by = $2`,
-        [projectId, userId]
-    );
     const assetsMap = {};
     for (const a of aRes.rows) {
         assetsMap[a.short_url] = a.storage_url;
@@ -114,25 +116,33 @@ async function getProjectWithEntries(projectId, userId) {
 // ─────────────────────────────────────────────────────────────────────────────
 router.get('/', async (req, res) => {
     try {
-        const result = await query(
-            `SELECT p.*, u.display_name, u.avatar_url
-             FROM projects p
-             JOIN users u ON u.id = p.user_id
-             WHERE p.user_id = $1 AND p.deleted_at IS NULL
-             ORDER BY p.created_at DESC`,
-            [req.user.id]
-        );
+        const [projectsRes, entriesRes] = await Promise.all([
+            query(
+                `SELECT p.*, u.display_name, u.avatar_url
+                 FROM projects p
+                 JOIN users u ON u.id = p.user_id
+                 WHERE p.user_id = $1 AND p.deleted_at IS NULL
+                 ORDER BY p.created_at DESC`,
+                [req.user.id]
+            ),
+            query(
+                `SELECT j.* FROM journal_entries j
+                 JOIN projects p ON p.id = j.project_id
+                 WHERE p.user_id = $1 AND j.deleted_at IS NULL AND p.deleted_at IS NULL
+                 ORDER BY j.created_at DESC`,
+                [req.user.id]
+            )
+        ]);
 
-        const projects = [];
-        for (const row of result.rows) {
-            const eRes = await query(
-                `SELECT * FROM journal_entries
-                 WHERE project_id = $1 AND deleted_at IS NULL
-                 ORDER BY created_at DESC`,
-                [row.id]
-            );
-            projects.push(rowToProject(row, eRes.rows.map(rowToEntry)));
+        const entriesByProject = {};
+        for (const e of entriesRes.rows) {
+            if (!entriesByProject[e.project_id]) entriesByProject[e.project_id] = [];
+            entriesByProject[e.project_id].push(rowToEntry(e));
         }
+
+        const projects = projectsRes.rows.map(row => {
+            return rowToProject(row, entriesByProject[row.id] || []);
+        });
 
         res.json(projects);
     } catch (err) {

@@ -468,9 +468,10 @@ class TrekProjectController {
         }
 
         try {
+            let res;
             if (this.editingEntryId) {
                 const existing = this.currentProject?.journalEntries?.find(e => e.id === this.editingEntryId);
-                await api.updateJournalEntry(this.currentProjectId, this.editingEntryId, {
+                res = await api.updateJournalEntry(this.currentProjectId, this.editingEntryId, {
                     title,
                     date: existing ? existing.date : new Date().toISOString().split('T')[0],
                     timeSpent,
@@ -478,7 +479,7 @@ class TrekProjectController {
                     images: extractedImages
                 });
             } else {
-                await api.createJournalEntry(this.currentProjectId, {
+                res = await api.createJournalEntry(this.currentProjectId, {
                     title,
                     date: new Date().toISOString().split('T')[0],
                     timeSpent,
@@ -488,7 +489,14 @@ class TrekProjectController {
             }
 
             this.hideInlineForm();
-            await this.loadProject();
+            if (res && res.project) {
+                this.currentProject = res.project;
+                await this.renderProjectHero();
+                this.renderTimeline();
+                this.renderReviewBanner();
+            } else {
+                await this.loadProject();
+            }
         } catch (err) {
             alert(`Error saving entry: ${err.message}`);
         } finally {
@@ -768,8 +776,15 @@ class TrekProjectController {
     async handleDeleteEntry(entryId) {
         if (!confirm('Are you sure you want to delete this build log entry?')) return;
         try {
-            await api.deleteJournalEntry(this.currentProjectId, entryId);
-            await this.loadProject();
+            const updated = await api.deleteJournalEntry(this.currentProjectId, entryId);
+            if (updated) {
+                this.currentProject = updated;
+                await this.renderProjectHero();
+                this.renderTimeline();
+                this.renderReviewBanner();
+            } else {
+                await this.loadProject();
+            }
         } catch (err) {
             alert(`Delete failed: ${err.message}`);
         }
