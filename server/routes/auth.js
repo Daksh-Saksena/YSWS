@@ -98,23 +98,27 @@ router.get('/callback', async (req, res) => {
              console.error('[Auth] HC Auth user info fetch failed:', identityData);
              return res.redirect(`${frontendUrl}/login.html?error=could_not_read_user`);
         }
-        console.log('[Auth] HC Auth identity payload:', identityData);
+        console.log('[Auth] HC Auth identity payload:', JSON.stringify(identityData, null, 2));
 
-        // API might return snake_case or camelCase. Fallback to HC Auth ID if slack_id is missing.
-        let slackId = identityData.slack_id || identityData.slackId;
+        const userObj = identityData.user || identityData;
+
+        let slackId = userObj.slack_id || userObj.slackId;
         if (!slackId) {
-            if (identityData.id) {
-                slackId = `hc_${identityData.id}`;
+            if (userObj.id) {
+                slackId = `hc_${userObj.id}`;
                 console.warn(`[Auth] No Slack ID provided by HC Auth. Falling back to HC Auth ID: ${slackId}`);
+            } else if (userObj.email) {
+                slackId = `hc_email_${userObj.email}`;
+                console.warn(`[Auth] No Slack ID or HC Auth ID provided. Falling back to email: ${slackId}`);
             } else {
-                console.error('[Auth] No Slack ID and no HC Auth ID provided!', identityData);
+                console.error('[Auth] NO STABLE IDENTIFIER PROVIDED BY HC AUTH!', identityData);
                 return res.redirect(`${frontendUrl}/login.html?error=no_slack_id`);
             }
         }
 
-        const displayName = identityData.name || 'Trek Builder';
-        const avatarUrl = identityData.avatar || null;
-        const email = identityData.email || null;
+        const displayName = userObj.name || 'Trek Builder';
+        const avatarUrl = userObj.avatar || userObj.avatar_url || null;
+        const email = userObj.email || null;
 
         // 3. Upsert user in DB
         const upsertResult = await query(
