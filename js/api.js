@@ -427,14 +427,52 @@ export class TrekApiService {
                 });
             }
 
-            const reader = new FileReader();
-            reader.onload = () => {
-                const dataUrl = reader.result;
-                const ext = file.name ? file.name.split('.').pop() || 'png' : 'png';
+            // Client-side image compression
+            const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.75) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > height) {
+                                if (width > maxWidth) {
+                                    height = Math.round(height * maxWidth / width);
+                                    width = maxWidth;
+                                }
+                            } else {
+                                if (height > maxHeight) {
+                                    width = Math.round(width * maxHeight / height);
+                                    height = maxHeight;
+                                }
+                            }
+
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // Output as JPEG for high compression
+                            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                            resolve(dataUrl);
+                        };
+                        img.onerror = reject;
+                        img.src = event.target.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            compressImage(file).then(dataUrl => {
+                const ext = 'jpg';
                 const randomHash = Math.random().toString(36).substring(2, 8);
                 const timeStamp = Date.now().toString(36);
                 const shortUrl = `https://cdn.hackclub.com/trek/${timeStamp}_${randomHash}.${ext}`;
-                const safeName = file.name ? file.name.replace(/[^\w.-]+/g, '_') : `image_${randomHash}.png`;
+                const safeName = file.name ? file.name.replace(/[^\w.-]+/g, '_') : `image_${randomHash}.jpg`;
 
                 const fallbackLocal = () => {
                     const assets = ls(ASSETS_STORAGE_KEY, {});
@@ -447,7 +485,7 @@ export class TrekApiService {
                     return fallbackLocal();
                 }
 
-                // Online: Send as base64 JSON to bypass Vercel multer/stream issues
+                // Online: Send as base64 JSON
                 const token = this.getToken();
                 fetch(`${API_BASE}/api/uploads`, {
                     method: 'POST',
@@ -455,9 +493,19 @@ export class TrekApiService {
                         'Content-Type': 'application/json',
                         ...(token ? { Authorization: `Bearer ${token}` } : {})
                     },
-                    body: JSON.stringify({ file: dataUrl, projectId, originalname: file.name }),
+                    body: JSON.stringify({ file: dataUrl, projectId, originalname: safeName }),
                 })
-                    .then(r => r.json())
+                    .then(async r => {
+                        const text = await r.text();
+                        let data;
+                        try {
+                            data = JSON.parse(text);
+                        } catch(e) {
+                            throw new Error(`HTTP ${r.status}: ${text.substring(0, 40).replace(/\\n/g, ' ')}...`);
+                        }
+                        if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+                        return data;
+                    })
                     .then(data => {
                         if (data && data.url && !data.error) {
                             const assets = ls(ASSETS_STORAGE_KEY, {});
@@ -473,11 +521,10 @@ export class TrekApiService {
                         console.warn('[Upload] Backend network failed, using local fallback:', err.message);
                         fallbackLocal();
                     });
-            };
-            reader.onerror = () => {
+            }).catch(err => {
+                console.error('Image compression failed', err);
                 resolve({ url: '', markdown: '![upload failed]()' });
-            };
-            reader.readAsDataURL(file);
+            });
         });
     }
 
