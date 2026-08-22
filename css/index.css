@@ -299,7 +299,7 @@ body.video-active {
 
 @font-face {
     font-family: 'Sand Beach';
-    src: url('sandscript_btn.ttf') format('truetype'),
+    src: url('../fonts/sandscript_btn.ttf') format('truetype'),
         url('SandBeach.ttf') format('truetype'),
         url('SandBeach.otf') format('opentype');
 }

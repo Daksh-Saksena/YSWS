@@ -411,7 +411,7 @@
                 }
 
                 grid.innerHTML = this.data.projects.map(p => {
-                    const coverImg = this.resolveAsset(p.cover_image_url || 'jet.png');
+                    const coverImg = this.resolveAsset(p.cover_image_url || 'images/jet.png');
                     const avatarImg = this.resolveAsset(p.author_avatar || 'images/flag.png');
                     const guildName = (p.guild || 'frontier').toUpperCase();
 

@@ -820,7 +820,7 @@ class TrekProjectController {
             `;
         }
 
-        document.getElementById('project-cover-img').src = this.resolveAsset(p.coverImageUrl || 'jet.png');
+        document.getElementById('project-cover-img').src = this.resolveAsset(p.coverImageUrl || 'images/jet.png');
 
         // Status Pill
         const statusPill = document.getElementById('project-status-pill');

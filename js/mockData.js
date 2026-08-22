@@ -11,7 +11,7 @@ export const INITIAL_TREK_PROJECTS = [
         guild: 'frontier',
         tagline: 'Documenting my hardware build journey on Trek',
         description: 'Track your physical prototypes, 3D models, electronics, and field testing.',
-        coverImageUrl: 'jet.png',
+        coverImageUrl: 'images/jet.png',
         status: 'draft',
         authorName: 'Trek Builder',
         authorAvatar: 'images/flag.png',

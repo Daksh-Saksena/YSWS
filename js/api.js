@@ -226,7 +226,7 @@ export class TrekApiService {
             guild: projectData.guild || 'frontier',
             tagline: projectData.tagline || '',
             description: projectData.description || '',
-            coverImageUrl: projectData.coverImageUrl || 'jet.png',
+            coverImageUrl: projectData.coverImageUrl || 'images/jet.png',
             reviewType: projectData.reviewType || 'design',
             linkedDesignProjectId: projectData.linkedDesignProjectId || null,
             repoUrl: projectData.repoUrl || null,
