@@ -34,9 +34,9 @@ function rowToProject(row, entries = [], collaborators = []) {
         const g = (guild || '').toLowerCase();
         if (g === 'air') return 'images/jet.png';
         if (g === 'land') return 'images/red_car.png';
-        if (g === 'space') return 'images/rocket.png';
         if (g === 'water') return 'images/boat.png';
-        return 'images/jet.png';
+        if (g === 'space' || g === 'frontier') return 'images/rocket.png';
+        return 'images/rocket.png';
     };
 
     return {

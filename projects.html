@@ -647,7 +647,7 @@
 
                     const tagline = document.getElementById('new-project-desc')?.value.trim();
                     const repoUrl = document.getElementById('new-project-repo')?.value.trim() || null;
-                    const coverImageUrl = this.uploadedCoverUrl || api.getDefaultCover(guild);
+                    const coverImageUrl = this.uploadedCoverUrl || api.getDefaultCover(this.selectedGuild || 'frontier');
 
                     this.isCreatingProject = true;
                     if (submitBtn) {
