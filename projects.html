@@ -189,23 +189,28 @@
                 align-items: flex-start;
                 gap: 16px;
             }
+
             .dashboard-stats-bar {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
+
             .stat-card {
                 width: auto;
                 min-width: 0;
                 padding: 12px;
                 text-align: center;
             }
+
             .stat-card-val {
                 font-size: 1.4rem;
             }
+
             .stat-card-label {
                 font-size: 0.75rem;
             }
+
             .projects-grid {
                 grid-template-columns: 1fr;
             }
@@ -262,7 +267,8 @@
                 <div class="stat-card-label">Logged Hours</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card-val" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <div class="stat-card-val"
+                    style="display: flex; align-items: center; justify-content: center; gap: 6px;">
                     <span id="stats-total-twigs">0</span>
                     <img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
                 </div>
@@ -435,7 +441,7 @@
                         <div class="drop-zone" id="new-cover-drop-zone" style="padding: 14px;">
                             <input type="file" id="new-cover-file-input" accept="image/*" style="display: none;">
                             <div id="new-cover-drop-text" style="font-size: 0.85rem; color: var(--hc-muted);">Click to
-                                upload a project cover photo (defaults to Jet)</div>
+                                upload a project cover photo (defaults to guild image)</div>
                             <div id="new-cover-preview-wrap" style="display: none; margin-top: 8px;">
                                 <img id="new-cover-preview-img" src="" alt="Cover preview"
                                     style="max-height: 90px; border-radius: 6px; object-fit: cover;">
@@ -840,11 +846,11 @@
                 if (allDates.size === 0) return 0;
 
                 const dates = Array.from(allDates).sort((a, b) => b.localeCompare(a));
-                
+
                 const today = new Date();
                 const yesterday = new Date();
                 yesterday.setDate(yesterday.getDate() - 1);
-                
+
                 const todayStr = today.toISOString().split('T')[0];
                 const yesterdayStr = yesterday.toISOString().split('T')[0];
 
