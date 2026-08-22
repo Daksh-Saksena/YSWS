@@ -39,9 +39,14 @@
             <div>
                 <h1>Trek Shop</h1>
                 <p>Spend your hard-earned twigs on hardware grants, domains, and more!</p>
-                <p><strong>These are approximate prices as they vary according to region!</strong></p>
-                <p style="color: var(--hc-smoke); margin-top: 6px;">Shop items unlock once you've marked at least one
-                    project as built.</p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                    <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
+                        These are approximate prices as they vary according to region!
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
+                        Shop items unlock once you've marked at least one project as built.
+                    </div>
+                </div>
             </div>
             <div class="shop-balance"
                 style="display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.4); padding: 12px 20px; border-radius: 12px; border: 1px dashed rgba(255, 255, 255, 0.15);">
@@ -59,11 +64,10 @@
         <div class="shop-grid">
             <!-- Direct Project Grant -->
             <a href="#" class="shop-card"
-                style="grid-column: 1 / -1; background: rgba(23, 23, 29, 0.85); border: 2px solid rgba(255, 140, 55, 0.5); box-shadow: 0 4px 20px rgba(255, 140, 55, 0.15);">
-                <div class="shop-card-content" style="padding: 24px;">
-                    <h3 class="shop-title" style="font-size: 1.6rem; color: var(--hc-white);">Direct project grant</h3>
-                    <p class="shop-desc" style="font-size: 1.1rem; color: var(--hc-smoke); margin-top: 8px;">Trade 5
-                        twigs to $1 to fund hardware for one of your approved projects.</p>
+                style="grid-column: 1 / -1; background: rgba(23, 23, 29, 0.7); border: 1px solid rgba(255, 140, 55, 0.4); border-radius: 12px;">
+                <div class="shop-card-content" style="padding: 14px 18px;">
+                    <h3 class="shop-title" style="font-size: 1.2rem; color: var(--hc-white); margin-bottom: 4px;">Direct project grant</h3>
+                    <p class="shop-desc" style="font-size: 0.95rem; color: var(--hc-smoke); margin: 0;">Trade 5 twigs to $1 to fund hardware for one of your approved projects.</p>
                 </div>
             </a>
 
