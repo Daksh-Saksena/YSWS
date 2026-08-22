@@ -69,9 +69,9 @@ router.post('/', async (req, res) => {
         );
 
         res.json({
-            url: shortUrl,
+            url: cloudinaryResult.secure_url,
             storageUrl: cloudinaryResult.secure_url,
-            markdown: `![${originalName.replace(/[^\w.-]+/g, '_')}](${shortUrl})`,
+            markdown: `![${originalName.replace(/[^\w.-]+/g, '_')}](${cloudinaryResult.secure_url})`,
         });
     } catch (err) {
         console.warn('[Uploads] Cloudinary error, using PostgreSQL direct asset storage fallback:', err.message || err);
@@ -100,9 +100,9 @@ router.post('/', async (req, res) => {
             );
 
             res.json({
-                url: shortUrl,
+                url: dataUrl,
                 storageUrl: dataUrl,
-                markdown: `![${originalName.replace(/[^\w.-]+/g, '_')}](${shortUrl})`,
+                markdown: `![${originalName.replace(/[^\w.-]+/g, '_')}](${dataUrl})`,
             });
         } catch (dbErr) {
             console.error('[Uploads] Fallback storage error:', dbErr);

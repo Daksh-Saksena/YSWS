@@ -126,14 +126,36 @@ async function getProjectWithEntries(projectId, userId) {
 
     if (pRes.rows.length === 0) return null;
 
+    const entries = eRes.rows.map(rowToEntry);
+
     const assetsMap = {};
     for (const a of aRes.rows) {
         assetsMap[a.short_url] = a.storage_url;
     }
 
+    // Safely extract ALL short_urls directly from the devlog markdown
+    // to fix legacy uploads where project_id was null during upload
+    const shortUrls = new Set();
+    entries.forEach(e => {
+        if (!e.content) return;
+        const matches = e.content.match(/https:\/\/cdn\.hackclub\.com\/trek\/[a-zA-Z0-9_.]+/g);
+        if (matches) matches.forEach(m => shortUrls.add(m));
+    });
+
+    const urlArray = Array.from(shortUrls);
+    if (urlArray.length > 0) {
+        const extraAssets = await query(
+            `SELECT short_url, storage_url FROM assets WHERE short_url = ANY($1)`,
+            [urlArray]
+        );
+        for (const a of extraAssets.rows) {
+            assetsMap[a.short_url] = a.storage_url;
+        }
+    }
+
     const project = rowToProject(
         pRes.rows[0],
-        eRes.rows.map(rowToEntry),
+        entries,
         cRes.rows
     );
     project.assets = assetsMap;
