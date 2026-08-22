@@ -281,9 +281,9 @@ html {
 }
 
 .shop-price {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    color: var(--hc-green);
+    color: #ffb020;
     display: flex;
     align-items: center;
     gap: 8px;
