@@ -652,6 +652,24 @@ class TrekProjectController {
         document.getElementById('close-project-modal-btn')?.addEventListener('click', () => this.closeEditProjectModal());
         document.getElementById('cancel-project-modal-btn')?.addEventListener('click', () => this.closeEditProjectModal());
         document.getElementById('project-details-form')?.addEventListener('submit', (e) => this.handleProjectFormSubmit(e));
+        
+        document.getElementById('project-guild-select')?.addEventListener('change', (e) => {
+            const previewImg = document.getElementById('cover-preview-img');
+            const previewContainer = document.getElementById('cover-preview-container');
+            
+            const currentGuild = this.currentProject?.guild || 'frontier';
+            const isUsingDefault = !this.currentProject?.coverImageUrl || 
+                                   this.currentProject.coverImageUrl === api.getDefaultCover(currentGuild) || 
+                                   this.currentProject.coverImageUrl === 'images/jet.png' || 
+                                   this.currentProject.coverImageUrl === 'jet.png';
+
+            // If they are using a default image and haven't uploaded a new custom image in this session
+            if (previewImg && previewContainer && !this.newCoverUploadedThisSession && isUsingDefault) {
+                this.pendingCoverUrl = api.getDefaultCover(e.target.value);
+                previewImg.src = this.resolveAsset(this.pendingCoverUrl);
+                previewContainer.style.display = 'block';
+            }
+        });
 
         // Delete Current Project
         document.getElementById('delete-current-project-btn')?.addEventListener('click', async () => {
