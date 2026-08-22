@@ -90,6 +90,7 @@ class TrekProjectController {
             await this.renderProjectHero();
             this.renderReviewBanner();
             this.applyProjectMode();
+            this.restoreDraft();
         } catch (err) {
             console.error('Failed to load project:', err);
             if (err.status === 401 || !api.isLoggedIn()) {
@@ -185,14 +186,35 @@ class TrekProjectController {
             }
         });
 
-        closeBtn?.addEventListener('click', () => this.hideInlineForm());
-        cancelBtn?.addEventListener('click', () => this.hideInlineForm());
+        const handleCancel = () => {
+            const hasContent = document.getElementById('entry-title-input')?.value.trim() ||
+                               document.getElementById('entry-time-input')?.value.trim() ||
+                               document.getElementById('entry-content-input')?.value.trim();
+            if (hasContent) {
+                if (confirm('Discard your unsaved draft?')) {
+                    this.clearDraft();
+                    this.hideInlineForm();
+                }
+            } else {
+                this.clearDraft();
+                this.hideInlineForm();
+            }
+        };
+
+        closeBtn?.addEventListener('click', handleCancel);
+        cancelBtn?.addEventListener('click', handleCancel);
 
         // Editor tab switches (Write vs Preview)
         tabWrite?.addEventListener('click', () => this.setEditorTab('write'));
         tabPreview?.addEventListener('click', () => this.setEditorTab('preview'));
 
-        // Time spent live parsing
+        // Title input live draft save
+        const titleInput = document.getElementById('entry-title-input');
+        if (titleInput) {
+            titleInput.addEventListener('input', () => this.saveDraft());
+        }
+
+        // Time spent live parsing and draft save
         if (timeInput) {
             timeInput.addEventListener('input', () => {
                 const preview = document.getElementById('time-parsed-preview');
@@ -206,13 +228,15 @@ class TrekProjectController {
                 } else {
                     preview.textContent = '';
                 }
+                this.saveDraft();
             });
         }
 
-        // Live content counter & validator
+        // Live content counter & validator & draft save
         if (textarea) {
             textarea.addEventListener('input', () => {
                 this.updateContentCounters();
+                this.saveDraft();
             });
 
             // Clipboard Paste for Images (like Forge)
@@ -244,6 +268,9 @@ class TrekProjectController {
                 }
             });
         }
+
+        // Save draft on window beforeunload
+        window.addEventListener('beforeunload', () => this.saveDraft());
 
         // File Browser Button for Images
         if (browseBtn && fileInput) {
@@ -349,10 +376,100 @@ class TrekProjectController {
                 console.error('Image upload failed:', err);
             }
             this.updateContentCounters();
+            this.saveDraft();
         }
 
         if (this.editorMode === 'preview') {
             this.setEditorTab('preview');
+        }
+    }
+
+    saveDraft() {
+        if (!this.currentProjectId) return;
+        const title = document.getElementById('entry-title-input')?.value || '';
+        const timeSpent = document.getElementById('entry-time-input')?.value || '';
+        const content = document.getElementById('entry-content-input')?.value || '';
+
+        if (title.trim() || timeSpent.trim() || content.trim()) {
+            const draft = {
+                title,
+                timeSpent,
+                content,
+                editingEntryId: this.editingEntryId || null,
+                updatedAt: Date.now()
+            };
+            try {
+                localStorage.setItem(`trek_journal_draft_${this.currentProjectId}`, JSON.stringify(draft));
+            } catch (e) {
+                console.warn('[Draft] Failed to save draft to localStorage:', e);
+            }
+        } else {
+            this.clearDraft();
+        }
+    }
+
+    clearDraft() {
+        if (!this.currentProjectId) return;
+        try {
+            localStorage.removeItem(`trek_journal_draft_${this.currentProjectId}`);
+        } catch (e) {}
+    }
+
+    restoreDraft() {
+        if (!this.currentProjectId) return false;
+        try {
+            const raw = localStorage.getItem(`trek_journal_draft_${this.currentProjectId}`);
+            if (!raw) return false;
+            const draft = JSON.parse(raw);
+            if (!draft || (!draft.title && !draft.timeSpent && !draft.content)) return false;
+
+            const titleInput = document.getElementById('entry-title-input');
+            const timeInput = document.getElementById('entry-time-input');
+            const contentInput = document.getElementById('entry-content-input');
+            const timePreview = document.getElementById('time-parsed-preview');
+
+            if (titleInput) titleInput.value = draft.title || '';
+            if (timeInput) {
+                timeInput.value = draft.timeSpent || '';
+                const parsed = TrekTimeParser.parse(draft.timeSpent || '');
+                if (parsed !== null && timePreview) {
+                    timePreview.textContent = `(Parsed: ${TrekTimeParser.formatFriendly(parsed)})`;
+                    timePreview.style.color = '#33d6a6';
+                }
+            }
+            if (contentInput) contentInput.value = draft.content || '';
+
+            if (draft.editingEntryId) {
+                this.editingEntryId = draft.editingEntryId;
+                const idInput = document.getElementById('entry-id-input');
+                if (idInput) idInput.value = draft.editingEntryId;
+                const formTitle = document.getElementById('inline-form-title');
+                const submitBtn = document.getElementById('save-entry-btn');
+                if (formTitle) formTitle.textContent = 'Edit DevLog Entry (Draft Restored)';
+                if (submitBtn) submitBtn.textContent = 'Update DevLog →';
+            }
+
+            this.updateContentCounters();
+
+            // Reveal the inline form with restored draft
+            const container = document.getElementById('inline-entry-container');
+            const toggleBtn = document.getElementById('toggle-entry-form-btn');
+            if (container) container.style.display = 'block';
+            if (toggleBtn) {
+                toggleBtn.textContent = 'Cancel';
+                toggleBtn.className = 'btn-secondary';
+            }
+
+            const statusText = document.getElementById('validation-status-text');
+            if (statusText) {
+                statusText.textContent = '💾 Restored unsaved draft';
+                statusText.style.color = '#ffb020';
+            }
+
+            return true;
+        } catch (e) {
+            console.warn('[Draft] Failed to restore draft:', e);
+            return false;
         }
     }
 
@@ -507,6 +624,7 @@ class TrekProjectController {
                 });
             }
 
+            this.clearDraft();
             this.hideInlineForm();
             if (res && res.project) {
                 this.currentProject = res.project;
