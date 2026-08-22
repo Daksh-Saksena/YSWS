@@ -30,6 +30,15 @@ router.use('/:projectId/collaborators', collaboratorRoutes);
 // ─────────────────────────────────────────────────────────────────────────────
 
 function rowToProject(row, entries = [], collaborators = []) {
+    const getDefaultCover = (guild) => {
+        const g = (guild || '').toLowerCase();
+        if (g === 'air') return 'images/jet.png';
+        if (g === 'land') return 'images/red_car.png';
+        if (g === 'space') return 'images/rocket.png';
+        if (g === 'water') return 'images/boat.png';
+        return 'images/jet.png';
+    };
+
     return {
         id: row.id,
         userId: row.user_id,
@@ -37,7 +46,9 @@ function rowToProject(row, entries = [], collaborators = []) {
         guild: row.guild,
         tagline: row.tagline || '',
         description: row.description || '',
-        coverImageUrl: row.cover_image_url || 'images/jet.png',
+        coverImageUrl: (row.cover_image_url === 'images/jet.png' || row.cover_image_url === 'jet.png' || !row.cover_image_url) 
+                       ? getDefaultCover(row.guild) 
+                       : row.cover_image_url,
         status: row.status,
         reviewType: row.review_type,
         linkedDesignProjectId: row.linked_design_project_id,
@@ -270,7 +281,7 @@ router.post('/', async (req, res) => {
                 guild || 'frontier',
                 tagline?.trim() || '',
                 description?.trim() || '',
-                coverImageUrl || 'images/jet.png',
+                coverImageUrl || null,
                 reviewType || 'design',
                 linkedDesignProjectId || null,
                 repoUrl || null,

@@ -602,6 +602,17 @@
                             }
                         }
                     });
+
+                    const guildSelect = document.getElementById('new-project-guild');
+                    if (guildSelect) {
+                        guildSelect.addEventListener('change', (e) => {
+                            if (!this.uploadedCoverUrl && previewImg) {
+                                previewImg.src = api.getDefaultCover(e.target.value);
+                                previewWrap.style.display = 'block';
+                                if (dropText) dropText.style.display = 'none';
+                            }
+                        });
+                    }
                 }
 
                 // Form Submit
@@ -630,7 +641,7 @@
 
                     const tagline = document.getElementById('new-project-desc')?.value.trim();
                     const repoUrl = document.getElementById('new-project-repo')?.value.trim() || null;
-                    const coverImageUrl = this.uploadedCoverUrl || 'images/jet.png';
+                    const coverImageUrl = this.uploadedCoverUrl || api.getDefaultCover(guild);
 
                     this.isCreatingProject = true;
                     if (submitBtn) {
@@ -726,7 +737,7 @@
                     }
 
                     grid.innerHTML = this.projects.map(p => {
-                        const coverImg = this.resolveAsset(p.coverImageUrl || 'images/jet.png');
+                        const coverImg = this.resolveAsset(p.coverImageUrl || api.getDefaultCover(p.guild));
                         const modeTag = p.devlogMode === 'git' ? 'GIT JOURNAL' : 'WEB JOURNAL';
                         const statusTag = (p.status || 'draft').toUpperCase();
                         const entryCount = p.journalEntries ? p.journalEntries.length : 0;
