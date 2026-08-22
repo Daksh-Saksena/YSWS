@@ -68,6 +68,17 @@ async function assertProjectAccess(projectId, userId) {
     return res.rows[0];
 }
 
+async function assertProjectOwner(projectId, userId) {
+    const res = await query(
+        `SELECT p.id, p.user_id
+         FROM projects p
+         WHERE p.id = $1 AND p.user_id = $2 AND p.deleted_at IS NULL`,
+        [projectId, userId]
+    );
+    if (res.rows.length === 0) throw Object.assign(new Error('Only the project owner can perform this action.'), { status: 403 });
+    return res.rows[0];
+}
+
 async function recalcTotalHours(client, projectId) {
     await client.query(
         `UPDATE projects
@@ -250,7 +261,7 @@ router.patch('/:projectId/:entryId', async (req, res) => {
 router.delete('/:projectId/:entryId', async (req, res) => {
     const { projectId, entryId } = req.params;
     try {
-        await assertProjectOwner(projectId, req.user.id);
+        await assertProjectAccess(projectId, req.user.id);
 
         await withTransaction(async (client) => {
             await client.query(
@@ -276,7 +287,7 @@ router.delete('/:projectId/:entryId', async (req, res) => {
 router.get('/:projectId/:entryId/history', async (req, res) => {
     const { projectId, entryId } = req.params;
     try {
-        await assertProjectOwner(projectId, req.user.id);
+        await assertProjectAccess(projectId, req.user.id);
 
         const histRes = await query(
             `SELECT h.*, u.display_name
