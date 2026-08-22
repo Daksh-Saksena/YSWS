@@ -34,14 +34,30 @@
 
     <!-- Main Content Dashboard -->
     <main class="shop-dashboard-wrap">
-        <div class="shop-header">
+        <div class="shop-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
             <div>
                 <h1>Trek Shop</h1>
                 <p>Spend your hard-earned coins on hardware grants, domains, and more!</p>
+                <p><strong>These are approximate prices as they vary according to region!</strong></p>
+            </div>
+            <div class="shop-balance" style="display: flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.4); padding: 12px 20px; border-radius: 12px; border: 1px dashed rgba(255, 255, 255, 0.1);">
+                <div style="font-size: 0.9rem; color: var(--hc-muted); text-transform: uppercase; font-family: var(--hc-font-heading); font-weight: 700;">Balance</div>
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--hc-green); display: flex; align-items: center; gap: 6px;">
+                    <span id="user-balance-twigs">0</span>
+                    <img src="images/twig.png" alt="twig" style="height: 1.5rem;">
+                </div>
             </div>
         </div>
 
         <div class="shop-grid">
+            <!-- Direct Project Grant -->
+            <a href="#" class="shop-card" style="grid-column: 1 / -1; background: rgba(23, 23, 29, 0.85); border: 2px solid var(--hc-green); box-shadow: 0 4px 20px rgba(51, 214, 166, 0.15);">
+                <div class="shop-card-content" style="padding: 24px;">
+                    <h3 class="shop-title" style="font-size: 1.6rem; color: var(--hc-white);">Direct project grant</h3>
+                    <p class="shop-desc" style="font-size: 1.1rem; color: var(--hc-smoke); margin-top: 8px;">Trade 1 twig per $1 to fund hardware for one of your approved projects.</p>
+                </div>
+            </a>
+
             <!-- Hardware Grant -->
             <a href="#" class="shop-card">
                 <div class="shop-card-img-wrap">
@@ -50,6 +66,7 @@
                 <div class="shop-card-content">
                     <h3 class="shop-title">Hardware Grant</h3>
                     <p class="shop-desc">Get funding to build your next big hardware project. Order parts, electronics, and components to bring your build to life.</p>
+                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.2rem;"> 50 twigs - 10$ hardware grant</div>
                 </div>
             </a>
             
@@ -61,6 +78,7 @@
                 <div class="shop-card-content">
                     <h3 class="shop-title">3D Printing & CNC Grant</h3>
                     <p class="shop-desc">Need custom parts? Get funding to outsource 3D printing, laser cutting, or CNC machining for your structural components.</p>
+                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.2rem;"> 50 twigs - 10$ 3d printing & cnc grant</div>
                 </div>
             </a>
 
@@ -72,6 +90,7 @@
                 <div class="shop-card-content">
                     <h3 class="shop-title">Flipper Zero</h3>
                     <p class="shop-desc">The ultimate multi-tool for geeks. A portable hardware tool for exploring access control systems, RFID, radio protocols, and more.</p>
+                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.2rem;"> 1300 twigs - flipper zero</div>
                 </div>
             </a>
 
@@ -83,6 +102,7 @@
                 <div class="shop-card-content">
                     <h3 class="shop-title">Bambu Lab A1 Mini</h3>
                     <p class="shop-desc">A blazing fast, beginner-friendly 3D printer to rapidly prototype and iterate on your physical builds.</p>
+                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.2rem;"> 1300 twigs - bambu lab a1 mini</div>
                 </div>
             </a>
 
@@ -94,6 +114,7 @@
                 <div class="shop-card-content">
                     <h3 class="shop-title">Smart Soldering Iron</h3>
                     <p class="shop-desc">A high-quality, portable smart soldering iron (like a Pinecil or TS101) for making permanent electronic connections.</p>
+                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.2rem;"> 325 twigs - pinecil v2 + charger bundle</div>
                 </div>
             </a>
         </div>
@@ -102,6 +123,27 @@
             <strong>WE ARE OPEN TO SUGGESTIONS. ANYTHING YOU WANT PLEASE DM @DS010 on slack</strong>
         </div>
     </main>
+
+    <script type="module">
+        import { api } from './js/api.js';
+
+        async function initShop() {
+            try {
+                if (!api.isLoggedIn()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const projects = await api.getProjects();
+                const totalHours = projects.reduce((sum, p) => sum + (p.totalHours || 0), 0);
+                const twigs = Math.round(totalHours * 25);
+                document.getElementById('user-balance-twigs').textContent = twigs;
+            } catch (err) {
+                console.error('Failed to load balance', err);
+            }
+        }
+
+        initShop();
+    </script>
 </body>
 
 </html>

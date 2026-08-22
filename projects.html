@@ -262,6 +262,13 @@
                 <div class="stat-card-label">Logged Hours</div>
             </div>
             <div class="stat-card">
+                <div class="stat-card-val" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span id="stats-total-twigs">0</span>
+                    <img src="images/twig.png" alt="twig" style="height: 1.2rem; width: auto;">
+                </div>
+                <div class="stat-card-label">Twigs</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-card-val" id="stats-total-logs">0</div>
                 <div class="stat-card-label">Total DevLogs</div>
             </div>
@@ -798,11 +805,13 @@
 
                 const elProjects = document.getElementById('stats-total-projects');
                 const elHours = document.getElementById('stats-total-hours');
+                const elTwigs = document.getElementById('stats-total-twigs');
                 const elLogs = document.getElementById('stats-total-logs');
                 const elStreak = document.getElementById('stats-current-streak');
 
                 if (elProjects) elProjects.textContent = totalProjects;
                 if (elHours) elHours.textContent = `${totalHours}h`;
+                if (elTwigs) elTwigs.textContent = Math.round(totalHours * 25);
                 if (elLogs) elLogs.textContent = totalLogs;
                 if (elStreak) elStreak.textContent = `${streak}🔥`;
             }

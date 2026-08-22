@@ -713,6 +713,7 @@ class TrekProjectController {
 
         // Metrics
         document.getElementById('total-hours-val').textContent = `${p.totalHours}h`;
+        document.getElementById('total-twigs-val').textContent = Math.round((p.totalHours || 0) * 25);
         document.getElementById('entry-count-val').textContent = p.journalEntries.length;
 
         // Review Button state

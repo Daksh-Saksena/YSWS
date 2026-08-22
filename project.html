@@ -66,6 +66,13 @@
                                 <div class="metric-label">Logged Hours</div>
                             </div>
                             <div class="metric-box">
+                                <div class="metric-val" style="display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                    <span id="total-twigs-val">0</span>
+                                    <img src="images/twig.png" alt="twig" style="height: 1.1rem; width: auto;">
+                                </div>
+                                <div class="metric-label">Twigs</div>
+                            </div>
+                            <div class="metric-box">
                                 <div class="metric-val" id="entry-count-val">0</div>
                                 <div class="metric-label">DevLogs</div>
                             </div>
@@ -150,8 +157,8 @@
 
                     <!-- Write Area -->
                     <div id="editor-write-area">
-                        <textarea id="entry-content-input" class="form-textarea" rows="8"
-                            placeholder="What did you work on? Paste or drop images directly into the editor..."
+                        <textarea id="entry-content-input" class="form-textarea" rows="12"
+                            placeholder="What did you build today? Write about your progress, challenges, or learnings... (Markdown supported)"
                             required
                             style="width: 100%; font-family: var(--hc-font-monospace); font-size: 0.9rem; line-height: 1.5; resize: vertical; box-sizing: border-box;"></textarea>
 

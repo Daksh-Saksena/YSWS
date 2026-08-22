@@ -273,6 +273,23 @@ html {
     color: var(--hc-white);
 }
 
+.shop-desc {
+    font-size: 0.95rem;
+    color: var(--hc-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.shop-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--hc-green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
 .project-tagline {
     font-size: 1.05rem;
     color: var(--hc-smoke);
