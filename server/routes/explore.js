@@ -15,8 +15,6 @@ router.get('/', async (req, res) => {
             FROM projects p
             JOIN users u ON p.user_id = u.id
             WHERE p.deleted_at IS NULL
-              AND p.name != 'Final Test'
-              AND p.status IN ('in_progress', 'submitted', 'approved')
             ORDER BY p.created_at DESC
         `);
 
