@@ -103,8 +103,24 @@ router.get('/', async (req, res) => {
             streak: userStreaks[u.id] || 0
         }));
 
+        const getDefaultCover = (guild) => {
+            const g = (guild || '').toLowerCase();
+            if (g === 'air') return 'images/jet.png';
+            if (g === 'land') return 'images/red_car.png';
+            if (g === 'space') return 'images/rocket.png';
+            if (g === 'water') return 'images/boat.png';
+            return 'images/jet.png';
+        };
+
+        const projects = projectsRes.rows.map(p => {
+            if (p.cover_image_url === 'images/jet.png' || p.cover_image_url === 'jet.png' || !p.cover_image_url) {
+                p.cover_image_url = getDefaultCover(p.guild);
+            }
+            return p;
+        });
+
         res.json({
-            projects: projectsRes.rows,
+            projects: projects,
             leaderboard: leaderboard
         });
     } catch (err) {

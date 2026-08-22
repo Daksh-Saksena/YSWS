@@ -551,6 +551,17 @@
                         });
                         card.style.background = 'rgba(236, 55, 80, 0.15)';
                         card.style.borderColor = 'var(--hc-red)';
+
+                        if (!this.uploadedCoverUrl) {
+                            const previewImg = document.getElementById('new-cover-preview-img');
+                            const previewWrap = document.getElementById('new-cover-preview-wrap');
+                            const dropText = document.getElementById('new-cover-drop-text');
+                            if (previewImg && previewWrap) {
+                                previewImg.src = api.getDefaultCover(this.selectedGuild);
+                                previewWrap.style.display = 'block';
+                                if (dropText) dropText.style.display = 'none';
+                            }
+                        }
                     });
                 });
 
@@ -608,17 +619,6 @@
                             }
                         }
                     });
-
-                    const guildSelect = document.getElementById('new-project-guild');
-                    if (guildSelect) {
-                        guildSelect.addEventListener('change', (e) => {
-                            if (!this.uploadedCoverUrl && previewImg) {
-                                previewImg.src = api.getDefaultCover(e.target.value);
-                                previewWrap.style.display = 'block';
-                                if (dropText) dropText.style.display = 'none';
-                            }
-                        });
-                    }
                 }
 
                 // Form Submit
