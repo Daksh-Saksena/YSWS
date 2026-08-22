@@ -28,7 +28,7 @@ Almost every idea out there has been thought of before - what matters is the pro
 - Directly copy paste 3D printed / manufactured models (reference parts are OK)
 - **In general, do not copy paste stuff directly - use them as references**
 
-Making multiple very-similar projects will also result in a decrease of coins or a rejection (if they are too simillar).
+Making multiple very-similar projects will also result in a decrease of twigs or a rejection (if they are too simillar).
 
 
 ### DIY First
@@ -38,7 +38,7 @@ Do as much of the design and implementation yourself as you can, i.e. write the 
 - Don't submit projects that are basically prebuilt kits or full templates
 - Don't copy paste third‑party code or designs without understanding or attribution
 
-References, examples, and small helper libraries are fine, but cite them and explain what you built yourself. Projects that are mostly assembled from premade parts may receive fewer coins or be rejected.
+References, examples, and small helper libraries are fine, but cite them and explain what you built yourself. Projects that are mostly assembled from premade parts may receive fewer twigs or be rejected.
 
 
 After that, go wild! If you're unsure of anything, feel free to ask or pitch your idea in #trek-ysws! Remember, projects under T1 are also welcome to pitch for feedback!

@@ -29,7 +29,7 @@ See [JOURNAL.md Format](/docs/design/journal-format) and [Good Journalling](/doc
 
 **A great example journal entry can be found [here!](https://hwdocs.hackclub.dev/shipping/example-journal/)**
 
-## 3. Ship your design, get coins!
+## 3. Ship your design, get twigs!
 
 Once you think you're done your project, make sure to go over each item in the **[project requirements!](/docs/requirements/project-guidelines)** It'll ensure that your project is good to ship. Your project will be returned if it does not follow the requirements.
 
@@ -39,7 +39,7 @@ See [Shipping](/docs/requirements/shipping) for more details.
 
 **Taking the extra few minutes to go through the checklist makes the review process faster for you and everyone else, since it means that we return projects less often.**
 
-## 4. Build your project, get more coins!
+## 4. Build your project, get more twigs!
 
 Order your parts and actually build your project! Make sure you keep journalling!
 

@@ -31,7 +31,7 @@ If you've just started or are in the middle of designing, you need to have journ
 <details>
 <summary role="heading" aria-level="3" style="font-size:1.15em;font-weight:700;margin:0.5em 0;cursor:pointer;">Can I double dip with Stardance, Stasis or any other Hack Club program?</summary>
 
-No! Double-dipping is not allowed. If you have coding time for your project, you can journal it, and get coins to use in the shop!
+No! Double-dipping is not allowed. If you have coding time for your project, you can journal it, and get twigs to use in the shop!
 
 </details>
 
