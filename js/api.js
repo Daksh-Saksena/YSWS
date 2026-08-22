@@ -164,6 +164,11 @@ export class TrekApiService {
 
     resolveAssetUrl(url) {
         if (!url) return '';
+        
+        // Handle legacy hardcoded paths in the DB before the asset reorganization
+        if (url === 'jet.png') url = 'images/jet.png';
+        if (url === 'flag.png') url = 'images/flag.png';
+
         // Check localStorage mirror first
         try {
             const assets = ls(ASSETS_STORAGE_KEY, {});
