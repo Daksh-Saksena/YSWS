@@ -149,7 +149,7 @@ export class TrekApiService {
                 await this[item.operation](...item.args);
                 console.log(`[Trek] Flushed: ${item.operation}`);
             } catch (err) {
-                console.error(`[Trek] Failed to flush ${item.operation}:`, err);
+                console.error('[Trek] Failed to flush', item.operation, ':', err);
                 // Re-queue permanently-failed items
                 this._offlineQueue.push(item);
             }

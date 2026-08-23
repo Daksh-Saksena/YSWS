@@ -247,49 +247,60 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { name, guild, tagline, description, coverImageUrl, devlogMode, reviewType, linkedDesignProjectId, repoUrl } = req.body;
-        // Duplicate creation guard: prevent double-clicks/retries within 5 seconds
-        const duplicateCheck = await query(
-            `SELECT id FROM projects
-             WHERE user_id = $1 AND name = $2 AND deleted_at IS NULL AND created_at > NOW() - INTERVAL '5 seconds'
-             LIMIT 1`,
-            [req.user.id, name.trim()]
-        );
-        if (duplicateCheck.rows.length > 0) {
-            const existingProject = await getProjectWithEntries(duplicateCheck.rows[0].id, req.user.id);
+        
+        const result = await withTransaction(async (client) => {
+            // Advisory lock to prevent concurrent creation by the same user
+            await client.query("SELECT pg_advisory_xact_lock(hashtext($1), hashtext('create_project'))", [req.user.id]);
+
+            // Duplicate creation guard: prevent double-clicks/retries within 5 seconds
+            const duplicateCheck = await client.query(
+                `SELECT id FROM projects
+                 WHERE user_id = $1 AND name = $2 AND deleted_at IS NULL AND created_at > NOW() - INTERVAL '5 seconds'
+                 LIMIT 1`,
+                [req.user.id, name.trim()]
+            );
+            if (duplicateCheck.rows.length > 0) {
+                return { existingId: duplicateCheck.rows[0].id };
+            }
+
+            // Generate slug-style ID, ensure uniqueness
+            const baseId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `project-${Date.now()}`;
+            let id = baseId;
+            let counter = 1;
+            while (true) {
+                const check = await client.query('SELECT id FROM projects WHERE id = $1', [id]);
+                if (check.rows.length === 0) break;
+                id = `${baseId}-${counter++}`;
+            }
+
+            const insertRes = await client.query(
+                `INSERT INTO projects
+                    (id, user_id, name, guild, tagline, description, cover_image_url, review_type, linked_design_project_id, repo_url)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                 RETURNING *`,
+                [
+                    id,
+                    req.user.id,
+                    name.trim(),
+                    guild || 'frontier',
+                    tagline?.trim() || '',
+                    description?.trim() || '',
+                    coverImageUrl || null,
+                    reviewType || 'design',
+                    linkedDesignProjectId || null,
+                    repoUrl || null,
+                ]
+            );
+            return { newId: insertRes.rows[0].id };
+        });
+
+        if (result.existingId) {
+            const existingProject = await getProjectWithEntries(result.existingId, req.user.id);
             return res.json(existingProject);
         }
 
-        // Generate slug-style ID, ensure uniqueness
-        const baseId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `project-${Date.now()}`;
-        let id = baseId;
-        let counter = 1;
-        while (true) {
-            const check = await query('SELECT id FROM projects WHERE id = $1', [id]);
-            if (check.rows.length === 0) break;
-            id = `${baseId}-${counter++}`;
-        }
-
-        const result = await query(
-            `INSERT INTO projects
-                (id, user_id, name, guild, tagline, description, cover_image_url, review_type, linked_design_project_id, repo_url)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-             RETURNING *`,
-            [
-                id,
-                req.user.id,
-                name.trim(),
-                guild || 'frontier',
-                tagline?.trim() || '',
-                description?.trim() || '',
-                coverImageUrl || null,
-                reviewType || 'design',
-                linkedDesignProjectId || null,
-                repoUrl || null,
-            ]
-        );
-
         // Fetch with user info
-        const project = await getProjectWithEntries(result.rows[0].id, req.user.id);
+        const project = await getProjectWithEntries(result.newId, req.user.id);
         res.status(201).json(project);
     } catch (err) {
         console.error('[Projects] POST / error:', err);
