@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Trek</title>
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="css/project.css">
-    
-    <!-- Marked.js for parsing markdown -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.1.2/marked.min.js" integrity="sha384-dAw12gnWShdrRMCwiNUvPHQ5IWS3uZwljXl3x7qNqvn+5gD/O/DXFCnR29GdXgOk" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.1.2/marked.min.js"
+        integrity="sha384-dAw12gnWShdrRMCwiNUvPHQ5IWS3uZwljXl3x7qNqvn+5gD/O/DXFCnR29GdXgOk"
+        crossorigin="anonymous"></script>
     <style>
         .docs-layout {
             max-width: 1200px;
@@ -24,7 +24,7 @@
 
         .docs-sidebar {
             background: rgba(14, 14, 17, 0.7);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 24px;
             position: sticky;
@@ -40,7 +40,7 @@
             color: var(--hc-red);
             margin: 0 0 16px 0;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .docs-category {
@@ -68,7 +68,7 @@
         }
 
         .docs-nav-link:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
         }
 
@@ -80,7 +80,7 @@
 
         .docs-content {
             background: rgba(14, 14, 17, 0.7);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 40px;
             min-height: 500px;
@@ -90,6 +90,7 @@
             .docs-layout {
                 grid-template-columns: 1fr;
             }
+
             .docs-sidebar {
                 position: static;
                 max-height: none;
@@ -99,7 +100,6 @@
 </head>
 
 <body class="trek-app">
-    <!-- Top Navigation Bar -->
     <nav class="trek-nav">
         <div class="trek-nav-left">
             <a href="index.html" class="trek-nav-brand">
@@ -107,8 +107,6 @@
                 <img src="images/logo.png" alt="Trek Logo" class="trek-nav-logo">
             </a>
             <div class="trek-nav-links">
-                <a href="projects.html" class="trek-nav-link">Projects</a>
-                <a href="explore.html" class="trek-nav-link">Explore</a>
                 <a href="docs.html" class="trek-nav-link active">Docs</a>
                 <a href="shop.html" class="trek-nav-link">Shop</a>
             </div>
@@ -116,23 +114,16 @@
         <div class="trek-nav-actions">
         </div>
     </nav>
-
-    <!-- Main Content -->
     <main class="docs-layout">
-        <!-- Sidebar -->
         <aside class="docs-sidebar" id="docs-sidebar-container">
-            <!-- Rendered by docsPage.js -->
         </aside>
-
-        <!-- Markdown Content -->
         <article class="docs-content devlog-md-content" id="docs-markdown-container">
             <div style="color: var(--hc-muted); text-align: center; padding: 40px;">
                 Loading document...
             </div>
         </article>
     </main>
-
-    <!-- Script: Docs Controller -->
     <script type="module" src="js/docsPage.js"></script>
 </body>
+
 </html>

@@ -774,9 +774,8 @@ body.video-active {
     background: #ff4760;
 }
 
-/* Attempt to hide Fillout branding */
-a[href*="fillout.com"]:not([data-fillout-id]), 
-[class*="fillout-branding"], 
+a[href*="fillout.com"]:not([data-fillout-id]),
+[class*="fillout-branding"],
 [class*="fillout-watermark"] {
     display: none !important;
     opacity: 0 !important;
@@ -784,7 +783,6 @@ a[href*="fillout.com"]:not([data-fillout-id]),
     pointer-events: none !important;
 }
 
-/* Hero section action buttons - matching shapes */
 .hero-btn-container {
     display: flex;
     gap: 15px;

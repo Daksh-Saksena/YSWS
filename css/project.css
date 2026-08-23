@@ -1,10 +1,3 @@
-/**
- * Trek YSWS - Project & Hardware Journal Styles
- * 
- * Hardware engineering build logs with wide banner layout, dark aesthetics,
- * clean typography, and tight spacing.
- */
-
 :root {
     --hc-red: #ec3750;
     --hc-orange: #ff8c37;
@@ -13,7 +6,6 @@
     --hc-cyan: #5bc0de;
     --hc-blue: #338eda;
     --hc-purple: #a633d6;
-    
     --hc-darker: #121217;
     --hc-dark: #17171d;
     --hc-darkless: #252429;
@@ -21,7 +13,6 @@
     --hc-smoke: #e0e6ed;
     --hc-muted: #8492a6;
     --hc-white: #ffffff;
-
     --hc-font-heading: 'Phantom Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --hc-font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --hc-font-monospace: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
@@ -44,10 +35,6 @@ html {
     overflow-x: hidden;
     width: 100%;
 }
-
-/* =========================================================================
-   1. NAVIGATION
-   ========================================================================= */
 
 .trek-nav {
     display: flex;
@@ -116,10 +103,6 @@ html {
 .trek-nav-link.active {
     color: var(--hc-red);
 }
-
-/* =========================================================================
-   2. PROJECT BANNER HERO (FORGE-STYLE WIDE BANNER)
-   ========================================================================= */
 
 .project-header-wrapper {
     max-width: 1100px;
@@ -350,10 +333,6 @@ html {
     margin-top: 2px;
 }
 
-/* =========================================================================
-   3. STATUS & REVIEW BANNER
-   ========================================================================= */
-
 .review-banner {
     max-width: 1100px;
     margin: 20px auto 0 auto;
@@ -382,10 +361,6 @@ html {
     font-size: 0.92rem;
     line-height: 1.4;
 }
-
-/* =========================================================================
-   4. DEVLOG BODY & TIMELINE
-   ========================================================================= */
 
 .project-body {
     max-width: 1100px;
@@ -451,7 +426,6 @@ html {
     background: rgba(255, 255, 255, 0.16);
 }
 
-/* Timeline Layout */
 .journal-timeline {
     display: flex;
     flex-direction: column;
@@ -516,29 +490,46 @@ html {
     word-break: break-word;
 }
 
-.entry-body h2, .entry-body h3, .entry-body h4, .entry-body h5,
-.preview-container h2, .preview-container h3, .preview-container h4, .preview-container h5 {
+.entry-body h2,
+.entry-body h3,
+.entry-body h4,
+.entry-body h5,
+.preview-container h2,
+.preview-container h3,
+.preview-container h4,
+.preview-container h5 {
     color: var(--hc-white);
     margin: 10px 0 2px 0;
     padding: 0;
     line-height: 1.2;
 }
 
-.entry-body h2 + *, .entry-body h3 + *, .entry-body h4 + *, .entry-body h5 + *,
-.preview-container h2 + *, .preview-container h3 + *, .preview-container h4 + *, .preview-container h5 + * {
+.entry-body h2+*,
+.entry-body h3+*,
+.entry-body h4+*,
+.entry-body h5+*,
+.preview-container h2+*,
+.preview-container h3+*,
+.preview-container h4+*,
+.preview-container h5+* {
     margin-top: 2px !important;
 }
 
-.entry-body p, .preview-container p {
+.entry-body p,
+.preview-container p {
     margin: 2px 0;
 }
 
-.entry-body ul, .entry-body ol, .preview-container ul, .preview-container ol {
+.entry-body ul,
+.entry-body ol,
+.preview-container ul,
+.preview-container ol {
     margin: 4px 0 6px 18px;
     padding: 0;
 }
 
-.entry-body code, .preview-container code {
+.entry-body code,
+.preview-container code {
     background: rgba(255, 255, 255, 0.08);
     padding: 2px 5px;
     border-radius: 4px;
@@ -609,10 +600,6 @@ html {
 .action-btn-sm.btn-danger:hover {
     color: #ff4760;
 }
-
-/* =========================================================================
-   5. MODAL DIALOG & FORMS
-   ========================================================================= */
 
 .modal-backdrop {
     position: fixed;
@@ -699,7 +686,9 @@ html {
     color: var(--hc-smoke);
 }
 
-.form-input, .form-select, .form-textarea {
+.form-input,
+.form-select,
+.form-textarea {
     background: rgba(18, 18, 23, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
@@ -711,34 +700,43 @@ html {
 }
 
 @media (max-width: 768px) {
-    .form-input, .form-select, .form-textarea {
-        font-size: 16px !important; /* Forces iOS Safari NOT to zoom in when tapped */
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 16px !important;
     }
-    
-    /* Top Nav Overrides */
+
     .trek-nav-brand span {
         font-size: 0 !important;
     }
+
     .trek-nav-brand span::after {
         content: "←";
         font-size: 1.5rem !important;
         color: var(--hc-smoke);
     }
+
     .trek-nav-logo {
         display: none !important;
     }
+
     .trek-nav-left {
-        gap: 16px !important; /* Move links to the left */
+        gap: 16px !important;
     }
+
     .trek-nav-links {
-        gap: 14px !important; /* Compress link spacing */
+        gap: 14px !important;
     }
+
     .trek-nav-link {
-        font-size: 0.95rem !important; /* Match scaling */
+        font-size: 0.95rem !important;
     }
 }
 
-.form-input:focus, .form-select:focus, .form-textarea:focus {
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
     outline: none;
     border-color: var(--hc-red);
 }
@@ -749,7 +747,6 @@ html {
     line-height: 1.45;
 }
 
-/* Tab controls for Write vs Preview */
 .editor-tabs {
     display: flex;
     gap: 6px;
@@ -786,7 +783,6 @@ html {
     color: #d1d5db;
 }
 
-/* Upload drop zone */
 .drop-zone {
     border: 2px dashed rgba(255, 255, 255, 0.15);
     border-radius: 10px;
@@ -797,7 +793,8 @@ html {
     background: rgba(18, 18, 23, 0.4);
 }
 
-.drop-zone.dragover, .drop-zone:hover {
+.drop-zone.dragover,
+.drop-zone:hover {
     border-color: var(--hc-red);
     background: rgba(236, 55, 80, 0.05);
 }
@@ -811,7 +808,6 @@ html {
     color: var(--hc-smoke);
 }
 
-/* Validation notice */
 .validation-notice {
     background: rgba(236, 55, 80, 0.1);
     border: 1px solid rgba(236, 55, 80, 0.3);
@@ -907,10 +903,6 @@ html {
     background: rgba(255, 255, 255, 0.02);
 }
 
-/* =========================================================================
-   X. SHOP UI
-   ========================================================================= */
-
 .shop-dashboard-wrap {
     flex: 1;
     padding: 30px;
@@ -981,8 +973,8 @@ html {
 .shop-card-img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* or cover depending on images, Forge usually uses clean PNGs with contain/cover */
-    padding: 10px; /* Optional, if images don't have built-in padding */
+    object-fit: contain;
+    padding: 10px;
 }
 
 .shop-card-content {

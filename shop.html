@@ -7,14 +7,12 @@
     <title>Trek</title>
     <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="stylesheet" href="css/project.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="trek-app">
-    <!-- Top Navigation Bar -->
     <nav class="trek-nav">
         <div class="trek-nav-left">
             <a href="index.html" class="trek-nav-brand">
@@ -22,8 +20,6 @@
                 <img src="images/logo.png" alt="Trek Logo" class="trek-nav-logo">
             </a>
             <div class="trek-nav-links">
-                <a href="projects.html" class="trek-nav-link">Projects</a>
-                <a href="explore.html" class="trek-nav-link">Explore</a>
                 <a href="docs.html" class="trek-nav-link">Docs</a>
                 <a href="shop.html" class="trek-nav-link active">Shop</a>
             </div>
@@ -31,8 +27,6 @@
         <div class="trek-nav-actions">
         </div>
     </nav>
-
-    <!-- Main Content Dashboard -->
     <main class="shop-dashboard-wrap">
         <div class="shop-header"
             style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
@@ -40,185 +34,151 @@
                 <h1>Trek Shop</h1>
                 <p>Spend your hard-earned twigs on hardware grants, domains, and more!</p>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                    <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
+                    <div
+                        style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
                         These are approximate prices as they vary according to region!
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
+                    <div
+                        style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; color: var(--hc-smoke);">
                         Shop items unlock once you've marked at least one project as built.
                     </div>
                 </div>
             </div>
-            <div class="shop-balance"
-                style="display: flex; align-items: center; gap: 10px; background: rgba(0, 0, 0, 0.4); padding: 12px 20px; border-radius: 12px; border: 1px dashed rgba(255, 255, 255, 0.15);">
-                <div
-                    style="font-size: 0.9rem; color: var(--hc-muted); text-transform: uppercase; font-family: var(--hc-font-heading); font-weight: 700;">
-                    Balance</div>
-                <div
-                    style="font-size: 1.8rem; font-weight: 700; color: #ffb020; display: flex; align-items: center; gap: 8px;">
-                    <span id="user-balance-twigs">0</span>
-                    <img src="images/twig.png" alt="twig" style="height: 2.2rem; width: auto;">
-                </div>
+            <div class="shop-grid">
+                <a href="#" class="shop-card"
+                    style="grid-column: 1 / -1; background: rgba(23, 23, 29, 0.7); border: 1px solid rgba(255, 140, 55, 0.4); border-radius: 12px;">
+                    <div class="shop-card-content" style="padding: 14px 18px;">
+                        <h3 class="shop-title" style="font-size: 1.2rem; color: var(--hc-white); margin-bottom: 4px;">
+                            Direct project grant</h3>
+                        <p class="shop-desc" style="font-size: 0.95rem; color: var(--hc-smoke); margin: 0;">Trade 5
+                            twigs to $1 to fund hardware for one of your approved projects.</p>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/hardware.png" alt="Hardware Grant" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">10$ Hardware Grant</h3>
+                        <p class="shop-desc">Get funding to build your next big hardware project. Order parts,
+                            electronics,
+                            and components to bring your build to life.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            50 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/3dp.png" alt="3D Printing and CNC Grant" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">10$ 3D Printing & CNC Grant</h3>
+                        <p class="shop-desc">Need custom parts? Get funding to outsource 3D printing, laser cutting, or
+                            CNC
+                            machining for your structural components.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            50 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/flipper.png" alt="Flipper Zero" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">Flipper Zero</h3>
+                        <p class="shop-desc">The ultimate multi-tool for geeks. A portable hardware tool for exploring
+                            access control systems, RFID, radio protocols, and more.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            1300 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/A1mini.png" alt="Bambu Lab A1 Mini" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">Bambu Lab A1 Mini</h3>
+                        <p class="shop-desc">A blazing fast, beginner-friendly 3D printer to rapidly prototype and
+                            iterate
+                            on your physical builds.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            1300 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/soldering.png" alt="Pinecil Soldering Iron" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">Pinecil V2 + Charger Bundle</h3>
+                        <p class="shop-desc">A high-quality, portable smart soldering iron for making permanent
+                            electronic
+                            connections.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            325 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/domain.png" alt="10$ Domain Grant" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">10$ Domain Grant</h3>
+                        <p class="shop-desc">Get a custom domain name for your project's website or documentation.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            50 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/caliper.png" alt="Digital Caliper" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">Digital Caliper</h3>
+                        <p class="shop-desc">Essential tool for precise measurements in hardware and 3D printing
+                            projects.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            45 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/driver.png" alt="Precision Screwdriver Set" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">Precision Screwdriver Set</h3>
+                        <p class="shop-desc">High-quality bits for assembling electronics, laptops, and small
+                            components.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            60 twigs</div>
+                    </div>
+                </a>
+                <a href="#" class="shop-card">
+                    <div class="shop-card-img-wrap">
+                        <img src="images/prizes/electronics.png" alt="10$ Electronics Grant" class="shop-card-img">
+                    </div>
+                    <div class="shop-card-content">
+                        <h3 class="shop-title">10$ Electronics Grant</h3>
+                        <p class="shop-desc">Grant for electronics (Mics, mouse, keyboards, phones, raspberry pi,
+                            washing machine, Large Hadron Collider) any electronics.</p>
+                        <div class="shop-price"><img src="images/twig.png" alt="twig"
+                                style="height: 1.6rem; width: auto;">
+                            50 twigs</div>
+                    </div>
+                </a>
             </div>
-        </div>
-
-        <div class="shop-grid">
-            <!-- Direct Project Grant -->
-            <a href="#" class="shop-card"
-                style="grid-column: 1 / -1; background: rgba(23, 23, 29, 0.7); border: 1px solid rgba(255, 140, 55, 0.4); border-radius: 12px;">
-                <div class="shop-card-content" style="padding: 14px 18px;">
-                    <h3 class="shop-title" style="font-size: 1.2rem; color: var(--hc-white); margin-bottom: 4px;">Direct project grant</h3>
-                    <p class="shop-desc" style="font-size: 0.95rem; color: var(--hc-smoke); margin: 0;">Trade 5 twigs to $1 to fund hardware for one of your approved projects.</p>
-                </div>
-            </a>
-
-            <!-- Hardware Grant -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/hardware.png" alt="Hardware Grant" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">10$ Hardware Grant</h3>
-                    <p class="shop-desc">Get funding to build your next big hardware project. Order parts, electronics,
-                        and components to bring your build to life.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        50 twigs</div>
-                </div>
-            </a>
-
-            <!-- 3D Printing and CNC Grant -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/3dp.png" alt="3D Printing and CNC Grant" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">10$ 3D Printing & CNC Grant</h3>
-                    <p class="shop-desc">Need custom parts? Get funding to outsource 3D printing, laser cutting, or CNC
-                        machining for your structural components.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        50 twigs</div>
-                </div>
-            </a>
-
-            <!-- Flipper Zero -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/flipper.png" alt="Flipper Zero" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">Flipper Zero</h3>
-                    <p class="shop-desc">The ultimate multi-tool for geeks. A portable hardware tool for exploring
-                        access control systems, RFID, radio protocols, and more.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        1300 twigs</div>
-                </div>
-            </a>
-
-            <!-- A1 Mini -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/A1mini.png" alt="Bambu Lab A1 Mini" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">Bambu Lab A1 Mini</h3>
-                    <p class="shop-desc">A blazing fast, beginner-friendly 3D printer to rapidly prototype and iterate
-                        on your physical builds.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        1300 twigs</div>
-                </div>
-            </a>
-
-            <!-- Soldering Iron -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/soldering.png" alt="Pinecil Soldering Iron" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">Pinecil V2 + Charger Bundle</h3>
-                    <p class="shop-desc">A high-quality, portable smart soldering iron for making permanent electronic
-                        connections.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        325 twigs</div>
-                </div>
-            </a>
-
-            <!-- Domain Grant -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/domain.png" alt="10$ Domain Grant" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">10$ Domain Grant</h3>
-                    <p class="shop-desc">Get a custom domain name for your project's website or documentation.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        50 twigs</div>
-                </div>
-            </a>
-
-            <!-- Digital Caliper -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/caliper.png" alt="Digital Caliper" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">Digital Caliper</h3>
-                    <p class="shop-desc">Essential tool for precise measurements in hardware and 3D printing projects.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        45 twigs</div>
-                </div>
-            </a>
-
-            <!-- Precision Screwdriver Set -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/driver.png" alt="Precision Screwdriver Set" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">Precision Screwdriver Set</h3>
-                    <p class="shop-desc">High-quality bits for assembling electronics, laptops, and small components.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        60 twigs</div>
-                </div>
-            </a>
-
-            <!-- Electronics Grant -->
-            <a href="#" class="shop-card">
-                <div class="shop-card-img-wrap">
-                    <img src="images/prizes/electronics.png" alt="10$ Electronics Grant" class="shop-card-img">
-                </div>
-                <div class="shop-card-content">
-                    <h3 class="shop-title">10$ Electronics Grant</h3>
-                    <p class="shop-desc">Grant for electronics (Mics, mouse, keyboards, phones, raspberry pi, washing machine, Large Hadron Collider) any electronics.</p>
-                    <div class="shop-price"><img src="images/twig.png" alt="twig" style="height: 1.6rem; width: auto;">
-                        50 twigs</div>
-                </div>
-            </a>
-        </div>
-
-        <div class="shop-suggestion-banner">
-            <strong>WE ARE OPEN TO SUGGESTIONS. ANYTHING YOU WANT PLEASE DM @DS010 on slack</strong>
-        </div>
+            <div class="shop-suggestion-banner">
+                <strong>WE ARE OPEN TO SUGGESTIONS. ANYTHING YOU WANT PLEASE DM @DS010 on slack</strong>
+            </div>
     </main>
-
-    <script type="module">
-        import { api } from './js/api.js';
-
-        async function initShop() {
-            try {
-                if (!api.isLoggedIn()) {
-                    window.location.href = 'login.html';
-                    return;
-                }
-                const projects = await api.getProjects();
-                const totalHours = projects.reduce((sum, p) => sum + (p.totalHours || 0), 0);
-                const twigs = Math.round(totalHours * 25);
-                document.getElementById('user-balance-twigs').textContent = twigs;
-            } catch (err) {
-                console.error('Failed to load balance', err);
-            }
-        }
-
-        initShop();
-    </script>
 </body>
 
 </html>
