@@ -45,8 +45,10 @@ router.get('/login', (req, res) => {
         client_id: clientId,
         response_type: 'code',
         redirect_uri: redirectUri,
-        scope: 'slack_id name profile email'
+        scope: 'openid email name profile verification_status slack_id'
     });
+    console.log('[Auth] Redirecting to Hack Club Auth with Client ID:', clientId);
+    console.log('[Auth] Redirect URI:', redirectUri);
     res.redirect(`https://auth.hackclub.com/oauth/authorize?${params}`);
 });
 
