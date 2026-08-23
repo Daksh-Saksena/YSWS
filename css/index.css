@@ -29,15 +29,7 @@ html {
     color: var(--hc-white);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
-
-body::-webkit-scrollbar,
-html::-webkit-scrollbar {
-    display: none;
-}
-
 body.video-active {
     overflow: hidden;
 }
