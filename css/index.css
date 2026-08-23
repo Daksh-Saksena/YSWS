@@ -766,14 +766,7 @@ body.video-active {
     background: #ff4760;
 }
 
-a[href*="fillout.com"]:not([data-fillout-id]),
-[class*="fillout-branding"],
-[class*="fillout-watermark"] {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
+
 
 .hero-btn-container {
     display: flex;
