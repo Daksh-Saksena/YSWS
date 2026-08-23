@@ -27,10 +27,10 @@ import { TrekJournalValidator } from './journalValidator.js';
 const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const API_BASE = window.TREK_API_BASE || (isLocal ? 'http://localhost:3001' : '');
 
-const STORAGE_KEY      = 'trek_ysws_projects_db_v2';   // legacy + mirror
+const STORAGE_KEY = 'trek_ysws_projects_db_v2';   // legacy + mirror
 const ASSETS_STORAGE_KEY = 'trek_ysws_assets_db_v1';
-const TREK_TOKEN_KEY   = 'trek_jwt_token';
-const TREK_USER_KEY    = 'trek_current_user';
+const TREK_TOKEN_KEY = 'trek_jwt_token';
+const TREK_USER_KEY = 'trek_current_user';
 const OFFLINE_QUEUE_KEY = 'trek_offline_queue';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ export class TrekApiService {
     constructor() {
         // In-memory fallback (used if localStorage is also broken)
         this.memoryStorage = null;
-        this.memoryAssets  = {};
+        this.memoryAssets = {};
         this._offlineQueue = ls(OFFLINE_QUEUE_KEY, []);
         this._flushingQueue = false;
 
@@ -158,13 +158,10 @@ export class TrekApiService {
         this._flushingQueue = false;
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Asset URL resolution (images stored in Cloudinary, keyed by short URL)
-    // ─────────────────────────────────────────────────────────────────────────
 
     resolveAssetUrl(url) {
         if (!url) return '';
-        
+
         // Handle legacy hardcoded paths in the DB before the asset reorganization
         if (url === 'jet.png') url = 'images/jet.png';
         if (url === 'flag.png') url = 'images/flag.png';
@@ -268,12 +265,12 @@ export class TrekApiService {
 
     async updateProject(projectId, updateData) {
         const body = {};
-        if (updateData.name !== undefined)         body.name = updateData.name;
-        if (updateData.tagline !== undefined)       body.tagline = updateData.tagline;
-        if (updateData.description !== undefined)   body.description = updateData.description;
+        if (updateData.name !== undefined) body.name = updateData.name;
+        if (updateData.tagline !== undefined) body.tagline = updateData.tagline;
+        if (updateData.description !== undefined) body.description = updateData.description;
         if (updateData.coverImageUrl !== undefined) body.coverImageUrl = updateData.coverImageUrl;
-        if (updateData.guild !== undefined)         body.guild = updateData.guild;
-        if (updateData.repoUrl !== undefined)       body.repoUrl = updateData.repoUrl;
+        if (updateData.guild !== undefined) body.guild = updateData.guild;
+        if (updateData.repoUrl !== undefined) body.repoUrl = updateData.repoUrl;
 
         if (!navigator.onLine) {
             this._enqueueOffline('updateProject', [projectId, updateData]);
@@ -468,7 +465,7 @@ export class TrekApiService {
                             canvas.height = height;
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, width, height);
-                            
+
                             // Output as JPEG for high compression
                             const dataUrl = canvas.toDataURL('image/jpeg', quality);
                             resolve(dataUrl);
@@ -514,7 +511,7 @@ export class TrekApiService {
                         let data;
                         try {
                             data = JSON.parse(text);
-                        } catch(e) {
+                        } catch (e) {
                             throw new Error(`HTTP ${r.status}: ${text.substring(0, 40).replace(/\\n/g, ' ')}...`);
                         }
                         if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
